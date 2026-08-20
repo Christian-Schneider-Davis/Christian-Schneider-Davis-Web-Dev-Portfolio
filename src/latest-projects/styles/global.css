@@ -1,0 +1,98 @@
+@import './tokens.css';
+
+* {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   .os-root — the embeddable box.
+   Everything the OS-desktop UI does (taskbar, windows, icons, music player)
+   is positioned relative to THIS element, not the browser viewport, and its
+   own size/overflow/stacking are fully self-contained so it can sit inside
+   a normal page section without leaking styles onto the rest of that page.
+   ========================================================================== */
+.os-root {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 420px;
+  max-height: 780px;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  isolation: isolate;
+
+  cursor: url('/cursors/cursor-arrow.svg') 2 2, auto;
+}
+
+.os-root a,
+.os-root button,
+.os-root [role='button'],
+.os-root .clickable {
+  cursor: url('/cursors/cursor-pointer.svg') 6 3, pointer;
+}
+
+.os-root h1,
+.os-root h2,
+.os-root h3,
+.os-root h4 {
+  font-family: var(--font-display);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.os-root p {
+  margin: 0;
+}
+
+.os-root button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.os-root ::selection {
+  background: var(--accent-violet);
+  color: #fff;
+}
+
+.os-root * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-glass-strong) transparent;
+}
+.os-root *::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.os-root *::-webkit-scrollbar-thumb {
+  background: var(--border-glass-strong);
+  border-radius: 8px;
+}
+.os-root *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.acrylic {
+  background: var(--surface-glass-strong);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid var(--border-glass);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

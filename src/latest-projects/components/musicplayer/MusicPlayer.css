@@ -1,0 +1,125 @@
+.music-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 252px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-window);
+  z-index: var(--z-widget);
+  animation: window-in var(--dur-med) var(--ease-spring);
+}
+
+.music-player.is-dragging {
+  transition: none;
+}
+
+.music-player__chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  padding: 0 6px 0 12px;
+  background: var(--surface-glass);
+  border-bottom: 1px solid var(--border-glass);
+  touch-action: none;
+  cursor: url('/cursors/cursor-arrow.svg') 2 2, auto;
+}
+
+.music-player__chrome-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.music-player__close {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+}
+
+.music-player__close:hover {
+  background: var(--accent-warn);
+  color: #fff;
+}
+
+.music-player__body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.music-player__art {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--accent-gradient);
+}
+
+.music-player__info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.music-player__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-player__artist {
+  margin-top: 2px;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-player__toggle {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: var(--accent-gradient);
+}
+
+.music-player__toggle:hover {
+  filter: brightness(1.1);
+}
+
+.music-player__skip {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text-secondary);
+}
+
+.music-player__skip:hover {
+  background: var(--surface-glass);
+  color: var(--text-primary);
+}

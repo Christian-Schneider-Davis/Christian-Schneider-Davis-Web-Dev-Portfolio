@@ -1,0 +1,93 @@
+/* Sticky positioning lives here rather than in App.css so everything
+   about how this card behaves is in one place. .pinned-layout (App.css)
+   is what defines the column it sits in and where the pin stops. */
+.hero-card {
+  position: sticky;
+  top: 6rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 1.4rem;
+  box-shadow: var(--shadow-card);
+}
+
+.hero-card__photo {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: var(--bg-alt);
+}
+
+.hero-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-card__meta {
+  margin: 1.2rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.hero-card__meta div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-card__meta div:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.hero-card__meta dt {
+  font-size: 0.72rem;
+  color: var(--fg-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hero-card__meta dd {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 500;
+  text-align: right;
+}
+
+.hero-card__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  margin-top: 1.2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+}
+
+.hero-card__socials a {
+  font-size: 0.78rem;
+  color: var(--fg-dim);
+  transition: color 0.3s var(--ease);
+}
+
+.hero-card__socials a:hover {
+  color: var(--accent);
+}
+
+.hero-card__cta {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.2rem;
+}
+
+/* Mobile/tablet: unpin, become a normal full-width block. */
+@media (max-width: 900px) {
+  .hero-card {
+    position: static;
+    top: auto;
+    width: 100%;
+  }
+}

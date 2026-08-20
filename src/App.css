@@ -1,0 +1,71 @@
+/* ---------------------------------------------------------
+   Pinned layout — wraps HeroCard + (Hero, About, Services, Work).
+   HeroCard sticks within this container only; it naturally stops
+   sticking at this container's bottom edge, right before the
+   "latest-projects" section starts (which lives outside this wrapper
+   and is untouched).
+--------------------------------------------------------- */
+.pinned-layout {
+  padding-top: 7rem;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(3rem, 7vw, 6rem);
+}
+
+.pinned-layout > .hero-card {
+  flex: 0 0 320px;
+}
+
+.pinned-layout__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .pinned-layout {
+    flex-direction: column;
+    padding-top: 6rem;
+  }
+
+  .pinned-layout > .hero-card {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ---------------------------------------------------------
+   Latest Projects (untouched by the pinned-layout change)
+--------------------------------------------------------- */
+.latest-projects {
+  padding-block: clamp(5rem, 10vw, 8rem);
+  border-top: 1px solid var(--line);
+}
+
+.latest-projects__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.latest-projects__inner .eyebrow {
+  margin-bottom: 0.9rem;
+}
+
+.latest-projects__intro {
+  margin-top: 1.1rem;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--fg-dim);
+}
+
+.latest-projects__frame {
+  width: 100%;
+  max-width: 1000px;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  box-shadow: var(--shadow-card);
+}

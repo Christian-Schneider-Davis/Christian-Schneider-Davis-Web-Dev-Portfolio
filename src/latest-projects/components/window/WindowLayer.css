@@ -1,0 +1,13 @@
+.window-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Must clearly outrank .desktop's stacking context (z-index: var(--z-desktop))
+     so open windows always paint above the background/icons, and stay below
+     the taskbar/start menu, which sit above everything intentionally. */
+  z-index: var(--z-window-base);
+}
+
+.window-layer .app-window {
+  pointer-events: auto;
+}

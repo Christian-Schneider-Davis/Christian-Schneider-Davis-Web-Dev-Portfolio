@@ -1,0 +1,15 @@
+.desktop {
+  position: absolute;
+  inset: 0;
+  bottom: var(--taskbar-h);
+  overflow: hidden;
+  /* Explicit z-index (rather than auto) contains the background layer and
+     icons' own z-index values inside THIS stacking context, so they can't
+     leak out and out-rank sibling layers like the window layer. */
+  z-index: var(--z-desktop);
+}
+
+.desktop__icons {
+  position: absolute;
+  inset: 0;
+}

@@ -1,0 +1,125 @@
+.app-window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 240px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-window);
+  transition: box-shadow var(--dur-fast) var(--ease-out);
+  animation: window-in var(--dur-med) var(--ease-spring);
+}
+
+@keyframes window-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.app-window.is-dragging {
+  transition: none;
+}
+
+.app-window__chrome {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 46px;
+  padding: 0 8px 0 14px;
+  flex-shrink: 0;
+  background: var(--surface-glass);
+  border-bottom: 1px solid var(--border-glass);
+  touch-action: none;
+  cursor: url('/cursors/cursor-arrow.svg') 2 2, auto;
+}
+
+.app-window__tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+
+.app-window__tab-icon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.app-window__tab-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-window__address {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 40px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: var(--surface-glass-solid);
+  border: 1px solid var(--border-glass);
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  overflow: hidden;
+}
+
+.app-window__address span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-window__address-icon {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.app-window__controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.app-window__ctrl {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background var(--dur-fast), color var(--dur-fast);
+}
+
+.app-window__ctrl:hover {
+  background: rgba(128, 128, 140, 0.18);
+  color: var(--text-primary);
+}
+
+.app-window__ctrl--close:hover {
+  background: var(--accent-warn);
+  color: #fff;
+}
+
+.app-window__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  background: var(--bg-void);
+  color: var(--text-primary);
+}

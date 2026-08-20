@@ -1,0 +1,51 @@
+.awards {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding-block: 1.6rem;
+  overflow: hidden;
+}
+
+.awards__marquee {
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.awards__track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+.awards__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-inline: 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+
+.awards__dot {
+  color: var(--accent);
+  font-size: 0.7rem;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .awards__track {
+    animation: none;
+  }
+}

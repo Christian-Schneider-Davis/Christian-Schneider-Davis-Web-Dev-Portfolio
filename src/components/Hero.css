@@ -1,0 +1,105 @@
+.hero {
+  position: relative;
+}
+
+.hero__content {
+  min-width: 0;
+  padding-bottom: 3rem;
+}
+
+.hero__eyebrow {
+  margin-bottom: 1.6rem;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3rem, 7.5vw, 6.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.hero__line-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.hero__line {
+  display: block;
+  will-change: transform;
+}
+
+.hero__line--italic {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero__foot {
+  margin-top: clamp(2rem, 6vw, 3.5rem);
+}
+
+.hero__sub {
+  max-width: 42ch;
+  font-size: 1.1rem;
+  line-height: 1.55;
+  color: var(--fg-dim);
+}
+
+.hero__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 2rem;
+}
+
+/* ---- Scroll cue ---- */
+.hero__scroll {
+  position: fixed;
+  bottom: 2.2rem;
+  right: var(--gutter);
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.hero__scroll-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  writing-mode: vertical-rl;
+}
+
+.hero__scroll-track {
+  display: block;
+  width: 1px;
+  height: 56px;
+  background: var(--line-strong);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__scroll-dot {
+  position: absolute;
+  left: -1.5px;
+  top: -20px;
+  width: 4px;
+  height: 20px;
+  background: var(--accent);
+  animation: scrollDrop 2.2s ease-in-out infinite;
+}
+
+@keyframes scrollDrop {
+  0% { top: -20px; }
+  60% { top: 56px; }
+  100% { top: 56px; opacity: 0; }
+}
+
+@media (max-width: 780px) {
+  .hero__scroll {
+    display: none;
+  }
+}

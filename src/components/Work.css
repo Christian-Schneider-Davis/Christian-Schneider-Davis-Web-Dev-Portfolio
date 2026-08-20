@@ -1,0 +1,107 @@
+.work {
+  padding-block: clamp(5rem, 10vw, 8rem);
+  border-top: 1px solid var(--line);
+}
+
+.work__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.work__count {
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  letter-spacing: 0.03em;
+}
+
+.work__list {
+  position: relative;
+}
+
+.work__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem 1fr auto auto 1.5rem;
+  align-items: center;
+  column-gap: 1.5rem;
+  padding: clamp(1.4rem, 3vw, 2.1rem) 0;
+  transition: background 0.35s var(--ease);
+}
+
+.work__row:hover {
+  background: var(--accent-soft);
+}
+
+.work__row:hover .work__row-name {
+  color: var(--accent);
+  transform: translateX(6px);
+}
+
+.work__row:hover .work__row-arrow {
+  transform: translate(2px, -2px);
+  opacity: 1;
+}
+
+.work__row-index {
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.work__row-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.4vw, 2.3rem);
+  font-weight: 400;
+  transition: color 0.35s var(--ease), transform 0.35s var(--ease);
+}
+
+.work__row-category,
+.work__row-year {
+  font-size: 0.85rem;
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+
+.work__row-arrow {
+  font-size: 1.2rem;
+  color: var(--accent);
+  opacity: 0;
+  transition: transform 0.35s var(--ease), opacity 0.35s var(--ease);
+}
+
+.work__row .hairline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.work__preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 170px;
+  margin-top: -85px;
+  margin-left: 40px;
+  border-radius: 6px;
+  pointer-events: none;
+  z-index: 5;
+  background-size: cover;
+  transition: opacity 0.35s ease;
+  box-shadow: 0 24px 50px -18px rgba(28, 27, 21, 0.35);
+}
+
+@media (max-width: 780px) {
+  .work__row {
+    grid-template-columns: 2rem 1fr auto;
+    row-gap: 0.4rem;
+  }
+  .work__row-category {
+    display: none;
+  }
+  .work__preview {
+    display: none;
+  }
+}

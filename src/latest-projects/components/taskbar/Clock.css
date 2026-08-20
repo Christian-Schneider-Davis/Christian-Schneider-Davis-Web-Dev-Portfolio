@@ -1,0 +1,30 @@
+.taskbar-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  line-height: 1.3;
+  transition: background var(--dur-fast);
+}
+
+.taskbar-clock:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.os-root[data-theme='light'] .taskbar-clock:hover {
+  background: rgba(20, 20, 30, 0.06);
+}
+
+.taskbar-clock__time {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  color: var(--text-primary);
+}
+
+.taskbar-clock__date {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
