@@ -52,8 +52,7 @@ export function BackgroundLayer() {
 
   return (
     <div className="background-layer" aria-hidden="true">
-      {/* Aurora gradient sits underneath as a graceful base / fallback,
-          in case the frame sequence hasn't been dropped into public/images yet. */}
+
       <div className="background-layer__aurora" />
 
       {shouldAnimate ? (
