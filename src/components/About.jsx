@@ -1,12 +1,6 @@
 import useReveal from '../hooks/useReveal'
 import './About.css'
 
-const STATS = [
-  { value: '9', label: 'Years in practice' },
-  { value: '60+', label: 'Projects shipped' },
-  { value: '24', label: 'Brands partnered with' },
-]
-
 const DETAILS = [
   { label: 'Name', value: 'Christian Schneider-Davis' },
   { label: 'Location', value: 'Barcelona, Spain' },
@@ -21,15 +15,15 @@ export default function About() {
       <div>
         <div className="about__head">
           <p className="eyebrow">About</p>
-          <h2 className="section-heading">Simplicity => most effective interface.;</h2>
+          <h2 className="section-heading"> <b>Simplicity</b>. The most effective interface.</h2>
         </div>
 
         <div className="about__body reveal" ref={revealRef}>
           <div className="about__main">
             <p className="about__statement">
-              I design in the space between a brand&rsquo;s ambition and the
-              way people actually read a screen &mdash; trimming noise until
-              what&rsquo;s left is <em>obvious</em>, considered, and quietly
+              I design in the space between a brand's ambition and the
+              way people actually read a screen, trimming noise until
+              what's left is <em>obvious</em>, considered, and quietly
               confident.
             </p>
 
@@ -38,15 +32,6 @@ export default function About() {
               use, not just flashy first impressions. Every engagement starts
               with the same question: "What is this brand trying to say?"
             </p>
-
-            <ul className="about__stats">
-              {STATS.map((stat) => (
-                <li key={stat.label}>
-                  <span className="about__stat-value">{stat.value}</span>
-                  <span className="about__stat-label">{stat.label}</span>
-                </li>
-              ))}
-            </ul>
           </div>
 
           <aside className="about__card">

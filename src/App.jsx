@@ -49,7 +49,7 @@ export default function App() {
           </div>
         </section>
 
-        <Awards />
+        {/* <Awards /> */}
         <Contact />
       </main>
       <Footer />
