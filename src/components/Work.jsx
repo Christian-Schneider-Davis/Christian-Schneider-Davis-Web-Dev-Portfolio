@@ -86,7 +86,6 @@ export default function Work() {
         <div className="hairline" />
         {PROJECTS.map((project, index) => (
           <a
-            href="#contact"
             className="work__row"
             key={project.name}
             onMouseEnter={() => setActiveIndex(index)}

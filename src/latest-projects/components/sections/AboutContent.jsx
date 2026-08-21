@@ -41,7 +41,7 @@ export function AboutContent() {
         </div>
 
         <div className="about-content__skills">
-          <h2 className="about-content__label">Tools, Skills, & disciplines</h2>
+          <h2 className="about-content__label">Tools, Skills, & Disciplines</h2>
           <ul className="about-content__skill-list">
             {SKILLS.map((skill) => (
               <li key={skill}>{skill}</li>

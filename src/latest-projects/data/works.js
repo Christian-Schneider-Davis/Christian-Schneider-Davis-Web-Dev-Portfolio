@@ -1,56 +1,37 @@
 export const WORKS = [
   {
-    id: 'aperture',
-    title: 'Aperture',
-    category: 'Product design · UX',
-    year: '2025',
-    blurb:
-      'A camera-first social app rebuilt around one editing surface, cutting the median publish flow from six taps to two.',
-    tags: ['UX Research', 'Design System', 'React Native'],
+    id: 'Epic-Mouse',
+    title: 'Epic Mouse App',
+    category: 'Apple IOS App · Web',
+    year: 'Coming Sept. 2026',
+    blurb: 'Epic Mouse App is an ADHD-friendly writing buddy app featuring a tiny magical companion that grows with every word you write.',
+    tags: ['UX Research', 'Design System', 'Animation', 'React Vite'],
   },
   {
-    id: 'lumen-atlas',
-    title: 'Lumen Atlas',
-    category: 'Web development',
-    year: '2024',
+    id: 'Virtual-Desktop',
+    title: 'My Virtual Desktop Portfolio',
+    category: 'Full-Stack Dev · Design',
+    year: 'Aug. 2026',
     blurb:
-      'An interactive lighting-design tool for architects, rendering real-time shadow studies in the browser with WebGL.',
-    tags: ['React', 'WebGL', 'Three.js'],
+      'You are looking at it. I built this virtual desktop from stratch as a stand-alone portfolio and nested it into this site.',
+    tags: [ 'React Vite', 'Motion', 'Full-Stack', 'Adobe Photoshop'],
   },
   {
-    id: 'ink-and-index',
-    title: 'Ink & Index',
-    category: 'Art direction',
-    year: '2024',
-    blurb:
-      'A generative type specimen series exploring how letterforms decay and regenerate across 200+ animation frames.',
-    tags: ['Generative Art', 'Motion', 'Typography'],
-  },
-  {
-    id: 'northbound',
-    title: 'Northbound',
+    id: 'Vinz',
+    title: 'Vinz Barber Shop',
     category: 'Brand · Web',
-    year: '2023',
+    year: 'Aug. 2026',
     blurb:
-      'Identity and site for an independent trail-mapping studio, built around a hand-drawn topographic type system.',
-    tags: ['Branding', 'Vite', 'Illustration'],
+      'Identity and site for an independent local barber shop. Built around client specifications.',
+    tags: ['Branding', 'React Vite', 'Full-Stack'],
   },
   {
-    id: 'signal-fm',
-    title: 'Signal FM',
-    category: 'UX · Front-end',
-    year: '2023',
+    id: 'PINistry',
+    title: 'PINistry Studio Vintage',
+    category: 'E-Commerce · Full-Stack',
+    year: 'Feb. 2024',
     blurb:
-      'A community radio player rethought as a tactile mixing desk, with waveform scrubbing tuned for touch first.',
-    tags: ['Interaction Design', 'Web Audio API'],
-  },
-  {
-    id: 'paper-trail',
-    title: 'Paper Trail',
-    category: 'Illustration · Web',
-    year: '2022',
-    blurb:
-      'A children\u2019s-book publisher\u2019s catalogue site, translating painted textures into a fast, accessible storefront.',
-    tags: ['Accessibility', 'Illustration', 'E-commerce'],
-  },
+      'PINistry© is a premiere collectible company founded in 2022, specializing in vintage and limited edition lapel pins and patches.',
+    tags: ['Interaction Design', 'Inventory Management', 'Web Marketing', 'Full-Stack'],
+  }
 ]

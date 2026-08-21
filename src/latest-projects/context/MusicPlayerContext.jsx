@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState } from 
 
 const MusicPlayerContext = createContext(null)
 
-// Point each entry at your own file. Anything the <audio> element can play works.
 export const PLAYLIST = [
   { title: 'Fat Jon', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-1.mp3' },
   { title: 'Counting Stars', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-2.mp3' },
@@ -24,8 +23,6 @@ export function MusicPlayerProvider({ children }) {
 
   const currentTrack = PLAYLIST[trackIndex]
 
-  // When the track changes, the <audio> element's src updates via the JSX
-  // below — this just keeps playback going if we were already playing.
   useEffect(() => {
     if (isPlaying) audioRef.current?.play().catch(() => {})
   }, [trackIndex])

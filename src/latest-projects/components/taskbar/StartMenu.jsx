@@ -62,8 +62,6 @@ export function StartMenu() {
             </button>
           ))}
 
-          {/* Not a window-app — its own context tracks open/playing state,
-              so this tile just brings the widget back if it's been closed. */}
           <button
             type="button"
             className="start-menu__tile"

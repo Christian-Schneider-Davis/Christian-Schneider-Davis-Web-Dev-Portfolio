@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 /**
- * useDraggable
- * Pointer-driven dragging for anything with a controlled { x, y } position.
  *
- * @param {{x:number, y:number}} position   current position (controlled)
- * @param {(x:number, y:number)=>void} onChange   called continuously while dragging
+ * @param {{x:number, y:number}} position   
+ * @param {(x:number, y:number)=>void} onChange 
  * @param {{
  *   disabled?: boolean,
  *   bounds?: () => {minX:number,maxX:number,minY:number,maxY:number},
