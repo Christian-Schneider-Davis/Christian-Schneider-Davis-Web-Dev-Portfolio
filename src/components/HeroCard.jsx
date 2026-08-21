@@ -3,9 +3,10 @@ import './HeroCard.css'
 
 const SOCIALS = [
   { label: 'Email', href: 'mailto:schneiderdavis@aol.com' },
-  { label: 'Instagram', href: '#' },
-  { label: 'Dribbble', href: '#' },
-  { label: 'LinkedIn', href: '#' },
+  { label: 'Github', href: 'https://github.com/Christian-Schneider-Davis'},
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/christian-schneider-davis/' },
+  { label: 'Instagram', href: 'https://www.instagram.com/christianscottie' }
+
 ]
 
 export default function HeroCard() {
@@ -20,15 +21,15 @@ export default function HeroCard() {
       <dl className="hero-card__meta">
         <div>
           <dt>Specialization</dt>
-          <dd>Web &amp; UX/UI Designer</dd>
+          <dd>Web Dev &amp; UX/UI Design</dd>
         </div>
         <div>
           <dt>Based in</dt>
-          <dd>Barcelona</dd>
+          <dd>Barcelona, Spain</dd>
         </div>
         <div>
           <dt>Practicing since</dt>
-          <dd>2016</dd>
+          <dd>2020</dd>
         </div>
       </dl>
 

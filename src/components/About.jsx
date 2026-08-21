@@ -9,7 +9,6 @@ const STATS = [
 
 const DETAILS = [
   { label: 'Name', value: 'Christian Schneider-Davis' },
-  { label: 'Email', value: 'schneiderdavis@aol.com', href: 'mailto:schneiderdavis@aol.com' },
   { label: 'Location', value: 'Barcelona, Spain' },
   { label: 'Availability', value: 'Open for new projects' },
 ]
@@ -22,7 +21,7 @@ export default function About() {
       <div>
         <div className="about__head">
           <p className="eyebrow">About</p>
-          <h2 className="section-heading">Turning ambiguity into a clear interface.</h2>
+          <h2 className="section-heading">Simplicity => most effective interface.;</h2>
         </div>
 
         <div className="about__body reveal" ref={revealRef}>
@@ -35,11 +34,9 @@ export default function About() {
             </p>
 
             <p className="about__bio">
-              My studio partners with founders and product teams to shape
-              identities, websites and interfaces that hold up under real
-              use &mdash; not just first impressions. Every engagement starts
-              with the same question: what is this brand trying to make
-              clear?
+              The goal is to build identities of brands & websites and interfaces that hold up under real
+              use, not just flashy first impressions. Every engagement starts
+              with the same question: "What is this brand trying to say?"
             </p>
 
             <ul className="about__stats">
