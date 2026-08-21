@@ -35,12 +35,10 @@ export default function App() {
           <div className="wrap latest-projects__inner">
             <p className="eyebrow">Try It Yourself</p>
             <h2 id="latest-projects-heading" className="section-heading">
-              Or explore my work as a desktop.
+              Explore my work as a desktop.
             </h2>
             <p className="latest-projects__intro">
-              A small interactive detour &mdash; the section above, rebuilt as a
-              tiny Windows desktop. Open a window, drag it around, play some
-              music.
+              Open a window, drag it around, play some music.
             </p>
 
             <div className="latest-projects__frame">
