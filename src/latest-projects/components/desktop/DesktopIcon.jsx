@@ -36,8 +36,6 @@ export function DesktopIcon({ app, index, isSelected, onSelect, onOpen, containe
         onSelect(app.id)
       },
       onDragEnd: () => {
-        // A press+release that barely moved is a click/tap, not a drag —
-        // open the app. Works the same for mouse and touch.
         if (maxDistanceRef.current < CLICK_THRESHOLD) {
           onOpen(app.id)
         }

@@ -49,12 +49,10 @@ export const APPS = [
   },
 ]
 
-// External links pinned to the taskbar tray, opened in a new browser tab
-// rather than as a mock window.
 export const SOCIAL_LINKS = [
-  { id: 'github', label: 'GitHub', href: 'https://github.com/', icon: 'github' },
-  { id: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/', icon: 'linkedin' },
-  { id: 'mail', label: 'Email', href: 'mailto:hello@christianschneiderdavis.com', icon: 'mail' },
+  { id: 'github', label: 'GitHub', href: 'https://github.com/Christian-Schneider-Davis', icon: 'github' },
+  { id: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/christian-schneider-davis/', icon: 'linkedin' },
+  { id: 'mail', label: 'Email', href: 'mailto:schneiderdavis@aol.com', icon: 'mail' },
 ]
 
 export function getApp(id) {

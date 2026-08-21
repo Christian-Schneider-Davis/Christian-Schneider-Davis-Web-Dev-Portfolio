@@ -126,58 +126,6 @@
   line-height: 1.2;
 }
 
-.start-menu__recent {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.start-menu__recent button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 6px;
-  border-radius: var(--radius-sm);
-  text-align: left;
-}
-
-.start-menu__recent button:hover {
-  background: var(--surface-glass);
-}
-
-.start-menu__recent-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface-glass);
-  border: 1px solid var(--border-glass);
-  color: var(--text-secondary);
-  flex-shrink: 0;
-}
-
-.start-menu__recent-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.start-menu__recent-title {
-  font-size: var(--fs-sm);
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.start-menu__recent-time {
-  font-size: 0.68rem;
-  color: var(--text-tertiary);
-}
-
 .start-menu__toggles {
   padding: 10px 18px;
   display: flex;

@@ -5,7 +5,7 @@ import { Icon } from '../common/Icon.jsx'
 import './sections.css'
 import './ContactContent.css'
 
-const CONTACT_EMAIL = 'hello@christianschneiderdavis.com'
+const CONTACT_EMAIL = 'schneiderdavis@aol.com'
 
 export function ContactContent() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
@@ -42,7 +42,7 @@ export function ContactContent() {
             </label>
           </div>
           <label>
-            <span>What are you building?</span>
+            <span>How can i make your vision a reality?</span>
             <textarea
               required
               rows={6}

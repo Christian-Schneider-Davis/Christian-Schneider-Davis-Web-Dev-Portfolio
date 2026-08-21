@@ -84,43 +84,6 @@ export function StartMenu() {
         </div>
       </section>
 
-      <section className="start-menu__section">
-        <div className="start-menu__section-head">
-          <h2>Recent</h2>
-          <button
-            type="button"
-            className="start-menu__more"
-            onClick={() => {
-              openApp('works')
-              closeStartMenu()
-            }}
-          >
-            More
-          </button>
-        </div>
-        <ul className="start-menu__recent">
-          {recent.map((work, i) => (
-            <li key={work.id}>
-              <button
-                type="button"
-                onClick={() => {
-                  openApp('works')
-                  closeStartMenu()
-                }}
-              >
-                <span className="start-menu__recent-icon">
-                  <Icon name="file" size={15} />
-                </span>
-                <span className="start-menu__recent-text">
-                  <span className="start-menu__recent-title">{work.title}</span>
-                  <span className="start-menu__recent-time">{RECENT_LABELS[i] ?? 'Earlier'}</span>
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <div className="start-menu__toggles">
         <button type="button" className="start-menu__toggle" onClick={toggleTheme}>
           <Icon name={isDark ? 'moon' : 'sun'} size={16} />

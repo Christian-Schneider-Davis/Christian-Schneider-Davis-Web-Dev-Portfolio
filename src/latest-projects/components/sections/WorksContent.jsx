@@ -10,8 +10,8 @@ export function WorksContent() {
     <div className="section-content">
       <SectionHeader
         eyebrow="Recent Works"
-        title="Selected projects, 2022&ndash;2025"
-        tagline="A working sample of product, web, and illustration work. Case studies available on request."
+        title="Recent Projects"
+        tagline="Here's some of my recent web and design work. More information available on request."
       />
 
       <div className="section-content__body">

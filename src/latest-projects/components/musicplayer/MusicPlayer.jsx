@@ -17,7 +17,7 @@ export function MusicPlayer() {
         minX: 8,
         minY: 8,
         maxX: width - 268,
-        maxY: height - 92 - 96, // keep clear of the taskbar
+        maxY: height - 92 - 96, // to keep clear of the taskbar
       }
     },
   })
