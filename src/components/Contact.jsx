@@ -2,10 +2,10 @@ import useReveal from '../hooks/useReveal'
 import './Contact.css'
 
 const SOCIALS = [
-  { label: 'Email', href: 'mailto:schneiderdavis@aol.com' },
-  { label: 'Github', href: '#' },
-  { label: 'LinkedIn', href: '#' },
+  { label: 'Email', href: 'mailto:hello@studioray.com' },
   { label: 'Instagram', href: '#' },
+  { label: 'Dribbble', href: '#' },
+  { label: 'LinkedIn', href: '#' },
 ]
 
 export default function Contact() {
@@ -23,7 +23,9 @@ export default function Contact() {
         </a>
 
         <div className="contact__row">
-          <p className="contactCTA">Let's work together - </p>
+          <a href="mailto:schneiderdavis@aol.com" className="contact__email">
+            schneiderdavis@aol.com
+          </a>
 
           <ul className="contact__socials">
             {SOCIALS.map((social) => (
