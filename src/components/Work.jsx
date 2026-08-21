@@ -5,34 +5,39 @@ import './Work.css'
 
 const PROJECTS = [
   {
-    name: 'Epic Mouse App Landind Page',
+    name: 'Epic Mouse App Landing Page',
     category: 'Web Design',
-    year: '2026',
+    year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
+    image: '/public/images/work/EpicMouse.app.png'
   },
   {
-    name: 'Epic Mouse App Apple IOS App',
-    category: 'IOS App',
+    name: 'Epic Mouse App',
+    category: 'Apple IOS App',
     year: 'Coming Sept. 2026',
     tone: 'linear-gradient(135deg, #2b2a3a, #14130f)',
+    image: "public/images/work/EpicMouseApp.png"
   },
   {
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
-    year: '2026',
+    year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #2f3a2c, #14130f)',
+    image:"public/images/work/My-Virtual-Desktop.png"
   },
   {
     name: 'Vinz Barber Shop',
     category: 'E-Commerce',
-    year: '2026',
+    year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
+    image:"public/images/work/Vinz-Barber-Shop.png"
   },
   {
-    name: 'PINistry Studio Vintange',
+    name: 'PINistry Studio Vintage',
     category: 'E-Commerce',
-    year: '2024',
+    year: 'Feb. 2024',
     tone: 'linear-gradient(135deg, #2a333a, #14130f)',
+    image:"public/images/work/PINistry-Studio.png"
   },
 ]
 
@@ -101,13 +106,17 @@ export default function Work() {
 
         <div
           className="work__preview"
-          ref={previewRef}
-          style={{
+            ref={previewRef}
+            style={{
             backgroundImage:
-              activeIndex !== null ? PROJECTS[activeIndex].tone : 'none',
-            opacity: activeIndex !== null ? 1 : 0,
-          }}
-          aria-hidden="true"
+            activeIndex !== null
+             ? `linear-gradient(135deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url(${PROJECTS[activeIndex].image})`
+            : 'none',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: activeIndex !== null ? 1 : 1,
+             }}
+             aria-hidden="true"
         />
       </div>
     </section>
