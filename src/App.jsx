@@ -35,12 +35,12 @@ export default function App() {
           <div className="wrap latest-projects__inner">
             <p className="eyebrow">Try It Yourself</p>
             <h2 id="latest-projects-heading" className="section-heading">
-              Explore my portfolio as a desktop.
+              Explore my work.
             </h2>
             <p className="latest-projects__intro">
-              A small interactive detour. The section above, rebuilt as a
-              tiny Windows desktop. Open a window, drag it around, play some
-              music.
+              This is a small interactive detour I created. All the sections above, rebuilt as a
+              tiny virtual desktop. Open a window, drag it around, play some
+              music. Hang for a bit.
             </p>
 
             <div className="latest-projects__frame">

@@ -7,25 +7,25 @@ const SERVICES = [
     title: 'Web Design',
     description:
       'Marketing sites and product pages designed to load fast, read clearly, and hold a brand together across every breakpoint.',
-    tools: ['Figma', 'Webflow', 'React'],
+    tools: ['Webflow', 'React', 'CSS', 'Adobe Photoshop',  'Vite'],
   },
   {
     title: 'UX / UI',
     description:
       'Interface systems and flows for web and product, grounded in research and built to be handed straight to engineering.',
-    tools: ['Figma', 'Prototyping', 'Design systems'],
+    tools: ['Adobe Photoshop', 'Prototyping', 'Design systems', 'Canva'],
   },
   {
     title: 'Front-End Development',
     description:
       'Pixel-accurate builds with considered motion — components that feel as good to use as they look in the file.',
-    tools: ['React', 'GSAP', 'Vite'],
+    tools: ['React', 'Vite', 'JavaScript', 'CSS', 'EJS'],
   },
   {
     title: 'Brand Identity',
     description:
-      'Naming-adjacent visual systems: type, colour and voice worked out together so a brand reads the same everywhere.',
-    tools: ['Type systems', 'Art direction'],
+      'Naming-adjacent visual systems: type, color and voice worked out together so a brand reads the same everywhere.',
+    tools: ['Type systems', 'Art direction', 'Color theory'],
   },
 ]
 

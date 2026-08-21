@@ -28,9 +28,8 @@ export default function About() {
             </p>
 
             <p className="about__bio">
-              The goal is to build identities of brands & websites and interfaces that hold up under real
-              use, not just flashy first impressions. Every engagement starts
-              with the same question: "What is this brand trying to say?"
+              The goal is to build identities for brands through websites and interfaces that hold up under real
+              use, not just flashy first impressions.
             </p>
           </div>
 

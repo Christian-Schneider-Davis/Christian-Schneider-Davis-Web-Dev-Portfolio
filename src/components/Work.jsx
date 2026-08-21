@@ -5,33 +5,33 @@ import './Work.css'
 
 const PROJECTS = [
   {
-    name: 'Renaissance Hotel',
+    name: 'Epic Mouse App Landind Page',
     category: 'Web Design',
-    year: '2025',
+    year: '2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
   },
   {
-    name: 'Alex Monroe Jewelry',
-    category: 'E-commerce',
-    year: '2025',
+    name: 'Epic Mouse App Apple IOS App',
+    category: 'IOS App',
+    year: 'Coming Sept. 2026',
     tone: 'linear-gradient(135deg, #2b2a3a, #14130f)',
   },
   {
-    name: 'Northbound Trekking Co.',
-    category: 'Brand & Web',
-    year: '2024',
+    name: 'Virtual Desktop Portfolio',
+    category: 'Portfolio Site',
+    year: '2026',
     tone: 'linear-gradient(135deg, #2f3a2c, #14130f)',
   },
   {
-    name: 'Press Play Productions',
-    category: 'Portfolio Site',
-    year: '2024',
+    name: 'Vinz Barber Shop',
+    category: 'E-Commerce',
+    year: '2026',
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
   },
   {
-    name: 'Summit AI Conference',
-    category: 'Design Concept',
-    year: '2023',
+    name: 'PINistry Vintange',
+    category: 'E-Commerce',
+    year: '2024',
     tone: 'linear-gradient(135deg, #2a333a, #14130f)',
   },
 ]

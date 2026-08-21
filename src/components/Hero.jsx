@@ -62,7 +62,7 @@ export default function Hero() {
 
         <div className="hero__foot">
           <p className="hero__sub" ref={subRef}>
-            I&rsquo;m Christian Schneider-Davis, a <b>Frontend / Full-Stack Developer</b> focused on creating interactive web experiences and production ready applications for brands that want to be understood at a glance.
+            I&rsquo;m Christian Schneider-Davis, a <b>Frontend / Full-Stack Developer</b> focused on creating interactive web experiences and production-ready applications for brands that want to be understood at a glance.
           </p>
 
           <div className="hero__cta-row" ref={metaRef}>
