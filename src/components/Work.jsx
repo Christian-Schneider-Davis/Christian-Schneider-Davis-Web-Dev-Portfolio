@@ -29,7 +29,7 @@ const PROJECTS = [
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
   },
   {
-    name: 'PINistry Vintange',
+    name: 'PINistry Studio Vintange',
     category: 'E-Commerce',
     year: '2024',
     tone: 'linear-gradient(135deg, #2a333a, #14130f)',
