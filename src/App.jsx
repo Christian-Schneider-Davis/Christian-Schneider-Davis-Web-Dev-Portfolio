@@ -38,7 +38,7 @@ export default function App() {
               Explore my work.
             </h2>
             <p className="latest-projects__intro">
-              This is a small interactive detour I created. All the sections above, rebuilt as a
+              This is a small interactive detour I created from scratch. All the sections above rebuilt as a
               tiny virtual desktop. Open a window, drag it around, play some
               music. Hang for a bit.
             </p>
