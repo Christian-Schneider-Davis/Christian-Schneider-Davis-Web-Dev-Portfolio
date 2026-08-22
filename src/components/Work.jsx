@@ -9,35 +9,35 @@ const PROJECTS = [
     category: 'Web Design',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
-    image: 'public/photos/EpicMouse.app.png'
+    image: '/photos/EpicMouse.app.png'
   },
   {
     name: 'Epic Mouse App',
     category: 'Apple IOS App',
     year: 'Coming Sept. 2026',
     tone: 'linear-gradient(135deg, #2b2a3a, #14130f)',
-    image: "public/photos/EpicMouseApp.png"
+    image: "/photos/EpicMouseApp.png"
   },
   {
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #2f3a2c, #14130f)',
-    image:"public/photos/My-Virtual-Desktop.png"
+    image:"/photos/My-Virtual-Desktop.png"
   },
   {
     name: 'Vinz Barber Shop',
     category: 'E-Commerce',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
-    image:"public/photos/Vinz-Barber-Shop.png"
+    image:"/photos/Vinz-Barber-Shop.png"
   },
   {
     name: 'PINistry Studio Vintage',
     category: 'E-Commerce',
     year: 'Feb. 2024',
     tone: 'linear-gradient(135deg, #2a333a, #14130f)',
-    image:"public/photos/PINistry-Studio.png"
+    image:"/photos/PINistry-Studio.png"
   },
 ]
 
