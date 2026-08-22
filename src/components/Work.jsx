@@ -10,7 +10,7 @@ const PROJECTS = [
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
     image: 'photos/EpicMouse.app.png',
-    url: 'https://epicmouse.app'
+    url: 'https://www.epicmouse.app'
   },
   {
     name: 'Epic Mouse App',
@@ -18,7 +18,7 @@ const PROJECTS = [
     year: 'Coming Sept. 2026',
     tone: 'linear-gradient(135deg, #2b2a3a, #14130f)',
     image: "photos/EpicMouseApp.png",
-    url: 'https://epicmouse.app'
+    url: 'https://www.epicmouse.app'
 
   },
   {
