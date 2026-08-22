@@ -9,35 +9,41 @@ const PROJECTS = [
     category: 'Web Design',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
-    image: '/photos/EpicMouse.app.png'
+    image: 'photos/EpicMouse.app.png',
+    url: 'https://epicmouse.app'
   },
   {
     name: 'Epic Mouse App',
     category: 'Apple IOS App',
     year: 'Coming Sept. 2026',
     tone: 'linear-gradient(135deg, #2b2a3a, #14130f)',
-    image: "/photos/EpicMouseApp.png"
+    image: "photos/EpicMouseApp.png",
+    url: 'https://epicmouse.app'
+
   },
   {
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #2f3a2c, #14130f)',
-    image:"/photos/My-Virtual-Desktop.png"
+    image:"photos/My-Virtual-Desktop.png",
+    url: 'https://christian-schneider-davis-port.vercel.app/'
   },
   {
     name: 'Vinz Barber Shop',
     category: 'E-Commerce',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
-    image:"/photos/Vinz-Barber-Shop.png"
+    image:"photos/Vinz-Barber-Shop.png",
+    // url: '' - Don't forget to add url at a later date
   },
   {
     name: 'PINistry Studio Vintage',
     category: 'E-Commerce',
     year: 'Feb. 2024',
     tone: 'linear-gradient(135deg, #2a333a, #14130f)',
-    image:"/photos/PINistry-Studio.png"
+    image:"photos/PINistry-Studio.png",
+    // url:'' Don't frget to add url at a later date
   },
 ]
 
@@ -88,7 +94,10 @@ export default function Work() {
           <a
             className="work__row"
             key={project.name}
-            onMouseEnter={() => setActiveIndex(index)}
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+             onMouseEnter={() => setActiveIndex(index)}
           >
             <span className="work__row-index">
               {String(index + 1).padStart(2, '0')}
