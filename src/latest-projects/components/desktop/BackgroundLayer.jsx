@@ -70,7 +70,7 @@ export function BackgroundLayer() {
         <img
           key="static"
           className="background-layer__frame background-layer__frame--static"
-          src="/images/wallpaper-static.jpg"
+          src="images/wallpaper-static.jpg"
           alt=""
           draggable={false}
         />

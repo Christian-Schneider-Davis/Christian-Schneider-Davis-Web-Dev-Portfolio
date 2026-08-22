@@ -36,7 +36,7 @@ export function AboutContent() {
           </div>
           <div>
             <h2 className="about-content__label">Based in</h2>
-            <p className="about-content__value">Barcelona, Spain and available work both locally and worldwide.</p>
+            <p className="about-content__value">Barcelona, Spain (available work both locally and worldwide).</p>
           </div>
         </div>
 
