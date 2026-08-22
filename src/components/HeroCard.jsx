@@ -15,7 +15,7 @@ export default function HeroCard() {
   return (
     <div className="hero-card reveal" ref={revealRef}>
       <div className="hero-card__photo">
-        <img src="/photos/christian-schneider-davis.jpg" alt="Christian Schneider-Davis" />
+        <img src="photos/christian-schneider-davis.jpg" alt="Christian Schneider-Davis" />
       </div>
 
       <dl className="hero-card__meta">

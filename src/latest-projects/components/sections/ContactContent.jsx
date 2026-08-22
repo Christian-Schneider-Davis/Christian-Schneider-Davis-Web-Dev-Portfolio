@@ -34,11 +34,11 @@ export function ContactContent() {
           <div className="contact-form__row">
             <label>
               <span>Name</span>
-              <input required type="text" value={form.name} onChange={update('name')} placeholder="Jamie Rivera" />
+              <input required type="text" value={form.name} onChange={update('name')} placeholder="Your name here" />
             </label>
             <label>
               <span>Email</span>
-              <input required type="email" value={form.email} onChange={update('email')} placeholder="jamie@studio.com" />
+              <input required type="email" value={form.email} onChange={update('email')} placeholder="youremail@studio.com" />
             </label>
           </div>
           <label>

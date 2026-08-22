@@ -9,7 +9,7 @@ const PROJECTS = [
     category: 'Web Design',
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a3226, #16150f)',
-    image: '/public/images/work/EpicMouse.app.png'
+    image: 'public/images/work/EpicMouse.app.png'
   },
   {
     name: 'Epic Mouse App',

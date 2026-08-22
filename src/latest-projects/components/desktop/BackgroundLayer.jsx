@@ -7,7 +7,7 @@ const FPS = 20
 const PRELOAD_AHEAD = 6
 
 function frameSrc(n) {
-  return `/images/${n}.png`
+  return `images/${n}.png`
 }
 
 export function BackgroundLayer() {
