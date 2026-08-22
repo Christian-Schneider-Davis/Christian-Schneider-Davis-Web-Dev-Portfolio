@@ -11,7 +11,7 @@ export function ResumeContent() {
 
       <div className="resume-intro">
         <p>I won't bore you with all the details. Click the pretty button for a coopy of my resume.</p>
-        <a className="resume-download" href="/resume.pdf" download>
+        <a className="resume-download" href="public/Christian_Schneider-Davis_Resume 1.pdf" download>
           <Icon name="download" size={16} />
           Download PDF
         </a>
