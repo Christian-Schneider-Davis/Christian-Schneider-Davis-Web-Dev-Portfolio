@@ -105,3 +105,51 @@
     display: none;
   }
 }
+
+.project-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.project-modal__window {
+  width: 90vw;
+  height: 85vh;
+  max-width: 1200px;
+  background: #16150f;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.project-modal__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #1e1d17;
+  color: #eee;
+  font-size: 0.9rem;
+}
+
+.project-modal__close {
+  background: none;
+  border: none;
+  color: #eee;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.project-modal__frame {
+  flex: 1;
+  border: none;
+  width: 100%;
+  background: white;
+}

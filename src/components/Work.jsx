@@ -62,6 +62,7 @@ export default function Work() {
   const quickX = useRef(null)
   const quickY = useRef(null)
   const [activeIndex, setActiveIndex] = useState(null)
+  const [modalProject, setModalProject] = useState(null)
 
   useEffect(() => {
     quickX.current = gsap.quickTo(previewRef.current, 'x', {
@@ -74,12 +75,30 @@ export default function Work() {
     })
   }, [])
 
+  useEffect(() => {
+    if (!modalProject) return
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setModalProject(null)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [modalProject])
+
   const handleMouseMove = (event) => {
     const bounds = containerRef.current.getBoundingClientRect()
     const x = event.clientX - bounds.left
     const y = event.clientY - bounds.top
     quickX.current?.(x)
     quickY.current?.(y)
+  }
+
+  const handleProjectClick = (event, project) => {
+    if (!project.url) {
+      event.preventDefault()
+      return
+    }
+    event.preventDefault()
+    setModalProject(project)
   }
 
   return (
@@ -103,9 +122,8 @@ export default function Work() {
             className="work__row"
             key={project.name}
             href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-             onMouseEnter={() => setActiveIndex(index)}
+            onMouseEnter={() => setActiveIndex(index)}
+            onClick={(event) => handleProjectClick(event, project)}
           >
             <span className="work__row-index">
               {String(index + 1).padStart(2, '0')}
@@ -135,6 +153,45 @@ export default function Work() {
              aria-hidden="true"
         />
       </div>
+
+      {modalProject && (
+        <div
+          className="project-modal__overlay"
+          onClick={() => setModalProject(null)}
+        >
+          <div
+            className="project-modal__window"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="project-modal__bar">
+              <span className="project-modal__title">{modalProject.name}</span>
+              <div className="project-modal__actions">
+                <a
+                  className="project-modal__open-new"
+                  href={modalProject.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Open in new tab &#8599;
+                </a>
+                <button
+                  type="button"
+                  className="project-modal__close"
+                  onClick={() => setModalProject(null)}
+                  aria-label="Close preview"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+            <iframe
+              src={modalProject.url}
+              title={modalProject.name}
+              className="project-modal__frame"
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
