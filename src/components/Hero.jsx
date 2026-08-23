@@ -45,17 +45,17 @@ export default function Hero() {
         <h1 className="hero__title">
           <span className="hero__line-mask">
             <span className="hero__line" ref={addLine}>
-              Clarity is
+              Where
             </span>
           </span>
           <span className="hero__line-mask">
             <span className="hero__line hero__line--italic" ref={addLine}>
-              a design
+              art
             </span>
           </span>
           <span className="hero__line-mask">
             <span className="hero__line" ref={addLine}>
-              decision.
+              meets logic.
             </span>
           </span>
         </h1>

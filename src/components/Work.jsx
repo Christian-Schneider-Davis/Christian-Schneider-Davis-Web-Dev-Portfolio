@@ -30,6 +30,14 @@ const PROJECTS = [
     url: 'https://christian-schneider-davis-port.vercel.app/'
   },
   {
+    name: 'My Art Portfolio',
+    category: 'Porfolio Site',
+    year: 'Aug. 2026',
+    tone: 'linear-gradient(135deg, #3a3226, #16150f)',
+    image: 'photos/Christian-SD-Art-Port.png',
+    url: 'https://christian-schneider-davis.github.io/art-portfolio/'
+  },
+  {
     name: 'Vinz Barber Shop',
     category: 'E-Commerce',
     year: 'Aug. 2026',
