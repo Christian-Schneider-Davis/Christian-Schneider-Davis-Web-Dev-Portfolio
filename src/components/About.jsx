@@ -45,7 +45,7 @@ export default function About() {
               ))}
             </dl>
 
-            <a href="public/Christian_Schneider-Davis_Resume 1.pdf" download className="btn btn--primary about__card-cta">
+            <a href="resume/C-Schneider-Davis-Resume.pdf" download className="btn btn--primary about__card-cta">
               Download CV
             </a>
           </aside>

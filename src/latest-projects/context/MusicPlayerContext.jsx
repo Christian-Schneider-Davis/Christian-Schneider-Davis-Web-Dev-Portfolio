@@ -3,16 +3,16 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState } from 
 const MusicPlayerContext = createContext(null)
 
 export const PLAYLIST = [
-  { title: 'Fat Jon', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-1.mp3' },
-  { title: 'Counting Stars', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-2.mp3' },
-  { title: 'Departure', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-3.mp3' },
-  { title: 'Just Forget', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-4.mp3' },
-  { title: 'Your 5th song name', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-5.mp3' },
-  { title: 'Your 6th song name', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-6.mp3' },
-  { title: 'Your 7th song name', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-7.mp3' },
-  { title: 'Your 8th song name', artist: 'Nujabes (Samurai Champloo OST)', src: '/audio/track-8.mp3' },
-  { title: 'Your 9th song name', artist: 'Minmi', src: '/audio/track-9.mp3' },
-  { title: 'Your 10th song name', artist: 'Tsutchie', src: '/audio/track-10.mp3' },
+  { title: 'Fat Jon', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-1.mp3' },
+  { title: 'Counting Stars', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-2.mp3' },
+  { title: 'Departure', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-3.mp3' },
+  { title: 'Just Forget', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-4.mp3' },
+  { title: 'Dead Season', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-5.mp3' },
+  { title: 'Same Ole Thing', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-6.mp3' },
+  { title: 'Tsurugi No Mai', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-7.mp3' },
+  { title: 'Sneak Chamber', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-8.mp3' },
+  { title: 'Whos Theme', artist: 'Minmi', src: '/audio/track-9.mp3' },
+  { title: 'Sincerely', artist: 'Tsutchie', src: '/audio/track-10.mp3' },
 ]
 
 export function MusicPlayerProvider({ children }) {

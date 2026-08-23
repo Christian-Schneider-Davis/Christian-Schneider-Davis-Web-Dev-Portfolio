@@ -17,9 +17,6 @@ export default function App() {
       <Grain />
       <Navbar />
       <main>
-        {/* HeroCard stays pinned (desktop) alongside Hero/About/Services/Work.
-            It naturally stops sticking once this wrapper ends, right where
-            the untouched "latest-projects" section begins. */}
         <div className="wrap pinned-layout">
           <HeroCard />
 
@@ -49,7 +46,6 @@ export default function App() {
           </div>
         </section>
 
-        {/* <Awards /> */}
         <Contact />
       </main>
       <Footer />
