@@ -148,7 +148,7 @@ export default function Work() {
             : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: activeIndex !== null ? 1 : 1,
+            opacity: activeIndex !== null ? 1 : 0,
              }}
              aria-hidden="true"
         />
