@@ -11,9 +11,16 @@
 
 .nav--scrolled {
   padding-block: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.nav--scrolled::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   background: rgba(247, 245, 238, 0.86);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
 }
 
 .nav__inner {
