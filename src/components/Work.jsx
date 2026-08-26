@@ -43,7 +43,7 @@ const PROJECTS = [
     year: 'Aug. 2026',
     tone: 'linear-gradient(135deg, #3a2b2b, #14130f)',
     image:"photos/Vinz-Barber-Shop.png",
-    url: 'https://christian-schneider-davis.github.io/vinz-barbershop/'
+    url: 'https://www.vinzbarbershopbcn.com/'
   },
   {
     name: 'PINistry Studio Vintage',
