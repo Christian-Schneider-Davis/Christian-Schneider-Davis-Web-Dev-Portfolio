@@ -27,7 +27,7 @@ I also embedded an entire other site I created inside this one as a feature. The
   </ul>
 <p>And more.</p>
 
-<p>Suggestions are greatly appreciated and if you have or know of any job offered, please reach out :) </p>
+<p>Suggestions are greatly appreciated and if you have or know of any job opportunities, share and please reach out :) </p>
 
 
 
