@@ -20,7 +20,7 @@ I also embedded an entire other site I created inside this one as a feature. The
     <li>Resume section with PDF download capability.</li>
     <li>Social links in the taskbar.</li>
     <li>Dynamic time in bottom right taskbar.</li>
-    <li>Frame by frame PNG image background.</li>
+    <li>Frame by frame PNG image background animation.</li>
     <li>Light mode and Dark mode toggle button.</li>
     <li>Toggle button to cycle between the animated wallpaper and a static default Windows 11 wallpaper.</li>
     </ul>
