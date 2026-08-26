@@ -1,6 +1,6 @@
 <h2>Hola amigos!</h2>
 <p>Here is my web dev portfolio website that I made in a week. I used React Vite + an implementation of code I have from three previous projects I made while in school. 
-I also embedded an entire other site I created inside this one as a feature. The other site is a virtual desktop portfolio I made with 200+ commits (private repo).</p>
+I also embedded an entire other site I created inside this one as a feature. The other site is a virtual desktop portfolio I made with 100+ commits (private repo).</p>
 <h3>Features include: </h3>
 <ul>
 <li>Sticky Hero card that remains in the viewport through multiple sections before pausing at the embedded site section.</li>
