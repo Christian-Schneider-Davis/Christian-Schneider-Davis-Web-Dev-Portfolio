@@ -11,8 +11,8 @@ export const PLAYLIST = [
   { title: 'Same Ole Thing', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-6.mp3' },
   { title: 'Tsurugi No Mai', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-7.mp3' },
   { title: 'Sneak Chamber', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-8.mp3' },
-  { title: 'Whos Theme', artist: 'Minmi', src: '/audio/track-9.mp3' },
-  { title: 'Sincerely', artist: 'Tsutchie', src: '/audio/track-10.mp3' },
+  { title: 'Shiki No Uta', artist: 'Nujabes (Samurai Champloo OST)', src: 'audio/track-9.mp3' },
+  { title: 'Sincerely', artist: 'Tsutchie', src: 'audio/track-10.mp3' },
 ]
 
 export function MusicPlayerProvider({ children }) {
