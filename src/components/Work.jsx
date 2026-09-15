@@ -22,6 +22,14 @@ const PROJECTS = [
 
   },
   {
+    name: 'RPG Inspired Mock Site Port',
+    category: 'Web Design *DESKTOP Version*',
+    year: 'Sept. 2026',
+    tone: 'linear-gradient(135deg, #0a411b, #292822)',
+    image: 'photos/RPG-port.png',
+    url: 'https://meta4-fan-port.vercel.app/'
+  },
+  {
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',

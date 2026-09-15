@@ -1,6 +1,4 @@
-/* Sticky positioning lives here rather than in App.css so everything
-   about how this card behaves is in one place. .pinned-layout (App.css)
-   is what defines the column it sits in and where the pin stops. */
+/* Sticky positioning lives here */
 .hero-card {
   position: sticky;
   top: 6rem;
