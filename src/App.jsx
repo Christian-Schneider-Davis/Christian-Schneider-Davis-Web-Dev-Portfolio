@@ -1,9 +1,10 @@
+import { useRef } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import HeroCard from './components/HeroCard.jsx'
 import About from './components/About.jsx'
 import Services from './components/Services.jsx'
-import Work from './components/Work.jsx'
+import ProjectGallery from './components/ProjectGallery.jsx'
 import Awards from './components/Awards.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
@@ -12,19 +13,21 @@ import LatestProjects from './latest-projects/App.jsx'
 import './App.css'
 
 export default function App() {
+  const heroCardRef = useRef(null)
+
   return (
     <>
       <Grain />
       <Navbar />
       <main>
         <div className="wrap pinned-layout">
-          <HeroCard />
+          <HeroCard ref={heroCardRef} />
 
           <div className="pinned-layout__content">
             <Hero />
             <About />
             <Services />
-            <Work />
+            <ProjectGallery heroCardRef={heroCardRef} />
           </div>
         </div>
 

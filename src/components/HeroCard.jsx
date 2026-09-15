@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import useReveal from '../hooks/useReveal'
 import './HeroCard.css'
 
@@ -9,11 +10,17 @@ const SOCIALS = [
 
 ]
 
-export default function HeroCard() {
+const HeroCard = forwardRef(function HeroCard(_props, ref) {
   const revealRef = useReveal()
 
+  const setRefs = (el) => {
+    revealRef.current = el
+    if (typeof ref === 'function') ref(el)
+    else if (ref) ref.current = el
+  }
+
   return (
-    <div className="hero-card reveal" ref={revealRef}>
+    <div className="hero-card reveal" ref={setRefs}>
       <div className="hero-card__photo">
         <img src="photos/christian-schneider-davis.jpg" alt="Christian Schneider-Davis" />
       </div>
@@ -46,4 +53,6 @@ export default function HeroCard() {
       </a>
     </div>
   )
-}
+})
+
+export default HeroCard

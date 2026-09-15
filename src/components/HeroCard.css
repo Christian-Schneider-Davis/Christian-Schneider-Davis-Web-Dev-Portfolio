@@ -2,6 +2,7 @@
 .hero-card {
   position: sticky;
   top: 6rem;
+  z-index: 20;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 22px;
