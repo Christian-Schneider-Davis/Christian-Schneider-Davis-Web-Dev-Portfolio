@@ -23,7 +23,7 @@ const PROJECTS = [
   },
   {
     name: 'RPG Inspired Mock Site Port',
-    category: 'Web Design *DESKTOP Version*',
+    category: 'Web Design',
     year: 'Sept. 2026',
     tone: 'linear-gradient(135deg, #0a411b, #292822)',
     image: 'photos/RPG-port.png',
