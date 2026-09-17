@@ -1,0 +1,11 @@
+{
+  "name": "Christian Schneider-Davis — Creative Designer",
+  "short_name": "C. Schneider-Davis",
+  "icons": [
+    { "src": "/icons/favicon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/favicon-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#f7f5ee",
+  "background_color": "#f7f5ee",
+  "display": "standalone"
+}
