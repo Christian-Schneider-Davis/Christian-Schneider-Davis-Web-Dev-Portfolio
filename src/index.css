@@ -30,21 +30,20 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth scrolling for in-page nav links is handled by GSAP's
+   ScrollToPlugin (see Navbar.jsx) instead of native CSS scroll-behavior.
+   Native smooth-scroll fights GSAP's ScrollTrigger-driven scroll
+   animations (the pinned Work gallery in particular), which was
+   silently breaking scroll-to-project and making wheel scrolling
+   inside that section unreliable. Keep it off globally. */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
 }
 

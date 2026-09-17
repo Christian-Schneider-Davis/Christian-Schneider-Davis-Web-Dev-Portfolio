@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import './Navbar.css'
 
+gsap.registerPlugin(ScrollToPlugin)
+
 const LINKS = [
-  { href: '#work', label: 'Work' },
   { href: '#about', label: 'About' },
   { href: '#services', label: 'Expertise' },
+  { href: '#work', label: 'Work' },
   { href: '#contact', label: 'Contact' },
 ]
 
@@ -21,20 +25,45 @@ export default function Navbar() {
 
   const handleLinkClick = () => setOpen(false)
 
+  // Smooth-scroll in-page anchor links with GSAP instead of native CSS
+  // `scroll-behavior: smooth` — the native version fights GSAP's
+  // ScrollTrigger-driven scroll animations elsewhere on the page (see
+  // index.css for the full explanation), so every in-page jump goes
+  // through GSAP's ScrollToPlugin instead.
+  const handleAnchorClick = (event, href) => {
+    const target = document.querySelector(href)
+    if (!target) return
+    event.preventDefault()
+    setOpen(false)
+    gsap.to(window, {
+      duration: 1,
+      ease: 'power2.inOut',
+      scrollTo: { y: target, autoKill: true },
+    })
+  }
+
   return (
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
       <div className="wrap nav__inner">
-        <a href="#top" className="nav__logo">
+        <a href="#top" className="nav__logo" onClick={(event) => handleAnchorClick(event, "#top")}>
           Christian Schneider-Davis<span className="nav__logo-mark">·</span>
         </a>
 
         <nav className={`nav__links ${open ? 'nav__links--open' : ''}`}>
           {LINKS.map((link) => (
-            <a key={link.href} href={link.href} onClick={handleLinkClick}>
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(event) => handleAnchorClick(event, link.href)}
+            >
               {link.label}
             </a>
           ))}
-          <a href="#contact" className="nav__links-cta" onClick={handleLinkClick}>
+          <a
+            href="#contact"
+            className="nav__links-cta"
+            onClick={(event) => handleAnchorClick(event, '#contact')}
+          >
             Let&rsquo;s Talk
           </a>
         </nav>
@@ -44,7 +73,11 @@ export default function Navbar() {
             <span className="dot" aria-hidden="true" />
             Available for work
           </span>
-          <a href="#contact" className="btn btn--primary nav__cta">
+          <a
+            href="#contact"
+            className="btn btn--primary nav__cta"
+            onClick={(event) => handleAnchorClick(event, '#contact')}
+          >
             Let&rsquo;s Talk
           </a>
         </div>

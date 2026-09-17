@@ -2,11 +2,26 @@
 .hero-card {
   position: sticky;
   top: 6rem;
+  z-index: 20;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 22px;
   padding: 1.4rem;
   box-shadow: var(--shadow-card);
+}
+
+/* Draggable while the Work section holds the screen. */
+.hero-card.is-draggable {
+  cursor: grab;
+}
+
+.hero-card.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.hero-card.is-dragging .hero-card__photo img {
+  pointer-events: none;
 }
 
 .hero-card__photo {
