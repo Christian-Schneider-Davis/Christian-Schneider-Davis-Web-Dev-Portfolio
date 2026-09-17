@@ -10,6 +10,20 @@
   box-shadow: var(--shadow-card);
 }
 
+/* Draggable while the Work section holds the screen. */
+.hero-card.is-draggable {
+  cursor: grab;
+}
+
+.hero-card.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.hero-card.is-dragging .hero-card__photo img {
+  pointer-events: none;
+}
+
 .hero-card__photo {
   border-radius: 16px;
   overflow: hidden;

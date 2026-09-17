@@ -54,6 +54,7 @@
 }
 
 .hero__scroll {
+  transition: opacity 0.4s var(--ease);
   position: fixed;
   bottom: 2.2rem;
   right: var(--gutter);
@@ -62,6 +63,12 @@
   flex-direction: column;
   align-items: center;
   gap: 0.7rem;
+}
+
+.hero__scroll--hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0s linear 0.4s;
 }
 
 .hero__scroll-label {

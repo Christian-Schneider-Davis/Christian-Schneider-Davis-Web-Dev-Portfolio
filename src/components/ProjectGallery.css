@@ -80,11 +80,13 @@
   transition: opacity 0.4s var(--ease);
 }
 
-.project-gallery__panel:hover .project-gallery__panel-video {
+.project-gallery__panel:hover .project-gallery__panel-video,
+.project-gallery__panel.is-previewing .project-gallery__panel-video {
   opacity: 1;
 }
 
-.project-gallery__panel:hover .project-gallery__panel-static {
+.project-gallery__panel:hover .project-gallery__panel-static,
+.project-gallery__panel.is-previewing .project-gallery__panel-static {
   opacity: 0;
 }
 
@@ -108,6 +110,18 @@
   max-height: 86vh;
   overflow-y: auto;
   box-shadow: 0 24px 60px -28px rgba(28, 27, 21, 0.45);
+}
+
+.project-gallery__compact.is-draggable .project-gallery__compact-head {
+  cursor: grab;
+}
+
+.project-gallery__compact.is-dragging {
+  user-select: none;
+}
+
+.project-gallery__compact.is-dragging .project-gallery__compact-head {
+  cursor: grabbing;
 }
 
 .project-gallery__compact-head {

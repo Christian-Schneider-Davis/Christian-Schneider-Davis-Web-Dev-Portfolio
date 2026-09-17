@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import './Hero.css'
 
 export default function Hero() {
+  const [cueHidden, setCueHidden] = useState(false)
   const linesRef = useRef([])
   const subRef = useRef(null)
   const metaRef = useRef(null)
@@ -36,6 +37,15 @@ export default function Hero() {
   const addLine = (el) => {
     if (el && !linesRef.current.includes(el)) linesRef.current.push(el)
   }
+
+  // The cue is position: fixed, so retire it once the hero is behind us —
+  // otherwise it sits on top of the Selected Work list further down.
+  useEffect(() => {
+    const onScroll = () => setCueHidden(window.scrollY > window.innerHeight * 0.5)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <section id="top" className="hero">
@@ -76,7 +86,10 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="hero__scroll" aria-hidden="true">
+      <div
+        className={`hero__scroll${cueHidden ? ' hero__scroll--hidden' : ''}`}
+        aria-hidden="true"
+      >
         <span className="hero__scroll-label">Scroll for more</span>
         <span className="hero__scroll-track">
           <span className="hero__scroll-dot" />
