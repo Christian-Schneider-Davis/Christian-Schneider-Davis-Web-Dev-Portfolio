@@ -45,7 +45,12 @@ export default function About() {
               ))}
             </dl>
 
-            <a href="resume/C-Schneider-Davis-Resume.pdf" download className="btn btn--primary about__card-cta">
+            <a
+              href={`${import.meta.env.BASE_URL}resume/C-Schneider-Davis-Resume.pdf`}
+              download="Christian-Schneider-Davis-Resume.pdf"
+              type="application/pdf"
+              className="btn btn--primary about__card-cta"
+            >
               Download CV
             </a>
           </aside>

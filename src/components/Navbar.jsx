@@ -6,9 +6,9 @@ import './Navbar.css'
 gsap.registerPlugin(ScrollToPlugin)
 
 const LINKS = [
-  { href: '#work', label: 'Work' },
   { href: '#about', label: 'About' },
   { href: '#services', label: 'Expertise' },
+  { href: '#work', label: 'Work' },
   { href: '#contact', label: 'Contact' },
 ]
 

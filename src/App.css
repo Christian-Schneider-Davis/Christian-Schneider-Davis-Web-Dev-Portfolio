@@ -13,7 +13,7 @@
 }
 
 .pinned-layout > .hero-card {
-  flex: 0 0 320px;
+  flex: 0 0 clamp(248px, 23vw, 320px);
 }
 
 .pinned-layout__content {

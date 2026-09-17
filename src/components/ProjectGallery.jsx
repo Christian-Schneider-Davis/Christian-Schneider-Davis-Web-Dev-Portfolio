@@ -7,8 +7,8 @@ import './ProjectGallery.css'
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 
 const PROJECTS = [
-  {
-    name: 'RPG Inspired Mock Site Port',
+    {
+    name: 'RPG Inspired Mock Site Port *DESKTOP VIEW ONLY*',
     category: 'Web Design',
     year: 'Sept. 2026',
     image: 'photos/RPG-port.png',
@@ -16,23 +16,14 @@ const PROJECTS = [
     static: 'gallery/project-1.png',
     video: 'gallery/project-1.mp4',
   },
-  {
-    name: 'Epic Mouse App Landing Page',
-    category: 'Web Design',
-    year: 'Aug. 2026',
+{
+    name: 'Epic Mouse App + Landing Page',
+    category: 'Mobile App & Web Design',
+    year: 'Coming Sept. 2026',
     image: 'photos/EpicMouse.app.png',
     url: 'https://www.epicmouse.app',
     static: 'gallery/project-3.png',
     video: 'gallery/project-3.mp4',
-  },
-  {
-    name: 'Epic Mouse App',
-    category: 'Apple IOS App',
-    year: 'Coming Sept. 2026',
-    image: 'photos/EpicMouseApp.png',
-    url: 'https://www.epicmouse.app',
-    static: 'gallery/project-6.png',
-    video: 'gallery/project-6.mp4',
   },
   {
     name: 'Virtual Desktop Portfolio',
@@ -42,15 +33,6 @@ const PROJECTS = [
     url: 'https://christian-schneider-davis-port.vercel.app/',
     static: 'gallery/project-5.png',
     video: 'gallery/project-5.mp4',
-  },
-  {
-    name: 'My Art Portfolio',
-    category: 'Portfolio Site',
-    year: 'Aug. 2026',
-    image: 'photos/Christian-SD-Art-Port.png',
-    url: 'https://christian-schneider-davis.github.io/art-portfolio/',
-    static: 'gallery/project-4.png',
-    video: 'gallery/project-4.mp4',
   },
   {
     name: 'Vinz Barber Shop',
@@ -70,20 +52,32 @@ const PROJECTS = [
     static: 'gallery/project-7.png',
     video: 'gallery/project-7.mp4',
   },
+    {
+    name: 'My Art Portfolio',
+    category: 'Portfolio Site',
+    year: 'Aug. 2026',
+    image: 'photos/Christian-SD-Art-Port.png',
+    url: 'https://christian-schneider-davis.github.io/art-portfolio/',
+    static: 'gallery/project-4.png',
+    video: 'gallery/project-4.mp4',
+  },
+
 ]
 
-// Total scroll distance (in viewport heights) given to the pinned gallery,
-// and the fraction of that distance spent on the "opening" transition
-// before the horizontal scrub takes over.
+// Scroll distance (in viewport heights) given to the pinned gallery, and the
+// fraction of it spent on the opening transition before the horizontal
+// scrub takes over. PANEL_RATIO is each panel's width as a share of the
+// stage, so the active project fills the left of the screen and the next
+// one runs off the right edge behind the list.
 const PIN_VH = 340
-const ENTRANCE_FRACTION = 0.18
-const EDGE_MARGIN = 28
-const STAGE_GAP = 40
+const ENTRANCE_FRACTION = 0.07
+const PANEL_RATIO = 0.583
+const HERO_SCALE = 0.92
 
 export default function ProjectGallery({ heroCardRef }) {
-  // --- pinned stage refs ---
   const sectionRef = useRef(null)
   const pinRef = useRef(null)
+  const stageRef = useRef(null)
   const compactOuterRef = useRef(null)
   const compactInnerRef = useRef(null)
   const galleryViewportRef = useRef(null)
@@ -91,8 +85,11 @@ export default function ProjectGallery({ heroCardRef }) {
   const videoRefs = useRef([])
   const mobileVideoRefs = useRef([])
   const scrollTriggerRef = useRef(null)
-  const activeIndexRef = useRef(0)
   const scrollTweenRef = useRef(null)
+  const activeIndexRef = useRef(0)
+  // Horizontal metrics shared between the scrub and the hover/wheel handlers
+  // so every input agrees on where a given project sits.
+  const metricsRef = useRef({ panelW: 0, end: 0 })
 
   const [activeIndex, setActiveIndex] = useState(0)
   const [modalProject, setModalProject] = useState(null)
@@ -111,13 +108,26 @@ export default function ProjectGallery({ heroCardRef }) {
     setModalProject(project)
   }, [])
 
+  // How far along the horizontal scrub a given project sits. Every project
+  // parks against the left edge, except where that would overscroll the end
+  // of the strip and leave dead space — the last one or two then share the
+  // tail. Hover and the scrub both read this, so they always agree.
+  const fractionForIndex = (index, panelW, end) =>
+    end > 0 ? Math.min(index * panelW, end) / end : 0
+
   const updateActiveFromProgress = useCallback((progress) => {
-    let idx
-    if (progress <= ENTRANCE_FRACTION) {
-      idx = 0
-    } else {
+    const { panelW, end } = metricsRef.current
+    let idx = 0
+    if (progress > ENTRANCE_FRACTION && panelW > 0 && end > 0) {
       const p = (progress - ENTRANCE_FRACTION) / (1 - ENTRANCE_FRACTION)
-      idx = Math.min(PROJECTS.length - 1, Math.max(0, Math.round(p * (PROJECTS.length - 1))))
+      let best = Infinity
+      for (let i = 0; i < PROJECTS.length; i += 1) {
+        const distance = Math.abs(fractionForIndex(i, panelW, end) - p)
+        if (distance < best) {
+          best = distance
+          idx = i
+        }
+      }
     }
     if (idx !== activeIndexRef.current) {
       activeIndexRef.current = idx
@@ -125,12 +135,40 @@ export default function ProjectGallery({ heroCardRef }) {
     }
   }, [])
 
-  // --- The scroll-driven pin + scrub timeline (desktop / pointer-capable only) ---
+  // The scroll position that brings a given project into view.
+  const scrollYForIndex = useCallback((index) => {
+    const st = scrollTriggerRef.current
+    const { panelW, end } = metricsRef.current
+    if (!st || !end) return null
+    const progress =
+      ENTRANCE_FRACTION + fractionForIndex(index, panelW, end) * (1 - ENTRANCE_FRACTION)
+    return st.start + progress * (st.end - st.start)
+  }, [])
+
+  const scrollToProject = useCallback(
+    (index) => {
+      const targetY = scrollYForIndex(index)
+      if (targetY == null) return
+      if (scrollTweenRef.current) scrollTweenRef.current.kill()
+      scrollTweenRef.current = gsap.to(window, {
+        duration: 0.7,
+        ease: 'power3.out',
+        overwrite: true,
+        // autoKill would cancel this the moment the scrub moves the page,
+        // which is exactly what this tween is trying to do.
+        scrollTo: { y: targetY, autoKill: false },
+      })
+      activeIndexRef.current = index
+      setActiveIndex(index)
+    },
+    [scrollYForIndex],
+  )
+
   useLayoutEffect(() => {
     const heroCard = heroCardRef?.current
-    const section = sectionRef.current
     const pin = pinRef.current
-    if (!heroCard || !section || !pin) return undefined
+    const stage = stageRef.current
+    if (!heroCard || !pin || !stage) return undefined
 
     const mm = gsap.matchMedia()
 
@@ -140,100 +178,100 @@ export default function ProjectGallery({ heroCardRef }) {
       const galleryViewport = galleryViewportRef.current
       const track = trackRef.current
 
-      // The natural (untransformed) left edge of an element, regardless of
-      // whatever x-transform GSAP has already applied to it.
-      const naturalLeft = (el) => {
-        const currentX = gsap.getProperty(el, 'x') || 0
-        return el.getBoundingClientRect().left - currentX
+      const galleryWidth = () => stage.clientWidth
+      const panelWidth = () => stage.clientWidth * PANEL_RATIO
+
+      // The section sits inside an off-centre flex column, so pull the
+      // full-width stage back to the left edge of the screen by hand.
+      const alignStage = () => {
+        stage.style.marginLeft = '0px'
+        stage.style.marginLeft = `${-stage.getBoundingClientRect().left}px`
       }
 
-      const heroTargetX = () => EDGE_MARGIN - naturalLeft(heroCard)
-      // The gallery viewport runs full-bleed from the left screen edge —
-      // it deliberately passes UNDER the hero card (which floats above it
-      // via z-index) rather than stopping short of it — and only respects
-      // the compact list's left edge on the right side.
-      const galleryWidth = () => {
-        const compactLeft = compactOuter.getBoundingClientRect().left
-        return Math.max(480, compactLeft - STAGE_GAP)
-      }
-      const panelWidth = () => galleryWidth() * 0.7
-      const trackTravel = () => -(track.scrollWidth - galleryViewport.clientWidth)
-
-      const applyPanelWidth = () => {
-        track.style.setProperty('--panel-w', `${panelWidth()}px`)
+      const applyMetrics = () => {
+        alignStage()
+        // The list mirrors the hero card: same visual width once the card has
+        // shrunk, and the same inset from its own side of the screen.
+        compactOuter.style.width = `${Math.round(heroCard.offsetWidth * HERO_SCALE)}px`
+        compactOuter.style.right = `${Math.round(heroCard.getBoundingClientRect().left)}px`
+        const panelW = panelWidth()
+        track.style.setProperty('--panel-w', `${panelW}px`)
+        metricsRef.current = {
+          panelW,
+          end: Math.max(0, track.scrollWidth - galleryWidth()),
+        }
       }
 
-      gsap.set(galleryViewport, { width: 0, opacity: 0 })
-      gsap.set(compactInner, { opacity: 0, x: 20 })
-      applyPanelWidth()
+      const trackTravel = () => -metricsRef.current.end
 
-      const st = ScrollTrigger.create({
-        trigger: pin,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.65,
-        invalidateOnRefresh: true,
-        onRefresh: applyPanelWidth,
-        onUpdate: (self) => {
-          updateActiveFromProgress(self.progress)
-          const openEnough = self.progress > ENTRANCE_FRACTION * 0.4
-          compactOuter.style.pointerEvents = openEnough ? 'auto' : 'none'
-          galleryViewport.style.pointerEvents = openEnough ? 'auto' : 'none'
+      gsap.set(heroCard, { transformOrigin: 'left top' })
+      gsap.set(galleryViewport, { opacity: 0 })
+      gsap.set(compactInner, { opacity: 0, y: 14 })
+      applyMetrics()
+
+      // Keep the list and strip clickable from the moment the panel opens,
+      // including when the page loads already scrolled into the section.
+      const syncInteractivity = (progress) => {
+        const open = progress > ENTRANCE_FRACTION * 0.4
+        compactOuter.style.pointerEvents = open ? 'auto' : 'none'
+        galleryViewport.style.pointerEvents = open ? 'auto' : 'none'
+      }
+
+      // The ScrollTrigger is declared as config on the timeline rather than
+      // built separately and handed over: gsap.timeline({ scrollTrigger: <instance> })
+      // does not scrub, it just plays the timeline straight through on mount.
+      const tl = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: pin,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.65,
+          invalidateOnRefresh: true,
+          onRefresh: applyMetrics,
+          onUpdate: (self) => {
+            updateActiveFromProgress(self.progress)
+            syncInteractivity(self.progress)
+          },
         },
       })
+
+      tl.to(heroCard, { scale: HERO_SCALE, duration: ENTRANCE_FRACTION }, 0)
+        .to(galleryViewport, { opacity: 1, duration: ENTRANCE_FRACTION }, 0)
+        .to(compactInner, { opacity: 1, y: 0, duration: ENTRANCE_FRACTION }, 0)
+        .to(track, { x: trackTravel, duration: 1 - ENTRANCE_FRACTION }, ENTRANCE_FRACTION)
+
+      const st = tl.scrollTrigger
       scrollTriggerRef.current = st
+      syncInteractivity(st.progress)
 
+      // Wheel over the stage drives the strip sideways instead of running the
+      // page past it. Vertical and horizontal (trackpad) deltas both work.
       const handleWheel = (event) => {
-        if (!st.isActive) return
+        const rect = pin.getBoundingClientRect()
+        const pinned = rect.top <= 0 && rect.bottom >= window.innerHeight
+        if (!pinned) return
+        const delta =
+          Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+        if (!delta) return
+        if (scrollTweenRef.current) scrollTweenRef.current.kill()
         event.preventDefault()
-        window.scrollBy(0, event.deltaY)
+        window.scrollBy(0, delta)
       }
-      pin.addEventListener('wheel', handleWheel, { passive: false })
-
-      const tl = gsap.timeline({ scrollTrigger: st, defaults: { ease: 'none' } })
-
-      tl.to(heroCard, { x: heroTargetX, duration: ENTRANCE_FRACTION }, 0)
-        .fromTo(
-          compactInner,
-          { opacity: 0, x: 20 },
-          { opacity: 1, x: 0, duration: ENTRANCE_FRACTION * 0.85 },
-          ENTRANCE_FRACTION * 0.15,
-        )
-        .fromTo(
-          galleryViewport,
-          { width: 0, opacity: 0 },
-          { width: galleryWidth, opacity: 1, duration: ENTRANCE_FRACTION, onUpdate: applyPanelWidth },
-          0,
-        )
-        .to(track, { x: trackTravel, duration: 1 - ENTRANCE_FRACTION, ease: 'none' }, ENTRANCE_FRACTION)
+      stage.addEventListener('wheel', handleWheel, { passive: false })
 
       const handleResize = () => ScrollTrigger.refresh()
       window.addEventListener('resize', handleResize)
 
       return () => {
         window.removeEventListener('resize', handleResize)
-        pin.removeEventListener('wheel', handleWheel)
+        stage.removeEventListener('wheel', handleWheel)
+        scrollTriggerRef.current = null
       }
     })
 
     return () => mm.revert()
   }, [heroCardRef, updateActiveFromProgress])
-
-  const scrollToProject = (index) => {
-    const st = scrollTriggerRef.current
-    if (!st) return
-    const frac = ENTRANCE_FRACTION + (index / (PROJECTS.length - 1)) * (1 - ENTRANCE_FRACTION)
-    const targetY = st.start + frac * (st.end - st.start)
-
-    if (scrollTweenRef.current) scrollTweenRef.current.kill()
-    scrollTweenRef.current = gsap.to(window, {
-      duration: 0.8,
-      ease: 'power2.inOut',
-      scrollTo: { y: targetY, autoKill: true },
-    })
-    activeIndexRef.current = index
-    setActiveIndex(index)
-  }
 
   const playVideo = (refsArray, index) => {
     const video = refsArray.current[index]
@@ -271,10 +309,8 @@ export default function ProjectGallery({ heroCardRef }) {
 
   return (
     <section id="work" className="project-gallery" ref={sectionRef}>
-      {/* Pinned, scroll-scrubbed video gallery (desktop / pointer devices) —
-          this IS the Work section now; there is no separate static list. */}
       <div className="project-gallery__pin" ref={pinRef} style={{ height: `${PIN_VH}vh` }}>
-        <div className="project-gallery__stage">
+        <div className="project-gallery__stage" ref={stageRef}>
           <div className="project-gallery__viewport" ref={galleryViewportRef}>
             <div className="project-gallery__track" ref={trackRef}>
               {PROJECTS.map((project, index) => (
@@ -302,10 +338,6 @@ export default function ProjectGallery({ heroCardRef }) {
                     playsInline
                     preload="none"
                   />
-                  <div className="project-gallery__panel-meta">
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <span>{project.name}</span>
-                  </div>
                 </div>
               ))}
             </div>
@@ -327,8 +359,9 @@ export default function ProjectGallery({ heroCardRef }) {
                       className={`project-gallery__compact-row${
                         activeIndex === index ? ' is-active' : ''
                       }`}
-                      onClick={() => scrollToProject(index)}
+                      onClick={() => openProject(project)}
                       onMouseEnter={() => scrollToProject(index)}
+                      onFocus={() => scrollToProject(index)}
                     >
                       <span className="project-gallery__compact-index">
                         {String(index + 1).padStart(2, '0')}
