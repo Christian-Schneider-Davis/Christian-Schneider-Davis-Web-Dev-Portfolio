@@ -17,7 +17,7 @@ const PROJECTS = [
   },
   {
     name: 'Epic Mouse App + Landing Page',
-    category: 'Mobile App & Web Design',
+    category: 'Browser-based Application',
     year: 'Coming Sept. 2026',
     image: 'photos/EpicMouse.app.png',
     url: 'https://www.epicmouse.app',
