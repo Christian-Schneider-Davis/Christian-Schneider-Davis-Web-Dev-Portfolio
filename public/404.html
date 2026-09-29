@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Page not found — Christian Schneider-Davis</title>
+
+    <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&display=swap" rel="stylesheet" />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(1.25rem, 3vw, 2rem);
+        padding: clamp(1rem, 4vw, 3rem);
+        background: #ffffff;
+        color: #1c1b15;
+        font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      }
+
+      main {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .not-found__image {
+        display: block;
+        width: 100%;
+        max-width: 1200px;
+        height: auto;
+      }
+
+      .not-found__home {
+        display: inline-block;
+        padding: 0.85rem 1.75rem;
+        border: 1px solid #1c1b15;
+        border-radius: 999px;
+        color: #1c1b15;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        transition: background 0.3s ease, color 0.3s ease;
+      }
+
+      .not-found__home:hover,
+      .not-found__home:focus-visible {
+        background: #1c1b15;
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img
+        class="not-found__image"
+        src="/404.png"
+        alt="Oops… Something went wrong! 404 — Please try again"
+        width="2560"
+        height="1440"
+      />
+    </main>
+    <a class="not-found__home" href="/">Back to home</a>
+  </body>
+</html>
