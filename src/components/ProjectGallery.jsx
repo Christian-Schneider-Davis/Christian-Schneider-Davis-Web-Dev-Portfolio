@@ -5,6 +5,8 @@ import './ProjectGallery.css'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const MOBILE_QUERY = '(max-width: 900px)'
+
 const PROJECTS = [
   {
     name: 'RPG Inspired Mock Site Port *DESKTOP VIEW ONLY*',
@@ -12,6 +14,7 @@ const PROJECTS = [
     year: 'Sept. 2026',
     image: 'photos/RPG-port.png',
     url: 'https://meta4-fan-port.vercel.app/',
+    desktopOnly: true,
     static: 'gallery/project-1.png',
     video: 'gallery/project-1.mp4',
   },
@@ -147,6 +150,7 @@ export default function ProjectGallery({ heroCardRef }) {
 
   const openProject = useCallback((project) => {
     if (!project?.url) return
+    if (project.desktopOnly && window.matchMedia(MOBILE_QUERY).matches) return
     setModalProject(project)
   }, [])
 
