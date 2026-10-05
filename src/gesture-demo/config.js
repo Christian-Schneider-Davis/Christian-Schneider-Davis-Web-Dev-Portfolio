@@ -1,6 +1,3 @@
-// Central place to tweak the experience without touching components.
-
-// Where this demo's files live on the site (public/gesture-demo/...).
 export const ASSET_BASE = '/gesture-demo';
 
 // ?embed=1 is added when the demo runs inside the frame on the home page.
@@ -23,7 +20,6 @@ export const VIDEOS = {
 
 export const TRACKING = {
   // MediaPipe library, runtime + models, all loaded from CDNs (no npm package needed).
-  // Keep the library and wasm versions identical.
   libUrl: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs',
   wasmPath: 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm',
   handModel:
@@ -32,7 +28,6 @@ export const TRACKING = {
     'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
 
   // MediaPipe labels hands as if the image were mirrored (selfie view).
-  // We feed it the raw camera frame, so the labels come back swapped.
   // If right/left ever feel reversed on your setup, flip this to false.
   swapHandedness: true,
 
