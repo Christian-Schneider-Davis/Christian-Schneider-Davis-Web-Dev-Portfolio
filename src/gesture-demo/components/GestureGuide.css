@@ -1,0 +1,338 @@
+.guide {
+  width: min(600px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  background: var(--foam);
+  color: var(--ink);
+  box-shadow: 0 40px 100px -30px rgba(26, 25, 24, 0.6);
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.guide::backdrop {
+  background: rgba(26, 25, 24, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.guide[open] {
+  animation: guide-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.guide[open]::backdrop {
+  animation: guide-fade 0.4s ease;
+}
+
+@keyframes guide-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+}
+
+@keyframes guide-fade {
+  from { opacity: 0; }
+}
+
+.guide__card {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  padding: clamp(22px, 4vw, 36px);
+}
+
+.guide__x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(26, 25, 24, 0.06);
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.guide__title {
+  font-size: clamp(32px, 5vw, 44px);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.guide__title em {
+  color: var(--coral);
+}
+
+.guide__steps {
+  display: grid;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 136px 1fr;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.step__text h3 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.step__text p {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.step__visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  border-radius: 16px;
+  background: var(--sand);
+  overflow: hidden;
+}
+
+/* closed → open flower */
+.step__visual--bloom {
+  gap: 2px;
+}
+
+.step__visual--bloom img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  mix-blend-mode: multiply;
+  filter: brightness(1.06);
+}
+
+.step__visual--bloom img:last-child {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+.step__arrow {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(0.82); }
+  50% { transform: scale(1); }
+}
+
+/* hand sweeping across in front of a face, over the page dots */
+.swipe__face {
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  width: 24px;
+  height: 30px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50% 50% 46% 46%;
+  transform: translateX(-50%);
+}
+
+.swipe__hand {
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  z-index: 1;
+  font-size: 26px;
+  animation: sweep 2.2s cubic-bezier(0.6, 0, 0.3, 1) infinite;
+}
+
+.swipe__dots {
+  position: absolute;
+  bottom: 14px;
+  display: flex;
+  gap: 6px;
+}
+
+.swipe__dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(26, 25, 24, 0.2);
+}
+
+.swipe__dots i:first-child {
+  animation: dot-a 2.2s infinite;
+}
+
+.swipe__dots i:nth-child(2) {
+  animation: dot-b 2.2s infinite;
+}
+
+@keyframes sweep {
+  0%, 15% { transform: translateX(72px); opacity: 0; }
+  25% { opacity: 1; }
+  60% { transform: translateX(0); opacity: 1; }
+  75%, 100% { transform: translateX(0); opacity: 0; }
+}
+
+@keyframes dot-a {
+  0%, 50% { background: var(--ink); width: 14px; border-radius: 3px; }
+  60%, 100% { background: rgba(26, 25, 24, 0.2); width: 6px; border-radius: 50%; }
+}
+
+@keyframes dot-b {
+  0%, 50% { background: rgba(26, 25, 24, 0.2); width: 6px; border-radius: 50%; }
+  60%, 100% { background: var(--ink); width: 14px; border-radius: 3px; }
+}
+
+/* framing guide */
+.frame {
+  position: relative;
+  width: 70px;
+  height: 52px;
+  border: 1.5px dashed rgba(26, 25, 24, 0.35);
+  border-radius: 8px;
+}
+
+.frame__face {
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 16px;
+  height: 20px;
+  border: 1.5px solid var(--ink);
+  border-radius: 50% 50% 46% 46%;
+  transform: translateX(-50%);
+}
+
+.frame__hand {
+  position: absolute;
+  bottom: 4px;
+  font-size: 15px;
+}
+
+.frame__hand--l {
+  left: 6px;
+}
+
+.frame__hand--r {
+  right: 6px;
+}
+
+.guide__privacy {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.guide__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* phones: bottom sheet */
+@media (max-width: 640px) {
+  .guide {
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    border-radius: 24px 24px 0 0;
+    max-height: 92dvh;
+  }
+  .guide[open] {
+    animation-name: sheet-in;
+  }
+  .step {
+    grid-template-columns: 96px 1fr;
+    gap: 14px;
+    padding: 12px 0;
+  }
+  .step__visual {
+    height: 60px;
+  }
+  .step__visual--bloom img {
+    width: 40px;
+    height: 40px;
+  }
+  @keyframes sweep {
+    0%, 15% { transform: translateX(46px); opacity: 0; }
+    25% { opacity: 1; }
+    60% { transform: translateX(-6px); opacity: 1; }
+    75%, 100% { transform: translateX(-6px); opacity: 0; }
+  }
+  .swipe__hand {
+    left: 14px;
+    top: 8px;
+    font-size: 22px;
+  }
+  .step__text h3 {
+    font-size: 15px;
+  }
+  .step__text p {
+    font-size: 13px;
+  }
+  .guide__actions .btn {
+    flex: 1;
+  }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(100%); }
+}
+
+/* short landscape screens */
+@media (max-height: 560px) and (min-aspect-ratio: 1/1) {
+  .guide__card {
+    gap: 12px;
+    padding: 20px 24px;
+  }
+  .guide__steps {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    border-top: 0;
+  }
+  .step {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    align-items: start;
+  }
+  .step__visual {
+    height: 54px;
+  }
+  .step__text p {
+    font-size: 12px;
+  }
+}
+
+/* shorter screens and frames: tighten so the whole guide fits without scrolling */
+@media (max-height: 720px) and (min-aspect-ratio: 1/1) and (min-height: 561px) {
+  .guide__card {
+    gap: 12px;
+    padding: 22px 28px;
+  }
+  .guide__title {
+    font-size: 32px;
+  }
+  .step {
+    padding: 10px 0;
+  }
+  .step__visual {
+    height: 58px;
+  }
+  .step__visual--bloom img {
+    width: 44px;
+    height: 44px;
+  }
+  .step__text p {
+    font-size: 13px;
+  }
+}

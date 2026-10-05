@@ -1,0 +1,128 @@
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  /* grey out and soften everything behind */
+  background: rgba(246, 245, 242, 0.55);
+  backdrop-filter: grayscale(1) blur(3px);
+  -webkit-backdrop-filter: grayscale(1) blur(3px);
+  animation: gate-fade 0.5s ease both;
+}
+
+.gate__card {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(380px, 100%);
+  padding: clamp(24px, 4vw, 34px);
+  border-radius: 26px;
+  background: var(--ink);
+  color: var(--foam);
+  text-align: center;
+  box-shadow: 0 40px 90px -30px rgba(26, 25, 24, 0.6);
+  animation: gate-rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.gate__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px 4px 9px;
+  border-radius: 999px;
+  background: rgba(251, 250, 248, 0.12);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--seafoam);
+}
+
+.gate__badge span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--seafoam);
+  animation: gate-blink 1.6s ease-in-out infinite;
+}
+
+.gate__title {
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.gate__title em {
+  color: var(--seafoam);
+}
+
+.gate__text {
+  max-width: 30ch;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(251, 250, 248, 0.7);
+}
+
+.gate__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 14px 26px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--foam);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+  animation: gate-pulse 2s ease-out infinite;
+}
+
+.gate__cta:hover {
+  transform: translateY(-1px);
+}
+
+.gate__skip {
+  border: 0;
+  background: none;
+  padding: 4px;
+  font-size: 13px;
+  color: rgba(251, 250, 248, 0.6);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.gate__skip:hover {
+  color: var(--foam);
+}
+
+@keyframes gate-fade {
+  from { opacity: 0; }
+}
+
+@keyframes gate-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+}
+
+@keyframes gate-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(233, 201, 168, 0.8); }
+  70%, 100% { box-shadow: 0 0 0 14px rgba(233, 201, 168, 0); }
+}
+
+@keyframes gate-blink {
+  50% { opacity: 0.35; }
+}
+
+/* short frames: tighten */
+@media (max-height: 480px) {
+  .gate__card {
+    gap: 10px;
+    padding: 20px 24px;
+  }
+  .gate__text {
+    display: none;
+  }
+}

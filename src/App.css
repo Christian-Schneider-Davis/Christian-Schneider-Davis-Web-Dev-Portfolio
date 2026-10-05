@@ -62,10 +62,93 @@
 .latest-projects__frame {
   width: 100%;
   max-width: 1000px;
-  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  margin: clamp(1.75rem, 4vw, 2.5rem) auto 0;
   padding: 10px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 26px;
   box-shadow: var(--shadow-card);
+}
+
+/* "1 · 2 · 3" how-to strip above the demo */
+.latest-projects__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--fg-dim);
+}
+
+.latest-projects__steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.latest-projects__steps span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.latest-projects__steps li:first-child span {
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
+}
+
+.latest-projects__steps strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+/* Gesture demo, embedded from /gesture-demo/ */
+.latest-projects__demo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 85vh;
+  max-height: 85svh;
+  border: 0;
+  border-radius: 18px;
+  background: #f6f5f2; /* the demo's own page colour, so there's no flash while it loads */
+}
+
+.latest-projects__note {
+  align-self: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--fg-faint);
+  text-align: center;
+}
+
+.latest-projects__note a {
+  color: var(--fg);
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .latest-projects__demo {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media (max-width: 560px) {
+  .latest-projects__frame {
+    padding: 6px;
+    border-radius: 20px;
+  }
+  .latest-projects__demo {
+    aspect-ratio: 9 / 16;
+    border-radius: 15px;
+  }
 }

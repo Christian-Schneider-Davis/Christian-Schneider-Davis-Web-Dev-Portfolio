@@ -1,0 +1,44 @@
+.flower {
+  margin: 0;
+  display: grid;
+  justify-items: center;
+  min-height: 0;
+  height: 100%;
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.flower__media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  border-radius: 18px;
+  touch-action: pan-y;
+}
+
+.flower__media:active {
+  cursor: grabbing;
+}
+
+.flower__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* the clips are shot on white; multiply melts that white into the page colour */
+  mix-blend-mode: multiply;
+  /* video decoding renders their white as ~97% grey; lift it to pure white so no box shows */
+  filter: brightness(1.06);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flower__video.is-shown {
+  opacity: 1;
+}
+

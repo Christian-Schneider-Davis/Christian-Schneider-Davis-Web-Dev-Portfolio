@@ -9,6 +9,15 @@ const MOBILE_QUERY = '(max-width: 900px)'
 
 const PROJECTS = [
   {
+    name: 'Epic Mouse App + Landing Page',
+    category: 'Browser-based Application',
+    year: 'Coming Oct. 2026',
+    image: 'photos/EpicMouse.app.png',
+    url: 'https://www.epicmouse.app',
+    static: 'gallery/project-3.png',
+    video: 'gallery/project-3.mp4',
+  },
+    {
     name: 'RPG Inspired Mock Site Port *DESKTOP VIEW ONLY*',
     category: 'Web Design',
     year: 'Sept. 2026',
@@ -17,15 +26,6 @@ const PROJECTS = [
     desktopOnly: true,
     static: 'gallery/project-1.png',
     video: 'gallery/project-1.mp4',
-  },
-  {
-    name: 'Epic Mouse App + Landing Page',
-    category: 'Browser-based Application',
-    year: 'Coming Oct. 2026',
-    image: 'photos/EpicMouse.app.png',
-    url: 'https://www.epicmouse.app',
-    static: 'gallery/project-3.png',
-    video: 'gallery/project-3.mp4',
   },
   {
     name: 'Virtual Desktop Portfolio',
@@ -55,7 +55,7 @@ const PROJECTS = [
     video: 'gallery/project-7.mp4',
   },
   {
-    name: 'My Art Portfolio',
+    name: 'Personal Art Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',
     image: 'photos/Christian-SD-Art-Port.png',

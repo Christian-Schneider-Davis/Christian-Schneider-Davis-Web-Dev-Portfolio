@@ -1,0 +1,250 @@
+.cam {
+  position: fixed;
+  z-index: 35;
+  cursor: grab;
+  touch-action: none; /* let a finger drag the box instead of scrolling */
+  user-select: none;
+  -webkit-user-select: none;
+  width: 200px;
+  border-radius: var(--radius);
+  background: var(--deep);
+  color: var(--foam);
+  overflow: hidden;
+  box-shadow: 0 24px 50px -24px rgba(26, 25, 24, 0.55);
+}
+
+/* only animate once we know where we are, so it doesn't fly in on load */
+.cam.is-placed {
+  transition: left 0.75s cubic-bezier(0.7, 0, 0.2, 1), top 0.75s cubic-bezier(0.7, 0, 0.2, 1),
+    width 0.45s ease, border-radius 0.45s ease;
+}
+
+.cam.is-dragging {
+  cursor: grabbing;
+  transition: none !important;
+  box-shadow: 0 30px 60px -20px rgba(26, 25, 24, 0.6);
+}
+
+.cam button {
+  cursor: pointer;
+}
+
+.cam--docked {
+  width: 150px;
+}
+
+.cam--docked:not(.is-live) {
+  width: auto;
+  max-width: min(300px, calc(100vw - 32px));
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.cam.is-live {
+  border: 3px solid var(--foam);
+}
+
+.cam.is-min {
+  width: 92px;
+}
+
+.cam__view {
+  position: relative;
+  aspect-ratio: 3 / 4;
+}
+
+.cam__view[hidden] {
+  display: none;
+}
+
+.cam__video,
+.cam__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* mirror so it feels like a selfie camera; landmarks are drawn in the same space */
+  transform: scaleX(-1);
+}
+
+.cam__status {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  background: rgba(18, 17, 16, 0.6);
+}
+
+.cam__hud {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.cam.is-min .cam__hud {
+  display: none;
+}
+
+.tag {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(18, 17, 16, 0.6);
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.tag.is-on {
+  background: var(--seafoam);
+  color: var(--deep);
+}
+
+.cam__tools {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  gap: 5px;
+}
+
+.cam__tools button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(18, 17, 16, 0.65);
+  color: var(--foam);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.consent {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.consent__title {
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.1;
+}
+
+.consent__body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(251, 250, 248, 0.72);
+}
+
+.consent__error {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #ffb3a3;
+}
+
+.consent .btn {
+  justify-self: start;
+}
+
+.consent--compact {
+  justify-items: end;
+  gap: 8px;
+  padding: 0;
+}
+
+.consent--compact .consent__error {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--ink);
+}
+
+.consent__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--ink);
+  color: var(--foam);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 12px 30px -14px rgba(26, 25, 24, 0.6);
+}
+
+@media (max-width: 640px) {
+  .cam.is-dragging {
+  cursor: grabbing;
+  transition: none !important;
+  box-shadow: 0 30px 60px -20px rgba(26, 25, 24, 0.6);
+}
+
+.cam button {
+  cursor: pointer;
+}
+
+.cam--docked {
+    width: 96px;
+  }
+  .cam.is-live {
+    border-width: 2px;
+  }
+  .cam.is-min {
+    width: 64px;
+  }
+  .cam--docked .tag {
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+}
+
+/* ---- "start here" cues before the camera is turned on ---- */
+.consent__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  justify-self: start;
+  padding: 4px 10px 4px 8px;
+  border-radius: 999px;
+  background: rgba(251, 250, 248, 0.12);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--seafoam);
+}
+
+.consent__badge span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--seafoam);
+  animation: consent-blink 1.6s ease-in-out infinite;
+}
+
+.consent--attention .btn,
+.consent--attention .consent__pill {
+  animation: consent-pulse 2s ease-out infinite;
+}
+
+@keyframes consent-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(233, 201, 168, 0.75); }
+  70%, 100% { box-shadow: 0 0 0 10px rgba(233, 201, 168, 0); }
+}
+
+@keyframes consent-blink {
+  50% { opacity: 0.35; }
+}

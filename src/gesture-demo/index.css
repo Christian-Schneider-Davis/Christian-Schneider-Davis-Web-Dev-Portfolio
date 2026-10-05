@@ -1,0 +1,230 @@
+:root {
+  --sand: #f6f5f2;
+  --foam: #fbfaf8;
+  --ink: #1a1918;
+  --ink-soft: #6b6863;
+  --deep: #1a1918;
+  --teal: #b4532a;
+  --seafoam: #e9c9a8;
+  --coral: #b4532a;
+  --line: rgba(26, 25, 24, 0.1);
+  --radius: 22px;
+  --serif: 'Instrument Serif', Georgia, serif;
+  --sans: 'Inter Tight', system-ui, sans-serif;
+  --gutter: clamp(16px, 4vw, 56px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* Inside the home-page frame: let scroll gestures pass through to the page around it. */
+.is-embed body {
+  overflow: visible; /* overflow:hidden here would swallow the wheel instead of passing it on */
+  overscroll-behavior: auto;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 3px;
+}
+
+/* ---------- shared ---------- */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.eyebrow span {
+  color: var(--coral);
+}
+
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--foam);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn--light {
+  background: var(--foam);
+  border-color: var(--foam);
+  color: var(--ink);
+}
+
+.btn--small {
+  padding: 9px 16px;
+  font-size: 14px;
+}
+
+/* ---------- one-page shell: nav on top, pages slide sideways underneath ---------- */
+
+.app {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+  touch-action: pan-y;
+}
+
+.bouncer,
+.track {
+  height: 100%;
+}
+
+.track {
+  display: flex;
+  transition: transform 0.75s cubic-bezier(0.7, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.panel {
+  flex: 0 0 100%;
+  height: 100%;
+  overflow: hidden;
+  /* gives the flower videos a backdrop to multiply against (the track is its own layer) */
+  background: var(--sand);
+}
+
+/* Every page fills the viewport; on very short screens it may scroll inside itself. */
+.page {
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: clamp(16px, 3vh, 40px) var(--gutter) calc(clamp(16px, 3vh, 40px) + 56px);
+}
+
+@media (max-height: 560px) and (min-aspect-ratio: 1/1) {
+  .page {
+    padding-top: 8px;
+    padding-bottom: 60px;
+  }
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+/* "Nothing that way" nudge when you swipe past the first or last page */
+.bounce-start {
+  animation: bounce-start 0.55s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+.bounce-end {
+  animation: bounce-end 0.55s cubic-bezier(0.3, 0.7, 0.4, 1);
+}
+
+@keyframes bounce-start {
+  0% { transform: translateX(0); }
+  30% { transform: translateX(56px); }
+  55% { transform: translateX(-12px); }
+  75% { transform: translateX(6px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes bounce-end {
+  0% { transform: translateX(0); }
+  30% { transform: translateX(-56px); }
+  55% { transform: translateX(12px); }
+  75% { transform: translateX(-6px); }
+  100% { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bounce-start,
+  .bounce-end {
+    animation-duration: 0.01s !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01s !important;
+  }
+}

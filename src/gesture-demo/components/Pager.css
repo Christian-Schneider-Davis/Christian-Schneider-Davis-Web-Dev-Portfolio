@@ -1,0 +1,92 @@
+.pager {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foam) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  transform: translateX(-50%);
+}
+
+.pager button {
+  border: 0;
+  background: none;
+  color: var(--ink);
+}
+
+.pager__arrow {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 15px;
+}
+
+.pager__arrow:hover {
+  background: rgba(26, 25, 24, 0.06);
+}
+
+.pager__dots {
+  display: flex;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pager__dots button {
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  transition: background 0.25s, color 0.25s;
+}
+
+.pager__dots button.is-on {
+  background: var(--ink);
+  color: var(--foam);
+}
+
+/* Small screens: dots only, tucked bottom-left so the camera can own the right corner. */
+@media (max-width: 640px), (max-height: 560px) and (min-aspect-ratio: 1/1) {
+  .pager {
+    left: 16px;
+    transform: none;
+  }
+  .pager__label {
+    display: block;
+    width: 8px;
+    height: 8px;
+    overflow: hidden;
+    text-indent: 20px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.4;
+  }
+  .pager__dots button {
+    padding: 13px 8px;
+  }
+  .pager__dots button.is-on {
+    background: none;
+    color: var(--ink);
+  }
+  .pager__dots button.is-on .pager__label {
+    width: 22px;
+    border-radius: 4px;
+    opacity: 1;
+  }
+}
+
+/* very narrow (e.g. the demo framed on a phone): dots only, so the camera button fits beside them */
+@media (max-width: 400px) {
+  .pager__arrow {
+    display: none;
+  }
+}

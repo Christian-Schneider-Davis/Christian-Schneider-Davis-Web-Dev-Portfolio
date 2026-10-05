@@ -21,15 +21,14 @@ export default function About() {
         <div className="about__body reveal" ref={revealRef}>
           <div className="about__main">
             <p className="about__statement">
-              I design in the space between a brand's ambition and the
-              way people actually read a screen, trimming noise until
-              what's left is <em>obvious</em>, considered, and quietly
-              confident.
+              I design where a brand's ambition meets the way people
+              actually use a screen, trimming noise until what's left
+              feels <em>natural</em>.
             </p>
 
             <p className="about__bio">
-              The goal is to build identities for brands through websites and interfaces that hold up under real
-              use, not just flashy first impressions.
+              My goal is to creare experiences that reach past the screen: interactive websites and live
+              event experiences that respond to the people in front of them.
             </p>
           </div>
 
