@@ -14,8 +14,9 @@ export default function About() {
       <div className="about__intro">
         <p className="eyebrow"><span aria-hidden="true">✦</span> About</p>
         <p className="about__statement">
-          I’m {SITE.name}. I curate the space between a brand and its audience, where design,
-          technology and live moments <em>fold into one story.</em>
+          I’m {SITE.name}. 
+          <p>I curate spaces where design,
+          technology and live moments <em>fold into one story.</em></p>
         </p>
       </div>
       <ul className="about__services">
