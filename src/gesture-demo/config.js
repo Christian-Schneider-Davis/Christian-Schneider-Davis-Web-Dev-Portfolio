@@ -9,11 +9,13 @@ export const VIDEOS = {
   left: {
     forward: `${ASSET_BASE}/flowers/two-forward.mp4`,
     reverse: `${ASSET_BASE}/flowers/two-reverse.mp4`,
+    poster: `${ASSET_BASE}/flowers/two-poster.jpg`,
     label: 'Left hand',
   },
   right: {
     forward: `${ASSET_BASE}/flowers/one-forward.mp4`,
     reverse: `${ASSET_BASE}/flowers/one-reverse.mp4`,
+    poster: `${ASSET_BASE}/flowers/one-poster.jpg`,
     label: 'Right hand',
   },
 };

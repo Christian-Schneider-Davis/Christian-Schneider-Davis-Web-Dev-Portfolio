@@ -29,7 +29,7 @@ function whenReady(video) {
  * Two stacked clips (forward + reversed) are swapped at the matching frame,
  * so it can change direction mid-bloom without jumping.
  */
-export default function Flower({ forward, reverse, open, label, onHold }) {
+export default function Flower({ forward, reverse, poster, open, label, onHold }) {
   const fwdRef = useRef(null);
   const revRef = useRef(null);
   const [showing, setShowing] = useState('forward');
@@ -41,6 +41,13 @@ export default function Flower({ forward, reverse, open, label, onHold }) {
     const r = revRef.current;
     if (!f || !r) return;
     const my = ++token.current;
+
+    // Still closed and staying closed (e.g. first load): nothing to do. Skipping the swap here
+    // keeps the forward clip (and its poster) on screen, which iPhone Safari needs to show anything.
+    if (!open && showingRef.current === 'forward' && f.currentTime <= END_TOLERANCE) {
+      f.pause();
+      return;
+    }
 
     (async () => {
       await Promise.all([whenReady(f), whenReady(r)]);
@@ -94,6 +101,7 @@ export default function Flower({ forward, reverse, open, label, onHold }) {
           ref={fwdRef}
           className={`flower__video ${showing === 'forward' ? 'is-shown' : ''}`}
           src={forward}
+          poster={poster}
           muted
           playsInline
           preload="auto"

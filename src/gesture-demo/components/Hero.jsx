@@ -37,6 +37,7 @@ export default function Hero({ open, onHold, onNext, camSlotRef }) {
             key={hand}
             forward={VIDEOS[hand].forward}
             reverse={VIDEOS[hand].reverse}
+            poster={VIDEOS[hand].poster}
             label={VIDEOS[hand].label}
             open={open[hand]}
             onHold={(v) => onHold(hand, v)}

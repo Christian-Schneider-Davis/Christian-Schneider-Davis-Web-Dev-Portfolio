@@ -1,5 +1,5 @@
 :root {
-  --sand: #f6f5f2;
+  --sand: #ffffff; /* pure white so the flower videos' white background disappears on every browser */
   --foam: #fbfaf8;
   --ink: #1a1918;
   --ink-soft: #6b6863;
