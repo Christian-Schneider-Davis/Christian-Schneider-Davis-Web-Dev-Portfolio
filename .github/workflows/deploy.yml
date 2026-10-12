@@ -25,6 +25,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - uses: actions/checkout@v4
+        with:
+          repository: Christian-Schneider-Davis/art-portfolio
+          path: art-portfolio
+      - name: Build art portfolio
+        working-directory: art-portfolio
+        run: |
+          npm ci
+          npx vite build --base=/art/ --outDir ../dist/art --emptyOutDir
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
