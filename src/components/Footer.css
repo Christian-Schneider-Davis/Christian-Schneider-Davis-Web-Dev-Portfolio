@@ -18,3 +18,8 @@
 .footer__top:hover {
   color: var(--accent);
 }
+
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
+}

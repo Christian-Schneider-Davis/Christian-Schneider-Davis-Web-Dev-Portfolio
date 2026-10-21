@@ -8,6 +8,7 @@ import ProjectGallery from './components/ProjectGallery.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import Grain from './components/Grain.jsx'
+import CookieConsent from './components/CookieConsent.jsx'
 import './App.css'
 
 export default function App() {
@@ -38,7 +39,7 @@ export default function App() {
             <p className="latest-projects__intro">
               A gesture-driven experience I designed and built from scratch with React and in-browser
               machine learning. Turn on your camera, open a hand to bloom a flower, and swipe through
-              the pages. It all runs on your device; nothing is recorded.
+              the pages. It all runs on your device; nothing is saved, stored, or recorded.
             </p>
 
             <ol className="latest-projects__steps" aria-label="How to try it">
@@ -68,6 +69,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <CookieConsent />
     </>
   )
 }

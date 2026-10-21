@@ -1,0 +1,228 @@
+/* Cookie consent card — bottom-left, same surface/line/shadow as HeroCard.
+   z-index sits above the nav (50) and grain (60), below the project modal (1000). */
+.cookie {
+  position: fixed;
+  left: var(--gutter);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 900;
+  width: min(380px, calc(100vw - 2rem));
+  padding: 1.3rem 1.4rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card), 0 2px 6px rgba(28, 27, 21, 0.06);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100svh - 2rem);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease),
+    visibility 0s linear 0.6s;
+}
+
+.cookie--open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease),
+    visibility 0s;
+}
+
+.cookie__text {
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--fg-dim);
+}
+
+.cookie__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.1rem;
+}
+
+.cookie__actions .btn {
+  padding: 0.7em 1.3em;
+  transition: background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+/* Expanded: a bit wider so the list breathes */
+.cookie--expanded {
+  width: min(440px, calc(100vw - 2rem));
+}
+
+/* "See what's used" toggle */
+.cookie__toggle {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.8rem;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 0.15rem;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.cookie__toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.cookie__chevron {
+  width: 6px;
+  height: 6px;
+  border-right: 1.4px solid currentColor;
+  border-bottom: 1.4px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.4s var(--ease);
+}
+
+.cookie--expanded .cookie__chevron {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+/* Cookie list — scrolls inside the card on short screens */
+.cookie__list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.cookie__list[hidden] {
+  display: none;
+}
+
+.cookie__group-title {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cookie__group-note {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+
+.cookie__items {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cookie__item {
+  padding: 0.75rem 0.9rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.cookie__item-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+}
+
+.cookie__item-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.cookie__item-type {
+  font-size: 0.7rem;
+  color: var(--fg-faint);
+}
+
+.cookie__item-purpose {
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+}
+
+.cookie__item-meta {
+  margin: 0.45rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+  font-size: 0.72rem;
+}
+
+.cookie__item-meta div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.cookie__item-meta dt {
+  color: var(--fg-faint);
+}
+
+.cookie__item-meta dd {
+  margin: 0;
+  color: var(--fg-dim);
+}
+
+.cookie__current {
+  font-size: 0.78rem;
+  color: var(--fg-faint);
+}
+
+.cookie__current strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.cookie__actions {
+  flex: none;
+}
+
+@media (max-width: 560px) {
+  .cookie--expanded {
+    width: auto;
+  }
+  .cookie {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+  }
+  .cookie__actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Footer-style "Cookie settings" link (used on the portfolio and links pages) */
+.cookie-settings {
+  font: inherit;
+  color: inherit;
+  padding: 0;
+  transition: color 0.3s var(--ease);
+}
+
+.cookie-settings:hover {
+  color: var(--accent);
+}

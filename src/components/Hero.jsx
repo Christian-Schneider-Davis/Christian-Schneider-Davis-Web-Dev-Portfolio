@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
+import { handleSectionLink } from '../lib/scrollToSection'
 import './Hero.css'
 
 export default function Hero() {
@@ -76,10 +77,10 @@ export default function Hero() {
           </p>
 
           <div className="hero__cta-row" ref={metaRef}>
-            <a href="#work" className="btn btn--primary">
+            <a href="#work" className="btn btn--primary" onClick={handleSectionLink}>
               My Work
             </a>
-            <a href="#contact" className="btn btn--ghost">
+            <a href="#contact" className="btn btn--ghost" onClick={handleSectionLink}>
               Get in Touch
             </a>
           </div>

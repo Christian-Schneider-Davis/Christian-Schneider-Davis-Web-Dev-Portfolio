@@ -25,6 +25,15 @@
   }
 }
 
+/* Invisible landing spot for "Work" links (positioned from script). */
+.project-gallery__anchor {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
 /* Width is 100vw and the left offset is set from script — this section sits
    inside an off-centre flex column, so the usual calc(50% - 50vw) full-bleed
    trick lands it in the wrong place. */
@@ -45,6 +54,27 @@
   overflow: hidden;
   opacity: 0;
   z-index: 3;
+}
+
+/* Drag the strip with a mouse: grab cursor, and no hover previews or
+   text selection mid-drag. Panels keep their pointer cursor for clicks. */
+.project-gallery__viewport {
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.project-gallery__viewport .project-gallery__panel {
+  cursor: grab;
+}
+
+.project-gallery__viewport.is-dragging,
+.project-gallery__viewport.is-dragging .project-gallery__panel {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.project-gallery__viewport.is-dragging .project-gallery__panel {
+  pointer-events: none;
 }
 
 .project-gallery__track {
@@ -285,6 +315,25 @@
   font-family: var(--font-body);
   font-size: 0.72rem;
   opacity: 0.75;
+}
+
+/* Mouse / trackpad: drag to scroll the strip. Snapping is paused
+   (.is-free) while the strip is being moved by hand. */
+@media (hover: hover) and (pointer: fine) {
+  .project-gallery__mobile-track {
+    cursor: grab;
+  }
+  .project-gallery__mobile-track.is-dragging {
+    cursor: grabbing;
+    user-select: none;
+  }
+  .project-gallery__mobile-track.is-dragging .project-gallery__mobile-panel {
+    pointer-events: none;
+  }
+}
+
+.project-gallery__mobile-track.is-free {
+  scroll-snap-type: none;
 }
 
 @media (max-width: 900px) and (orientation: landscape) {

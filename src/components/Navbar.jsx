@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
-import { gsap } from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { scrollToSection } from '../lib/scrollToSection'
 import './Navbar.css'
-
-gsap.registerPlugin(ScrollToPlugin)
 
 const LINKS = [
   { href: '#about', label: 'About' },
@@ -25,21 +22,11 @@ export default function Navbar() {
 
   const handleLinkClick = () => setOpen(false)
 
-  // Smooth-scroll in-page anchor links with GSAP instead of native CSS
-  // `scroll-behavior: smooth` — the native version fights GSAP's
-  // ScrollTrigger-driven scroll animations elsewhere on the page (see
-  // index.css for the full explanation), so every in-page jump goes
-  // through GSAP's ScrollToPlugin instead.
+  // Smooth-scroll in-page anchor links with GSAP (see lib/scrollToSection).
   const handleAnchorClick = (event, href) => {
-    const target = document.querySelector(href)
-    if (!target) return
+    if (!scrollToSection(href)) return
     event.preventDefault()
     setOpen(false)
-    gsap.to(window, {
-      duration: 1,
-      ease: 'power2.inOut',
-      scrollTo: { y: target, autoKill: true },
-    })
   }
 
   return (

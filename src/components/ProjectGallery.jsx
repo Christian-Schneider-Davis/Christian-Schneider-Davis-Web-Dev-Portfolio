@@ -18,7 +18,7 @@ const PROJECTS = [
     video: 'gallery/project-3.mp4',
   },
     {
-    name: 'RPG Inspired Mock Site Port *DESKTOP VIEW ONLY*',
+    name: 'RPG Inspired Portfilio -Contest Runner-up- *DESKTOP VIEW ONLY*',
     category: 'Web Design',
     year: 'Sept. 2026',
     image: 'photos/RPG-port.png',
@@ -27,6 +27,16 @@ const PROJECTS = [
     static: 'gallery/project-1.png',
     video: 'gallery/project-1.mp4',
   },
+    {
+    name: 'United Nations Consultant Personal Portfolio',
+    category: 'Portfolio Site',
+    year: 'Oct. 2026',
+    image: 'photos/Ariane-Lignier-port.png',
+    url: 'https://arianelignier.com',
+    static: 'gallery/project-8.png',
+    video: 'gallery/project-8.mp4',
+  },
+
   {
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
@@ -71,6 +81,8 @@ const LOOP = [...PROJECTS, ...PROJECTS]
 
 const PIN_VH = 340
 const ENTRANCE_FRACTION = 0.07
+// Nav links to #work land a little past the entrance (see scrollToSection).
+const ANCHOR_FRACTION = ENTRANCE_FRACTION + 0.02
 // Each panel's width as a share of the stage — the active project fills the
 // left of the screen and the next runs off the right edge behind the list.
 const PANEL_RATIO = 0.583
@@ -115,6 +127,7 @@ export default function ProjectGallery({ heroCardRef }) {
   const trackRef = useRef(null)
   const videoRefs = useRef([])
   const mobileVideoRefs = useRef([])
+  const mobileTrackRef = useRef(null)
   const activeIndexRef = useRef(0)
 
   // The strip's position is a single running offset in pixels rather than a
@@ -320,6 +333,85 @@ export default function ProjectGallery({ heroCardRef }) {
       }
       stage.addEventListener('wheel', onWheel, { passive: false })
 
+      // Click-and-drag the strip itself (mouse / pen). It follows the pointer,
+      // keeps gliding briefly on release, and the idle drift takes over again
+      // from wherever it comes to rest.
+      const stripDrag = { down: false, moved: false, startX: 0, lastX: 0, lastT: 0, v: 0, id: null }
+      let suppressStripClick = false
+
+      const onStripPointerDown = (event) => {
+        if (event.pointerType === 'touch' || event.button !== 0) return
+        if (galleryViewport.style.pointerEvents === 'none') return
+        Object.assign(stripDrag, {
+          down: true,
+          moved: false,
+          startX: event.clientX,
+          lastX: event.clientX,
+          lastT: performance.now(),
+          v: 0,
+          id: event.pointerId,
+        })
+      }
+
+      const onStripPointerMove = (event) => {
+        if (!stripDrag.down || event.pointerId !== stripDrag.id) return
+        if (!stripDrag.moved) {
+          if (Math.abs(event.clientX - stripDrag.startX) < 6) return
+          stripDrag.moved = true
+          if (offsetTweenRef.current) offsetTweenRef.current.kill()
+          galleryViewport.classList.add('is-dragging')
+          capturePointer(galleryViewport, event.pointerId)
+        }
+        const now = performance.now()
+        const dx = event.clientX - stripDrag.lastX
+        const dt = Math.max(1, now - stripDrag.lastT)
+        stripDrag.v = 0.8 * (dx / dt) + 0.2 * stripDrag.v
+        stripDrag.lastX = event.clientX
+        stripDrag.lastT = now
+        offsetRef.current -= dx
+      }
+
+      const onStripPointerUp = (event) => {
+        if (!stripDrag.down || event.pointerId !== stripDrag.id) return
+        stripDrag.down = false
+        if (!stripDrag.moved) return
+        galleryViewport.classList.remove('is-dragging')
+        releasePointer(galleryViewport, event.pointerId)
+        suppressStripClick = true
+        setTimeout(() => {
+          suppressStripClick = false
+        }, 0)
+
+        // Glide on with the release speed (px/ms), easing out.
+        const glide = -stripDrag.v * 420
+        if (Math.abs(glide) < 2) return
+        const proxy = { value: offsetRef.current }
+        offsetTweenRef.current = gsap.to(proxy, {
+          value: offsetRef.current + glide,
+          duration: 0.9,
+          ease: 'power3.out',
+          onUpdate: () => {
+            offsetRef.current = proxy.value
+          },
+        })
+      }
+
+      // A drag shouldn't also open the project under the pointer.
+      const onStripClickCapture = (event) => {
+        if (!suppressStripClick) return
+        event.preventDefault()
+        event.stopPropagation()
+        suppressStripClick = false
+      }
+      const onStripDragStart = (event) => event.preventDefault()
+
+      galleryViewport.addEventListener('pointerdown', onStripPointerDown)
+      window.addEventListener('pointermove', onStripPointerMove)
+      window.addEventListener('pointerup', onStripPointerUp)
+      window.addEventListener('pointercancel', onStripPointerUp)
+      galleryViewport.addEventListener('click', onStripClickCapture, true)
+      galleryViewport.addEventListener('dragstart', onStripDragStart)
+
       // Drag the hero card around, but only while the Work section holds the
       // screen. Links and buttons inside the card keep working.
       const onHeroPointerDown = (event) => {
@@ -439,6 +531,7 @@ export default function ProjectGallery({ heroCardRef }) {
           !reduced &&
           pinnedRef.current &&
           !offsetTweenRef.current?.isActive() &&
+          !stripDrag.down &&
           !pointerIsEngaged()
 
         const targetSpeed = drifting ? DRIFT_SPEED : 0
@@ -505,6 +598,13 @@ export default function ProjectGallery({ heroCardRef }) {
         window.removeEventListener('resize', handleResize)
         window.removeEventListener('orientationchange', handleResize)
         stage.removeEventListener('wheel', onWheel)
+        galleryViewport.removeEventListener('pointerdown', onStripPointerDown)
+        window.removeEventListener('pointermove', onStripPointerMove)
+        window.removeEventListener('pointerup', onStripPointerUp)
+        window.removeEventListener('pointercancel', onStripPointerUp)
+        galleryViewport.removeEventListener('click', onStripClickCapture, true)
+        galleryViewport.removeEventListener('dragstart', onStripDragStart)
+        galleryViewport.classList.remove('is-dragging')
         compactHead.removeEventListener('pointerdown', onListPointerDown)
         window.removeEventListener('pointermove', onListPointerMove)
         window.removeEventListener('pointerup', onListPointerUp)
@@ -596,9 +696,179 @@ export default function ProjectGallery({ heroCardRef }) {
     return () => observer.disconnect()
   }, [])
 
+  // Narrow screens with a mouse or trackpad (small desktop windows, tablets
+  // with a pointer): the swipe strip also responds to click-and-drag and to
+  // the vertical mouse wheel while hovered. Touch keeps its native swipe.
+  useEffect(() => {
+    const track = mobileTrackRef.current
+    if (!track) return undefined
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+
+    let tween = null
+    let wheelTarget = null
+    let idleTimer = 0
+    const drag = { down: false, moved: false, startX: 0, startScroll: 0, lastX: 0, lastT: 0, v: 0 }
+    let suppressClick = false
+
+    const maxScroll = () => track.scrollWidth - track.clientWidth
+
+    // The scroll positions the browser's own scroll-snap would land on.
+    const snapPoints = () => {
+      const base = track.getBoundingClientRect().left - track.scrollLeft
+      const max = maxScroll()
+      const points = Array.from(track.children).map((panel) =>
+        Math.min(max, Math.max(0, panel.getBoundingClientRect().left - base)),
+      )
+      return [...new Set([...points, max].map(Math.round))]
+    }
+
+    // Where to come to rest: the nearest panel, or — when the strip was
+    // pushed one way — the next panel in that direction, so even a single
+    // wheel notch or a short drag moves on by one project.
+    const restingPoint = (x, dir = 0) => {
+      const points = snapPoints().sort((a, b) => a - b)
+      if (dir > 0) return points.find((p) => p >= x - 1) ?? points[points.length - 1]
+      if (dir < 0) return [...points].reverse().find((p) => p <= x + 1) ?? points[0]
+      return points.reduce((best, p) => (Math.abs(p - x) < Math.abs(best - x) ? p : best), points[0])
+    }
+    const bounds = () => {
+      const points = snapPoints()
+      return [Math.min(...points), Math.max(...points)]
+    }
+
+    // Native snapping is switched off while we move the strip by hand (it
+    // would fight every frame), then back on once it rests on a panel.
+    const free = () => track.classList.add('is-free')
+    const settle = (from = track.scrollLeft, dir = 0, duration = 0.5) => {
+      tween?.kill()
+      wheelTarget = null
+      tween = gsap.to(track, {
+        scrollLeft: restingPoint(from, dir),
+        duration,
+        ease: 'power3.out',
+        onComplete: () => track.classList.remove('is-free'),
+      })
+    }
+
+    const onWheel = (event) => {
+      if (!finePointer.matches) return
+      // Sideways trackpad swipes already scroll the strip natively.
+      if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return
+      const unit = event.deltaMode === 1 ? 32 : event.deltaMode === 2 ? track.clientWidth : 1
+      const delta = event.deltaY * unit
+      const from = wheelTarget ?? track.scrollLeft
+      const [min, max] = bounds()
+      // At either end, let the page carry on scrolling.
+      if ((delta < 0 && from <= min + 1) || (delta > 0 && from >= max - 1)) return
+      event.preventDefault()
+      free()
+      wheelTarget = Math.min(max, Math.max(min, from + delta))
+      const dir = Math.sign(delta)
+      tween?.kill()
+      tween = gsap.to(track, { scrollLeft: wheelTarget, duration: 0.45, ease: 'power2.out' })
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => settle(wheelTarget ?? track.scrollLeft, dir), 160)
+    }
+
+    const onPointerDown = (event) => {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return
+      tween?.kill()
+      clearTimeout(idleTimer)
+      Object.assign(drag, {
+        down: true,
+        moved: false,
+        startX: event.clientX,
+        startScroll: track.scrollLeft,
+        lastX: event.clientX,
+        lastT: performance.now(),
+        v: 0,
+      })
+    }
+
+    const onPointerMove = (event) => {
+      if (!drag.down) return
+      const dx = event.clientX - drag.startX
+      if (!drag.moved) {
+        if (Math.abs(dx) < 6) return
+        drag.moved = true
+        free()
+        track.classList.add('is-dragging')
+        try {
+          track.setPointerCapture(event.pointerId)
+        } catch {
+          /* fine without capture */
+        }
+      }
+      const now = performance.now()
+      const dt = Math.max(1, now - drag.lastT)
+      drag.v = 0.8 * ((event.clientX - drag.lastX) / dt) + 0.2 * drag.v
+      drag.lastX = event.clientX
+      drag.lastT = now
+      track.scrollLeft = drag.startScroll - dx
+    }
+
+    const onPointerUp = (event) => {
+      if (!drag.down) return
+      drag.down = false
+      if (!drag.moved) return
+      track.classList.remove('is-dragging')
+      try {
+        track.releasePointerCapture(event.pointerId)
+      } catch {
+        /* already released */
+      }
+      // A quick flick carries on to the next panel or two.
+      const projected = track.scrollLeft - drag.v * 260
+      const moved = track.scrollLeft - drag.startScroll
+      settle(projected, Math.abs(moved) > 40 ? Math.sign(moved) : 0, 0.65)
+      suppressClick = true
+      setTimeout(() => {
+        suppressClick = false
+      }, 0)
+    }
+
+    // A drag shouldn't also count as a click that opens the project.
+    const onClickCapture = (event) => {
+      if (!suppressClick) return
+      event.preventDefault()
+      event.stopPropagation()
+      suppressClick = false
+    }
+    const onDragStart = (event) => event.preventDefault()
+
+    track.addEventListener('wheel', onWheel, { passive: false })
+    track.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('pointerup', onPointerUp)
+    window.addEventListener('pointercancel', onPointerUp)
+    track.addEventListener('click', onClickCapture, true)
+    track.addEventListener('dragstart', onDragStart)
+
+    return () => {
+      tween?.kill()
+      clearTimeout(idleTimer)
+      track.removeEventListener('wheel', onWheel)
+      track.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', onPointerUp)
+      window.removeEventListener('pointercancel', onPointerUp)
+      track.removeEventListener('click', onClickCapture, true)
+      track.removeEventListener('dragstart', onDragStart)
+      track.classList.remove('is-free', 'is-dragging')
+    }
+  }, [])
+
   return (
     <section id="work" className="project-gallery" ref={sectionRef}>
       <div className="project-gallery__pin" ref={pinRef} style={{ height: `${PIN_VH}vh` }}>
+        {/* Where "Work" links land: just past the scroll-driven entrance, so
+            the gallery is already faded in when the jump finishes. */}
+        <span
+          className="project-gallery__anchor"
+          data-scroll-anchor="#work"
+          aria-hidden="true"
+          style={{ top: `${(PIN_VH - 100) * ANCHOR_FRACTION}vh` }}
+        />
         <div className="project-gallery__stage" ref={stageRef}>
           <div className="project-gallery__viewport" ref={galleryViewportRef}>
             <div className="project-gallery__track" ref={trackRef}>
@@ -691,7 +961,7 @@ export default function ProjectGallery({ heroCardRef }) {
             {String(PROJECTS.length).padStart(2, '0')} projects
           </span>
         </div>
-        <div className="project-gallery__mobile-track">
+        <div className="project-gallery__mobile-track" ref={mobileTrackRef}>
           {PROJECTS.map((project, index) => (
             <div
               key={project.name}

@@ -1,4 +1,6 @@
 import Grain from '../components/Grain.jsx'
+import CookieConsent from '../components/CookieConsent.jsx'
+import { openConsent } from '../lib/consent'
 import useReveal from '../hooks/useReveal'
 import { SOCIALS, AMAZON_PICKS } from './links.js'
 import './LinksPage.css'
@@ -12,7 +14,9 @@ function Arrow() {
 }
 
 function Section({ eyebrow, title, children, delay = 0 }) {
-  const ref = useReveal()
+  // threshold 0: long sections can be taller than the screen, so they
+  // reveal as soon as any part scrolls into view.
+  const ref = useReveal({ threshold: 0 })
   return (
     <section className="links__section reveal" ref={ref} style={{ transitionDelay: `${delay}ms` }}>
       <div className="links__section-head">
@@ -101,8 +105,15 @@ export default function LinksPage() {
           See my portfolio
         </a>
 
-        <footer className="links__footer">&copy; {year} Christian Schneider-Davis</footer>
+        <footer className="links__footer">
+          &copy; {year} Christian Schneider-Davis
+          <span aria-hidden="true"> · </span>
+          <button type="button" className="cookie-settings" onClick={openConsent}>
+            Cookie settings
+          </button>
+        </footer>
       </main>
+      <CookieConsent />
     </>
   )
 }
