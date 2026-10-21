@@ -3,14 +3,6 @@
    reorder links. Nothing else needs to change.
 --------------------------------------------------------- */
 
-// Social links — shown as full-width rows.
-export const SOCIALS = [
-  { label: 'Instagram', handle: '@christianscottie', href: 'https://www.instagram.com/christianscottie' },
-  { label: 'LinkedIn', handle: 'christian-schneider-davis', href: 'https://www.linkedin.com/in/christian-schneider-davis/' },
-  { label: 'GitHub', handle: 'Christian-Schneider-Davis', href: 'https://github.com/Christian-Schneider-Davis' },
-  { label: 'Email', handle: 'schneiderdavis@aol.com', href: 'mailto:schneiderdavis@aol.com' },
-]
-
 // Amazon affiliate picks — shown as cards.
 //   title:    product name
 //   note:     optional one-liner (why you like it)
@@ -41,4 +33,12 @@ export const AMAZON_PICKS = [
     image: '',
     href: '#',
   },
+]
+
+// Social links — shown as full-width rows.
+export const SOCIALS = [
+  { label: 'Instagram', handle: '@christianscottie', href: 'https://www.instagram.com/christianscottie' },
+  { label: 'LinkedIn', handle: 'christian-schneider-davis', href: 'https://www.linkedin.com/in/christian-schneider-davis/' },
+  { label: 'GitHub', handle: 'Christian-Schneider-Davis', href: 'https://github.com/Christian-Schneider-Davis' },
+  { label: 'Email', handle: 'schneiderdavis@aol.com', href: 'mailto:schneiderdavis@aol.com' },
 ]
