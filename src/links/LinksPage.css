@@ -1,0 +1,245 @@
+/* ---------------------------------------------------------
+   Links page — single centred column, same paper-and-ink
+   tokens as the portfolio (see src/index.css).
+--------------------------------------------------------- */
+.links {
+  max-width: 560px;
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 5rem) var(--gutter) 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(2.5rem, 6vw, 3.25rem);
+}
+
+/* Grain overlay: fill the viewport (an <svg> otherwise defaults to 300×150). */
+.grain {
+  width: 100%;
+  height: 100%;
+}
+
+/* Profile ------------------------------------------------- */
+.links__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.links__avatar {
+  width: 112px;
+  aspect-ratio: 1 / 1;
+  padding: 6px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+
+.links__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.links__name {
+  margin-top: 1.4rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
+.links__name em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.links__bio {
+  margin: 0.7rem 0 1.1rem;
+  font-size: 0.92rem;
+  color: var(--fg-dim);
+}
+
+/* Sections ------------------------------------------------ */
+.links__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.links__section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.links__section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.5rem, 5vw, 1.9rem);
+  line-height: 1.1;
+}
+
+.links__arrow {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--fg-faint);
+  transition: transform 0.4s var(--ease), color 0.3s var(--ease);
+}
+
+/* Social rows -------------------------------------------- */
+.links__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.links__row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.05rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: border-color 0.3s var(--ease), transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.links__row-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.links__row-handle {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Amazon cards ------------------------------------------- */
+.links__picks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.links__pick {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.2rem 0.75rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  transition: border-color 0.3s var(--ease), transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.links__pick-media {
+  flex: none;
+  width: 76px;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--bg-alt);
+  display: grid;
+  place-items: center;
+}
+
+.links__pick-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.links__pick-initial {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.9rem;
+  color: var(--accent);
+}
+
+.links__pick-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.links__pick-tag {
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.links__pick-title {
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.links__pick-note {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+}
+
+.links__disclosure {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+  text-align: center;
+}
+
+/* Shared hover ------------------------------------------- */
+.links__row:hover,
+.links__pick:hover,
+.links__row:focus-visible,
+.links__pick:focus-visible {
+  border-color: var(--fg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.links__row:hover .links__arrow,
+.links__pick:hover .links__arrow {
+  color: var(--accent);
+  transform: translate(2px, -2px);
+}
+
+/* Footer ------------------------------------------------- */
+.links__home {
+  align-self: center;
+}
+
+.links__footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--fg-faint);
+}
+
+@media (max-width: 420px) {
+  .links__row-handle {
+    display: none;
+  }
+  .links__row-label {
+    flex: 1;
+  }
+  .links__pick-media {
+    width: 64px;
+  }
+}

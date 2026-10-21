@@ -9,11 +9,13 @@ export default defineConfig({
   base: '/',
   build: {
     rollupOptions: {
-      // Two pages: the portfolio itself, and the gesture demo at /gesture-demo/
-      // (shown inside the "Try it yourself" section and shareable on its own).
+      // Pages: the portfolio itself, the gesture demo at /gesture-demo/
+      // (shown inside the "Try it yourself" section and shareable on its own),
+      // and the link-in-bio page at /links/.
       input: {
         main: page('./index.html'),
         gestureDemo: page('./gesture-demo/index.html'),
+        links: page('./links/index.html'),
       },
     },
   },
