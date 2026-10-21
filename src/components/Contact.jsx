@@ -23,7 +23,12 @@ export default function Contact() {
         </a>
 
         <div className="contact__row">
-          <p>Let's work together </p>
+          <div className="contact__cta">
+            <p>Let's work together</p>
+            <a href="mailto:schneiderdavis@aol.com" className="btn btn--primary">
+              Email me directly <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
           <ul className="contact__socials">
             {SOCIALS.map((social) => (
               <li key={social.label}>

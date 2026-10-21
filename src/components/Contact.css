@@ -32,10 +32,26 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line);
+}
+
+.contact__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.4rem;
+}
+
+.contact__cta p {
+  font-size: 1rem;
+  color: var(--fg-dim);
+}
+
+.contact__cta .btn {
+  transition: background 0.3s var(--ease);
 }
 
 .contact__email {
