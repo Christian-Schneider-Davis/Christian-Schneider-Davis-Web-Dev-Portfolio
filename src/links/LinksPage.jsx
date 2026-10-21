@@ -46,27 +46,6 @@ export default function LinksPage() {
           </span>
         </header>
 
-        <Section eyebrow="Socials" delay={80}>
-          <ul className="links__list">
-            {SOCIALS.map((s) => {
-              const external = !s.href.startsWith('mailto:')
-              return (
-                <li key={s.label}>
-                  <a
-                    className="links__row"
-                    href={s.href}
-                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
-                  >
-                    <span className="links__row-label">{s.label}</span>
-                    <span className="links__row-handle">{s.handle}</span>
-                    <Arrow />
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-        </Section>
-
         {AMAZON_PICKS.length > 0 && (
           <Section eyebrow="Amazon Finds" title="Things I actually use." delay={160}>
             <ul className="links__picks">
@@ -97,6 +76,26 @@ export default function LinksPage() {
             </p>
           </Section>
         )}
+        <Section eyebrow="Socials" delay={80}>
+          <ul className="links__list">
+            {SOCIALS.map((s) => {
+              const external = !s.href.startsWith('mailto:')
+              return (
+                <li key={s.label}>
+                  <a
+                    className="links__row"
+                    href={s.href}
+                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                  >
+                    <span className="links__row-label">{s.label}</span>
+                    <span className="links__row-handle">{s.handle}</span>
+                    <Arrow />
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </Section>
 
         <a href="/" className="btn btn--primary links__home">
           See my portfolio
