@@ -75,6 +75,13 @@ export const AMAZON_PICKS = [
     image: 'https://m.media-amazon.com/images/I/71OlRDdFgVL._AC_SY575_.jpg',
     href: 'https://link.amazon/B07hj8uVg',
   },
+    {
+    title: "ULANZI MT-70 Extendable Tripod",
+    note: "I use this multiple times a week to film my content. Handy with the wireless bluetooth controller and most importantly super durable.",
+    tag: 'Everyday',
+    image: 'https://m.media-amazon.com/images/I/61N3eSvI7rL._AC_SX679_.jpg',
+    href: 'https://link.amazon/B01PhCByT',
+  },
 
 
 
