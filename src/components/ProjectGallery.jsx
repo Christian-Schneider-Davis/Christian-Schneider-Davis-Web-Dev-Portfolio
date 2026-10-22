@@ -18,7 +18,7 @@ const PROJECTS = [
     video: 'gallery/project-3.mp4',
   },
     {
-    name: 'United Nations Consultant Personal Portfolio',
+    name: 'United Nations Consultant - Personal Portfolio',
     category: 'Portfolio Site',
     year: 'Oct. 2026',
     image: 'photos/Ariane-Lignier-port.png',
