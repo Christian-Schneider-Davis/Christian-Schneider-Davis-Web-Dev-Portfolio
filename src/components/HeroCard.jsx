@@ -23,6 +23,20 @@ const HeroCard = forwardRef(function HeroCard(_props, ref) {
     <div className="hero-card reveal" ref={setRefs}>
       <div className="hero-card__photo">
         <img src="photos/christian-schneider-davis.jpg" alt="Christian Schneider-Davis" />
+        {/* Shown only while the card can be dragged (desktop, Selected Work). */}
+        <span className="hero-card__drag-hint" aria-hidden="true">
+          <svg viewBox="0 0 16 16" width="12" height="12">
+            <path
+              d="M8 1.5v13M1.5 8h13M8 1.5 6 3.5M8 1.5l2 2M8 14.5l-2-2M8 14.5l2-2M1.5 8l2-2M1.5 8l2 2M14.5 8l-2-2M14.5 8l-2 2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Drag me
+        </span>
       </div>
 
       <dl className="hero-card__meta">

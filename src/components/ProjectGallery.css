@@ -133,6 +133,61 @@
   pointer-events: none;
 }
 
+/* "Drag me" pill on the list's top edge, above the header it drags by.
+   Mirrors the hero card's hint: shows while draggable, hides mid-drag,
+   and after the first drag only pops back up on hover. */
+.project-gallery__drag-hint {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.5em 0.95em;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px -8px rgba(28, 27, 21, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, calc(-50% - 6px));
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.project-gallery__compact.is-draggable .project-gallery__drag-hint {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  animation: compact-hint-bob 2.4s var(--ease) 0.6s infinite;
+}
+
+.project-gallery__compact.is-dragging .project-gallery__drag-hint,
+.project-gallery__compact.has-dragged .project-gallery__drag-hint {
+  opacity: 0;
+  animation: none;
+}
+
+.project-gallery__compact.is-draggable.has-dragged:not(.is-dragging):hover .project-gallery__drag-hint {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  animation: none;
+}
+
+@keyframes compact-hint-bob {
+  0%, 60%, 100% { transform: translate(-50%, -50%); }
+  30% { transform: translate(-50%, calc(-50% - 4px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-gallery__compact.is-draggable .project-gallery__drag-hint {
+    animation: none;
+  }
+}
+
 .project-gallery__compact-card {
   background: var(--bg);
   border-radius: 12px;

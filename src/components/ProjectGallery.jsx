@@ -423,7 +423,7 @@ export default function ProjectGallery({ heroCardRef }) {
         drag.baseTop = rect.top - drag.y
         drag.pointerX = event.clientX
         drag.pointerY = event.clientY
-        heroCard.classList.add('is-dragging')
+        heroCard.classList.add('is-dragging', 'has-dragged')
         capturePointer(heroCard, event.pointerId)
         event.preventDefault()
       }
@@ -468,7 +468,7 @@ export default function ProjectGallery({ heroCardRef }) {
         drag.baseTop = rect.top - drag.y
         drag.pointerX = event.clientX
         drag.pointerY = event.clientY
-        compactOuter.classList.add('is-dragging')
+        compactOuter.classList.add('is-dragging', 'has-dragged')
         capturePointer(compactHead, event.pointerId)
         event.preventDefault()
       }
@@ -608,7 +608,7 @@ export default function ProjectGallery({ heroCardRef }) {
         window.removeEventListener('pointermove', onListPointerMove)
         window.removeEventListener('pointerup', onListPointerUp)
         window.removeEventListener('pointercancel', onListPointerUp)
-        compactOuter.classList.remove('is-draggable', 'is-dragging')
+        compactOuter.classList.remove('is-draggable', 'is-dragging', 'has-dragged')
         compactOuter.style.transform = ''
         listDragRef.current.x = 0
         listDragRef.current.y = 0
@@ -616,7 +616,7 @@ export default function ProjectGallery({ heroCardRef }) {
         window.removeEventListener('pointermove', onHeroPointerMove)
         window.removeEventListener('pointerup', onHeroPointerUp)
         window.removeEventListener('pointercancel', onHeroPointerUp)
-        heroCard.classList.remove('is-draggable', 'is-dragging')
+        heroCard.classList.remove('is-draggable', 'is-dragging', 'has-dragged')
         dragRef.current.x = 0
         dragRef.current.y = 0
         appliedHeroYRef.current = 0
@@ -907,6 +907,20 @@ export default function ProjectGallery({ heroCardRef }) {
           </div>
 
           <div className="project-gallery__compact" ref={compactOuterRef}>
+            {/* Same "Drag me" hint as the hero card; the list drags by its header. */}
+            <span className="project-gallery__drag-hint" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="12" height="12">
+                <path
+                  d="M8 1.5v13M1.5 8h13M8 1.5 6 3.5M8 1.5l2 2M8 14.5l-2-2M8 14.5l2-2M1.5 8l2-2M1.5 8l2 2M14.5 8l-2-2M14.5 8l-2 2"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Drag me
+            </span>
             <div className="project-gallery__compact-card" ref={compactInnerRef}>
               <div className="project-gallery__compact-head" ref={compactHeadRef}>
                 <p className="eyebrow">Selected Work</p>

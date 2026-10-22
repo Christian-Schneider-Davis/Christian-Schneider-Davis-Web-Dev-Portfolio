@@ -25,10 +25,67 @@
 }
 
 .hero-card__photo {
+  position: relative;
   border-radius: 16px;
   overflow: hidden;
   aspect-ratio: 1 / 1;
   background: var(--bg-alt);
+}
+
+/* "Drag me" pill — fades in while the card is draggable and gently bobs.
+   It hides while dragging; after the first drag it only reappears on hover. */
+.hero-card__drag-hint {
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.5em 0.95em;
+  border-radius: 999px;
+  background: var(--fg);
+  color: var(--bg);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px -8px rgba(28, 27, 21, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -6px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+.hero-card.is-draggable .hero-card__drag-hint {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  animation: hero-card-hint-bob 2.4s var(--ease) 0.6s infinite;
+}
+
+.hero-card.is-dragging .hero-card__drag-hint,
+.hero-card.has-dragged .hero-card__drag-hint {
+  opacity: 0;
+  animation: none;
+}
+
+/* After the first drag it stays tucked away, but pops back up whenever
+   the pointer rests on the card (hidden again while actually dragging). */
+.hero-card.is-draggable.has-dragged:not(.is-dragging):hover .hero-card__drag-hint {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  animation: none;
+}
+
+@keyframes hero-card-hint-bob {
+  0%, 60%, 100% { transform: translate(-50%, 0); }
+  30% { transform: translate(-50%, -4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card.is-draggable .hero-card__drag-hint {
+    animation: none;
+  }
 }
 
 .hero-card__photo img {
