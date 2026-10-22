@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { ASSET_BASE } from '../config.js';
+import { allowThirdPartyOnce, useConsent } from '../../lib/consent.js';
 import './GestureGuide.css';
 
 /**
@@ -8,6 +9,9 @@ import './GestureGuide.css';
  */
 export default function GestureGuide({ open, live, onStart, onClose }) {
   const ref = useRef(null);
+  // The hand-tracking library and models are fetched from jsDelivr and
+  // Google, so without saved consent the start button asks for it.
+  const accepted = useConsent() === 'accepted';
 
   useEffect(() => {
     const dialog = ref.current;
@@ -91,14 +95,32 @@ export default function GestureGuide({ open, live, onStart, onClose }) {
           Press and hold a flower, and swipe with your finger or use the arrow keys.
         </p>
 
+        {!live && !accepted && (
+          <p className="guide__privacy guide__thirdparty">
+            Starting loads Google&rsquo;s open-source hand-tracking files from jsDelivr and Google
+            Cloud. They don&rsquo;t set cookies.{' '}
+            <a href="/privacy/" target="_top">
+              Privacy policy
+            </a>
+          </p>
+        )}
+
         <div className="guide__actions">
           {live ? (
             <button type="button" className="btn" onClick={onClose} data-autofocus>Got it</button>
           ) : (
             <>
               <button type="button" className="btn btn--ghost" onClick={onClose}>Not now</button>
-              <button type="button" className="btn" onClick={onStart} data-autofocus>
-                Start camera <span aria-hidden="true">→</span>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => {
+                  allowThirdPartyOnce();
+                  onStart();
+                }}
+                data-autofocus
+              >
+                {accepted ? 'Start camera' : 'Allow & start camera'} <span aria-hidden="true">→</span>
               </button>
             </>
           )}

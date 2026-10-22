@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useConsent } from '../lib/consent'
 import './ProjectGallery.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -150,6 +151,12 @@ export default function ProjectGallery({ heroCardRef }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [previewIndex, setPreviewIndex] = useState(null)
   const [modalProject, setModalProject] = useState(null)
+  // Live previews load the other site inside this page (with its own
+  // scripts and cookies), so they wait for consent — or a one-off click.
+  const consent = useConsent()
+  const [previewOnce, setPreviewOnce] = useState(false)
+  useEffect(() => setPreviewOnce(false), [modalProject])
+  const livePreview = consent === 'accepted' || previewOnce
 
   useEffect(() => {
     if (!modalProject) return
@@ -1032,7 +1039,33 @@ export default function ProjectGallery({ heroCardRef }) {
                 </button>
               </div>
             </div>
-            <iframe src={modalProject.url} title={modalProject.name} className="project-modal__frame" />
+            {livePreview ? (
+              <iframe src={modalProject.url} title={modalProject.name} className="project-modal__frame" />
+            ) : (
+              <div className="project-modal__gate">
+                <img className="project-modal__gate-img" src={modalProject.static} alt="" />
+                <div className="project-modal__gate-card">
+                  <p className="eyebrow">Live preview</p>
+                  <p className="project-modal__gate-text">
+                    This loads <strong>{new URL(modalProject.url).hostname.replace(/^www\./, '')}</strong>{' '}
+                    inside this page. That site may set its own cookies.
+                  </p>
+                  <div className="project-modal__gate-actions">
+                    <a
+                      className="btn btn--ghost"
+                      href={modalProject.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open in new tab &#8599;
+                    </a>
+                    <button type="button" className="btn btn--primary" onClick={() => setPreviewOnce(true)}>
+                      Load preview
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

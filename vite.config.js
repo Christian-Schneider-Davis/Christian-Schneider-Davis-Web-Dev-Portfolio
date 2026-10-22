@@ -11,11 +11,12 @@ export default defineConfig({
     rollupOptions: {
       // Pages: the portfolio itself, the gesture demo at /gesture-demo/
       // (shown inside the "Try it yourself" section and shareable on its own),
-      // and the link-in-bio page at /links/.
+      // the link-in-bio page at /links/, and the privacy policy at /privacy/.
       input: {
         main: page('./index.html'),
         gestureDemo: page('./gesture-demo/index.html'),
         links: page('./links/index.html'),
+        privacy: page('./privacy/index.html'),
       },
     },
   },

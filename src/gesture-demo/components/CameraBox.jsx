@@ -3,6 +3,7 @@ import { useHandFaceTracking } from '../hooks/useHandFaceTracking.js';
 import CameraConsent from './CameraConsent.jsx';
 import GestureGuide from './GestureGuide.jsx';
 import StartGate from './StartGate.jsx';
+import { thirdPartyAllowed } from '../../lib/consent.js';
 import './CameraBox.css';
 
 const STATUS_TEXT = {
@@ -215,7 +216,7 @@ export default function CameraBox({ onGesture, onSwipe, docked, slotRef }) {
           error={error}
           // First time: explain the gestures, and start the camera from the guide.
           // After an error: retry straight away.
-          onAllow={status === 'idle' ? () => setGuideOpen(true) : start}
+          onAllow={status === 'idle' || !thirdPartyAllowed() ? () => setGuideOpen(true) : start}
           compact={mode === 'docked'}
         />
       )}

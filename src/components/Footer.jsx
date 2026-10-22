@@ -9,6 +9,9 @@ export default function Footer() {
       <div className="wrap footer__inner">
         <span>&copy; {year} Christian Schneider-Davis. All rights reserved.</span>
         <div className="footer__links">
+          <a href="/privacy/" className="cookie-settings">
+            Privacy
+          </a>
           <button type="button" className="cookie-settings" onClick={openConsent}>
             Cookie settings
           </button>

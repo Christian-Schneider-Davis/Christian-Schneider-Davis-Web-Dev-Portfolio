@@ -41,10 +41,12 @@ export default function CookieConsent() {
     >
       <p className="eyebrow" id="cookie-title">Cookies</p>
       <p className="cookie__text">
-        No tracking cookies here. This site only saves your choice on this notice, and loads fonts
-        and images from a few trusted services.
+        No tracking, no ads. Accept to load content hosted elsewhere: Amazon product photos, live
+        project previews and the hand-tracking demo. Decline and you can still load each one when
+        you want it.
       </p>
 
+      <div className="cookie__links">
       <button
         type="button"
         className="cookie__toggle"
@@ -56,6 +58,10 @@ export default function CookieConsent() {
         {showList ? 'Hide details' : 'See what’s used'}
         <span className="cookie__chevron" aria-hidden="true" />
       </button>
+      <a href="/privacy/" className="cookie__toggle cookie__privacy" tabIndex={tab}>
+        Privacy policy
+      </a>
+      </div>
 
       <div className="cookie__list" id="cookie-list" hidden={!showList}>
         {COOKIE_GROUPS.map((group) => (

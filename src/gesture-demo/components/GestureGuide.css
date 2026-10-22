@@ -230,6 +230,19 @@
   color: var(--ink-soft);
 }
 
+.guide__thirdparty {
+  margin-top: -4px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(26, 25, 24, 0.05);
+}
+
+.guide__thirdparty a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .guide__actions {
   display: flex;
   justify-content: flex-end;

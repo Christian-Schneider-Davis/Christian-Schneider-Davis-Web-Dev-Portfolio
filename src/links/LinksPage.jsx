@@ -1,6 +1,7 @@
 import Grain from '../components/Grain.jsx'
 import CookieConsent from '../components/CookieConsent.jsx'
-import { openConsent } from '../lib/consent'
+import { useState } from 'react'
+import { openConsent, useConsent } from '../lib/consent'
 import useReveal from '../hooks/useReveal'
 import { SOCIALS, AMAZON_PICKS } from './links.js'
 import './LinksPage.css'
@@ -31,6 +32,12 @@ function Section({ eyebrow, title, children, delay = 0 }) {
 export default function LinksPage() {
   const headRef = useReveal()
   const year = new Date().getFullYear()
+  // Product photos come from Amazon's servers, so they only load once the
+  // visitor accepts, or asks for them on this visit with "Show photos".
+  const consent = useConsent()
+  const [photosOnce, setPhotosOnce] = useState(false)
+  const showPhotos = consent === 'accepted' || photosOnce
+  const hasPhotos = AMAZON_PICKS.some((p) => p.image)
 
   return (
     <>
@@ -52,12 +59,20 @@ export default function LinksPage() {
 
         {AMAZON_PICKS.length > 0 && (
           <Section eyebrow="Amazon Finds" title="Things I actually use." delay={160}>
+            {hasPhotos && !showPhotos && (
+              <div className="links__photos-note">
+                <p>Product photos are hosted by Amazon, so they load only with your OK.</p>
+                <button type="button" className="links__photos-btn" onClick={() => setPhotosOnce(true)}>
+                  Show photos
+                </button>
+              </div>
+            )}
             <ul className="links__picks">
               {AMAZON_PICKS.map((p) => (
                 <li key={p.title}>
                   <a className="links__pick" href={p.href} target="_blank" rel="sponsored noopener noreferrer">
                     <div className="links__pick-media">
-                      {p.image ? (
+                      {p.image && showPhotos ? (
                         <img src={p.image} alt="" loading="lazy" />
                       ) : (
                         <span className="links__pick-initial" aria-hidden="true">
@@ -111,6 +126,10 @@ export default function LinksPage() {
           <button type="button" className="cookie-settings" onClick={openConsent}>
             Cookie settings
           </button>
+          <span aria-hidden="true"> · </span>
+          <a href="/privacy/" className="cookie-settings">
+            Privacy
+          </a>
         </footer>
       </main>
       <CookieConsent />

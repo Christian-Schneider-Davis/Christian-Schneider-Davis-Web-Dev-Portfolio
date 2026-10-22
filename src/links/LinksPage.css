@@ -205,6 +205,37 @@
   text-align: center;
 }
 
+/* "Show photos" note — shown until Amazon images are allowed */
+.links__photos-note {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 0.9rem 0.8rem 1.1rem;
+  background: var(--accent-soft);
+  border-radius: 16px;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+}
+
+.links__photos-btn {
+  flex: none;
+  padding: 0.5em 1.05em;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--fg);
+  transition: border-color 0.3s var(--ease);
+}
+
+.links__photos-btn:hover {
+  border-color: var(--fg);
+}
+
 /* Shared hover ------------------------------------------- */
 .links__row:hover,
 .links__pick:hover,

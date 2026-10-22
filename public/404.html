@@ -10,11 +10,18 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&display=swap" rel="stylesheet" />
+
 
     <style>
+      /* Self-hosted (no Google Fonts) */
+      @font-face {
+        font-family: 'Space Grotesk';
+        font-style: normal;
+        font-display: swap;
+        font-weight: 300 700;
+        src: url('/fonts/space-grotesk-latin-wght-normal.woff2') format('woff2');
+      }
+
       *,
       *::before,
       *::after {

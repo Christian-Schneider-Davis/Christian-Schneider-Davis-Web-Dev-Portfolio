@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TRACKING } from '../config.js';
 import { countExtendedFingers, resolveHand } from '../lib/gestures.js';
+import { thirdPartyAllowed } from '../../lib/consent.js';
 
 /**
  * Owns the camera stream and the MediaPipe models.
@@ -118,6 +119,13 @@ export function useHandFaceTracking({ videoRef, canvasRef, onGesture, onSwipe })
   };
 
   const start = useCallback(async () => {
+    // Never fetch the third-party tracking files without consent (saved in the
+    // cookie banner, or given for this visit by "Allow & start camera").
+    if (!thirdPartyAllowed()) {
+      setStatus('error');
+      setError('Allow the hand-tracking files to start the camera.');
+      return;
+    }
     if (!window.isSecureContext) {
       setStatus('unsupported');
       setError(
