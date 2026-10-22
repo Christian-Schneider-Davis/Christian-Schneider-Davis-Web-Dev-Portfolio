@@ -68,6 +68,13 @@ export const AMAZON_PICKS = [
     image: 'https://m.media-amazon.com/images/I/817HH0jnblL._AC_SX679_.jpg',
     href: 'https://amzn.to/4hVaIpQ',
   },
+    {
+    title: "Nike Vomero 18 Men's Running Shoes",
+    note: "I am a runner... I have fallen arches... I am also in my mid 30s. These shoes literally saved my life lol. Super snug, light, and comfortable even after many miles/kms. ",
+    tag: 'Everyday',
+    image: 'https://m.media-amazon.com/images/I/71OlRDdFgVL._AC_SY575_.jpg',
+    href: 'https://link.amazon/B07hj8uVg',
+  },
 
 
 
