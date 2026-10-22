@@ -30,7 +30,7 @@ export default function App() {
           </div>
         </div>
 
-        <section className="latest-projects" aria-labelledby="latest-projects-heading">
+        <section id="demo" className="latest-projects" aria-labelledby="latest-projects-heading">
           <div className="wrap latest-projects__inner">
             <p className="eyebrow">Try It Yourself</p>
             <h2 id="latest-projects-heading" className="section-heading">
