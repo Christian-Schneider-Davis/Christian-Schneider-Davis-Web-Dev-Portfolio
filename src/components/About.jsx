@@ -27,7 +27,7 @@ export default function About() {
             </p>
 
             <p className="about__bio">
-              My goal is to creare experiences that reach past the screen: interactive websites and live
+              My goal is to create experiences that reach past the screen: interactive websites and live
               event experiences that respond to the people in front of them.
             </p>
           </div>
