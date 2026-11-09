@@ -3,6 +3,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 
 gsap.registerPlugin(ScrollToPlugin)
 
+const navOffset = () => document.querySelector('.nav')?.offsetHeight ?? 0
+
 /**
  * Smooth-scroll to an in-page section with GSAP (native smooth scrolling
  * fights the ScrollTrigger animations — see index.css).
@@ -20,10 +22,24 @@ export function scrollToSection(href) {
   const target = anchor && anchor.offsetParent !== null ? anchor : document.querySelector(href)
   if (!target) return false
 
+  const offsetY = href === '#top' ? 0 : navOffset()
+
+  gsap.killTweensOf(window)
   gsap.to(window, {
     duration: 1,
     ease: 'power2.inOut',
-    scrollTo: { y: target, autoKill: true },
+    scrollTo: { y: target, offsetY, autoKill: false },
+    onComplete: () => {
+      const drift = target.getBoundingClientRect().top - offsetY
+      const atBottom = window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 1
+      if (Math.abs(drift) > 2 && !atBottom) {
+        gsap.to(window, {
+          duration: 0.4,
+          ease: 'power2.out',
+          scrollTo: { y: target, offsetY, autoKill: false },
+        })
+      }
+    },
   })
   return true
 }
