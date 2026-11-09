@@ -1,6 +1,9 @@
-import { useState } from 'react'
-import useReveal from '../hooks/useReveal'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './Services.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const SERVICES = [
   {
@@ -29,55 +32,278 @@ const SERVICES = [
   },
 ]
 
-export default function Services() {
-  const [openIndex, setOpenIndex] = useState(0)
-  const revealRef = useReveal()
+const DESKTOP_QUERY = '(min-width: 901px)'
+const HOVER_QUERY = '(hover: hover) and (pointer: fine)'
+const REDUCED_QUERY = '(prefers-reduced-motion: reduce)'
+const VIDEO_DURATION = 5.06
+
+const PIN_VH = { desktop: 420, mobile: 260 }
+// Share of the pinned scroll spent playing the video; the rest holds the
+// finished layout on screen before the section lets go.
+const VIDEO_END = { desktop: 0.62, mobile: 0.8 }
+// "Expertise" links land once everything has faded in; on mobile, far enough
+// on that the list below the laptop is in view too.
+const ANCHOR_FRACTION = { desktop: 0.8, mobile: 1 }
+const ANCHOR_EXTRA_VH = { desktop: 0, mobile: 15 }
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches)
+
+  useEffect(() => {
+    const media = window.matchMedia(query)
+    const onChange = () => setMatches(media.matches)
+    onChange()
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [query])
+
+  return matches
+}
+
+function ServiceList({ openIndex, setOpenIndex, className = '' }) {
+  const canHover = useMediaQuery(HOVER_QUERY)
 
   return (
-    <section id="services" className="services">
-      <div>
-        <div className="services__head reveal" ref={revealRef}>
-          <p className="eyebrow">Expertise</p>
-          <h2 className="section-heading">Where I add the most value.</h2>
+    <ul className={`expertise__list ${className}`}>
+      {SERVICES.map((service, index) => {
+        const isOpen = openIndex === index
+        return (
+          <li
+            key={service.title}
+            className={`expertise__item expertise__item--${index + 1}`}
+            style={{ '--i': index }}
+            onMouseEnter={canHover ? () => setOpenIndex(index) : undefined}
+            onMouseLeave={
+              canHover ? () => setOpenIndex((current) => (current === index ? -1 : current)) : undefined
+            }
+          >
+            <button
+              className="expertise__row"
+              aria-expanded={isOpen}
+              onClick={(event) => {
+                const fromKeyboard = event.detail === 0
+                setOpenIndex(isOpen && (fromKeyboard || !canHover) ? -1 : index)
+              }}
+            >
+              <span className="expertise__index">{String(index + 1).padStart(2, '0')}</span>
+              <span className="expertise__title">{service.title}</span>
+              <span className={`expertise__toggle ${isOpen ? 'expertise__toggle--open' : ''}`}>
+                +
+              </span>
+            </button>
+
+            <p className={`expertise__desc ${isOpen ? 'expertise__desc--open' : ''}`}>
+              {service.description}
+            </p>
+
+            <div className="expertise__panel" style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}>
+              <div className="expertise__panel-inner">
+                <ul className="expertise__tools">
+                  {service.tools.map((tool) => (
+                    <li key={tool}>{tool}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+export default function Services() {
+  const isDesktop = useMediaQuery(DESKTOP_QUERY)
+  const reduced = useMediaQuery(REDUCED_QUERY)
+  const [openIndex, setOpenIndex] = useState(-1)
+
+  const pinRef = useRef(null)
+  const stageRef = useRef(null)
+  const frameRef = useRef(null)
+  const videoRef = useRef(null)
+  const eyebrowRef = useRef(null)
+  const headingRef = useRef(null)
+  const mobileListRef = useRef(null)
+
+  const mode = isDesktop ? 'desktop' : 'mobile'
+  const pinVh = reduced ? 100 : PIN_VH[mode]
+  const videoSrc = isDesktop ? 'expertise/laptop-1080.mp4' : 'expertise/laptop-720.mp4'
+
+  useLayoutEffect(() => {
+    const pin = pinRef.current
+    const stage = stageRef.current
+    const frameEl = frameRef.current
+    const video = videoRef.current
+    if (!pin || !stage || !frameEl || !video) return undefined
+
+    const items = gsap.utils.toArray('.expertise__item', stage)
+    const duration = () => (Number.isFinite(video.duration) ? video.duration : VIDEO_DURATION)
+
+    const alignStage = () => {
+      if (!isDesktop) {
+        stage.style.marginLeft = ''
+        return
+      }
+      stage.style.marginLeft = '0px'
+      stage.style.marginLeft = `${-stage.getBoundingClientRect().left}px`
+    }
+    alignStage()
+
+    const primeVideo = () => {
+      const attempt = video.play()
+      if (attempt) attempt.then(() => video.pause()).catch(() => {})
+    }
+    video.addEventListener('loadedmetadata', primeVideo, { once: true })
+
+    if (reduced) {
+      const showEnd = () => {
+        video.currentTime = Math.max(0, duration() - 0.05)
+      }
+      if (video.readyState >= 1) showEnd()
+      else video.addEventListener('loadedmetadata', showEnd, { once: true })
+      gsap.set([eyebrowRef.current, headingRef.current, ...items], { autoAlpha: 1, y: 0, scale: 1 })
+      window.addEventListener('resize', alignStage)
+      return () => {
+        window.removeEventListener('resize', alignStage)
+        video.removeEventListener('loadedmetadata', primeVideo)
+        video.removeEventListener('loadedmetadata', showEnd)
+      }
+    }
+
+    const playhead = { t: 0 }
+    let wantedTime = 0
+    let frame = 0
+
+    const seek = () => {
+      if (!video.seeking && video.readyState >= 1 && Math.abs(video.currentTime - wantedTime) > 0.008) {
+        video.currentTime = wantedTime
+      }
+      frame = requestAnimationFrame(seek)
+    }
+    frame = requestAnimationFrame(seek)
+
+    const videoEnd = VIDEO_END[mode]
+    const headingIn = videoEnd * 0.5
+
+    gsap.set(eyebrowRef.current, { autoAlpha: 0, y: 10 })
+    gsap.set(headingRef.current, { autoAlpha: 0, scale: 0.82, y: 18 })
+    gsap.set(items, { autoAlpha: 0, y: 26 })
+    const card = { reveal: 0 }
+    const paintCard = () => frameEl.style.setProperty('--reveal', card.reveal.toFixed(3))
+    paintCard()
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: pin,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        invalidateOnRefresh: true,
+        onRefresh: alignStage,
+      },
+    })
+
+    tl.to(
+      playhead,
+      {
+        t: 1,
+        duration: videoEnd,
+        onUpdate: () => {
+          wantedTime = playhead.t * Math.max(0, duration() - 0.04)
+        },
+      },
+      0,
+    )
+      .to(headingRef.current, { autoAlpha: 1, y: 0, duration: 0.1, ease: 'power2.out' }, headingIn)
+      .to(headingRef.current, { scale: 1, duration: videoEnd - headingIn, ease: 'power1.inOut' }, headingIn)
+      .to(eyebrowRef.current, { autoAlpha: 1, y: 0, duration: 0.08, ease: 'power2.out' }, videoEnd - 0.08)
+      .to(card, { reveal: 1, duration: 0.1, ease: 'power1.out', onUpdate: paintCard }, videoEnd - 0.08)
+
+    if (isDesktop) {
+      tl.to(
+        items,
+        { autoAlpha: 1, y: 0, duration: 0.07, stagger: 0.035, ease: 'power2.out' },
+        videoEnd - 0.08,
+      )
+    }
+
+    tl.to({}, { duration: 1 - tl.duration() }, tl.duration())
+
+    let observer
+    if (!isDesktop && mobileListRef.current) {
+      const list = mobileListRef.current
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            list.classList.add('is-visible')
+            observer.disconnect()
+          }
+        },
+        { threshold: 0.15 },
+      )
+      observer.observe(list)
+    }
+
+    const handleResize = () => ScrollTrigger.refresh()
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', handleResize)
+      video.removeEventListener('loadedmetadata', primeVideo)
+      observer?.disconnect()
+      tl.scrollTrigger?.kill()
+      tl.kill()
+      gsap.set([eyebrowRef.current, headingRef.current, ...items], { clearProps: 'all' })
+      frameEl.style.removeProperty('--reveal')
+    }
+  }, [isDesktop, reduced, mode])
+
+  return (
+    <section id="services" className={`expertise expertise--${mode}`}>
+      <div className="expertise__pin" ref={pinRef} style={{ height: `${pinVh}vh` }}>
+        <span
+          className="expertise__anchor"
+          data-scroll-anchor="#services"
+          aria-hidden="true"
+          style={{ top: `${(pinVh - 100) * ANCHOR_FRACTION[mode] + (reduced ? 0 : ANCHOR_EXTRA_VH[mode])}vh` }}
+        />
+        <div className="expertise__stage" ref={stageRef}>
+          <div className="expertise__frame" ref={frameRef}>
+            <video
+              key={videoSrc}
+              ref={videoRef}
+              className="expertise__video"
+              src={videoSrc}
+              poster="expertise/laptop-poster.jpg"
+              muted
+              playsInline
+              preload="auto"
+              aria-hidden="true"
+              tabIndex={-1}
+            />
+
+            <div className="expertise__layout">
+              <p className="eyebrow expertise__eyebrow" ref={eyebrowRef}>
+                Expertise
+              </p>
+              <h2 className="section-heading expertise__heading" ref={headingRef}>
+                Where I add the
+                <br />
+                most value.
+              </h2>
+              {isDesktop && <ServiceList openIndex={openIndex} setOpenIndex={setOpenIndex} />}
+            </div>
+          </div>
         </div>
-
-        <ul className="services__list">
-          {SERVICES.map((service, index) => {
-            const isOpen = openIndex === index
-            return (
-              <li key={service.title} className="services__item">
-                <button
-                  className="services__row"
-                  aria-expanded={isOpen}
-                  onClick={() => setOpenIndex(isOpen ? -1 : index)}
-                >
-                  <span className="services__index">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="services__title">{service.title}</span>
-                  <span className={`services__toggle ${isOpen ? 'services__toggle--open' : ''}`}>
-                    +
-                  </span>
-                </button>
-
-                <div
-                  className="services__panel"
-                  style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
-                >
-                  <div className="services__panel-inner">
-                    <p>{service.description}</p>
-                    <ul className="services__tools">
-                      {service.tools.map((tool) => (
-                        <li key={tool}>{tool}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
       </div>
+
+      {!isDesktop && (
+        <div className="expertise__mobile-list" ref={mobileListRef}>
+          <ServiceList openIndex={openIndex} setOpenIndex={setOpenIndex} />
+        </div>
+      )}
     </section>
   )
 }

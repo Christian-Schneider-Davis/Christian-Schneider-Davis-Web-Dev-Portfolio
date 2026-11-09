@@ -1,4 +1,5 @@
-import { forwardRef } from 'react'
+import { forwardRef, useLayoutEffect } from 'react'
+import { gsap } from 'gsap'
 import useReveal from '../hooks/useReveal'
 import './HeroCard.css'
 
@@ -18,6 +19,67 @@ const HeroCard = forwardRef(function HeroCard(_props, ref) {
     if (typeof ref === 'function') ref(el)
     else if (ref) ref.current = el
   }
+
+  // Desktop: the card parks on the bottom edge of About (with a small bounce),
+  // stays out of the way through Expertise, then rides back in on top of the
+  // Work section and sticks again for the gallery. Uses the CSS `translate`
+  // property so it composes with the gallery's own transform on the card.
+  useLayoutEffect(() => {
+    const card = revealRef.current
+    if (!card) return undefined
+
+    const mm = gsap.matchMedia()
+    mm.add('(min-width: 901px)', () => {
+      const about = document.getElementById('about')
+      const workPin = document.querySelector('.project-gallery__pin')
+      if (!about) return undefined
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const bounce = { y: 0 }
+      let parked = false
+      let lastScrollY = window.scrollY
+
+      const update = () => {
+        const stickyTop = parseFloat(getComputedStyle(card).top) || 0
+        const gap = about.getBoundingClientRect().bottom - (stickyTop + card.offsetHeight)
+        const workTop = workPin ? workPin.getBoundingClientRect().top : Infinity
+
+        let y = 0
+        if (gap < 0 && workTop > 0) {
+          y = workTop < window.innerHeight ? workTop : gap
+        }
+
+        const nowParked = gap < 0
+        const scrollingDown = window.scrollY > lastScrollY
+        if (nowParked && !parked && scrollingDown && !reduced) {
+          gsap.killTweensOf(bounce)
+          gsap.to(bounce, {
+            keyframes: [
+              { y: -16, duration: 0.18, ease: 'power2.out' },
+              { y: 0, duration: 0.2, ease: 'power2.in' },
+              { y: -5, duration: 0.12, ease: 'power2.out' },
+              { y: 0, duration: 0.14, ease: 'power2.in' },
+            ],
+          })
+        }
+        parked = nowParked
+        lastScrollY = window.scrollY
+
+        card.style.translate = `0 ${y + bounce.y}px`
+      }
+
+      gsap.ticker.add(update)
+      update()
+
+      return () => {
+        gsap.ticker.remove(update)
+        gsap.killTweensOf(bounce)
+        card.style.translate = ''
+      }
+    })
+
+    return () => mm.revert()
+  }, [])
 
   return (
     <div className="hero-card reveal" ref={setRefs}>
