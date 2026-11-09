@@ -1,4 +1,3 @@
-import { useRef } from 'react'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import HeroCard from './components/HeroCard.jsx'
@@ -12,17 +11,15 @@ import CookieConsent from './components/CookieConsent.jsx'
 import './App.css'
 
 export default function App() {
-  const heroCardRef = useRef(null)
-
   return (
     <>
       <Grain />
       <Navbar />
       <main>
-        <div className="wrap pinned-layout">
-          <HeroCard ref={heroCardRef} />
+        <div className="wrap intro-layout">
+          <HeroCard />
 
-          <div className="pinned-layout__content">
+          <div className="intro-layout__content">
             <Hero />
           </div>
         </div>
@@ -30,7 +27,7 @@ export default function App() {
         <div className="wrap">
           <About />
           <Services />
-          <ProjectGallery heroCardRef={heroCardRef} />
+          <ProjectGallery />
         </div>
 
         <section id="demo" className="latest-projects" aria-labelledby="latest-projects-heading">

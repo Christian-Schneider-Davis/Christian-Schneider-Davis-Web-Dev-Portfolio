@@ -13,7 +13,6 @@ const PROJECTS = [
     name: 'Epic Mouse App + Landing Page',
     category: 'Browser-based Application',
     year: 'Launched Oct. 2026',
-    image: 'photos/EpicMouse.app.png',
     url: 'https://www.epicmouse.app',
     static: 'gallery/project-3.png',
     video: 'gallery/project-3.mp4',
@@ -22,7 +21,6 @@ const PROJECTS = [
     name: 'United Nations Consultant - Personal Portfolio',
     category: 'Portfolio Site',
     year: 'Oct. 2026',
-    image: 'photos/Ariane-Lignier-port.png',
     url: 'https://arianelignier.com',
     static: 'gallery/project-8.png',
     video: 'gallery/project-8.mp4',
@@ -31,7 +29,6 @@ const PROJECTS = [
     name: 'Vinz Barber Shop',
     category: 'E-Commerce',
     year: 'Aug. 2026',
-    image: 'photos/Vinz-Barber-Shop.png',
     url: 'https://www.vinzbarbershopbcn.com/',
     static: 'gallery/project-2.png',
     video: 'gallery/project-2.mp4',
@@ -40,7 +37,6 @@ const PROJECTS = [
     name: 'PINistry Studio Vintage',
     category: 'E-Commerce',
     year: 'Feb. 2024',
-    image: 'photos/PINistry-Studio.png',
     url: '',
     static: 'gallery/project-7.png',
     video: 'gallery/project-7.mp4',
@@ -49,7 +45,6 @@ const PROJECTS = [
     name: 'RPG Inspired Portfilio -Contest Runner-up- *DESKTOP VIEW ONLY*',
     category: 'Web Design',
     year: 'Sept. 2026',
-    image: 'photos/RPG-port.png',
     url: 'https://meta4-fan-port.vercel.app/',
     desktopOnly: true,
     static: 'gallery/project-1.png',
@@ -59,7 +54,6 @@ const PROJECTS = [
     name: 'Virtual Desktop Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',
-    image: 'photos/My-Virtual-Desktop.png',
     url: 'https://christian-schneider-davis-port.vercel.app/',
     static: 'gallery/project-5.png',
     video: 'gallery/project-5.mp4',
@@ -68,7 +62,6 @@ const PROJECTS = [
     name: 'Personal Art Portfolio',
     category: 'Portfolio Site',
     year: 'Aug. 2026',
-    image: 'photos/Christian-SD-Art-Port.png',
     url: 'https://christian-schneider-davis.github.io/art-portfolio/',
     static: 'gallery/project-4.png',
     video: 'gallery/project-4.mp4',
@@ -86,10 +79,9 @@ const ANCHOR_FRACTION = ENTRANCE_FRACTION + 0.02
 // Each panel's width as a share of the stage — the active project fills the
 // left of the screen and the next runs off the right edge behind the list.
 const PANEL_RATIO = 0.583
-// The hero card shrinks on the way in, but never past what fits on screen.
-const HERO_MAX_SCALE = 0.92
-const HERO_MIN_SCALE = 0.58
-// Breathing room above and below the two floating cards.
+// The Selected Work card's width tracks the screen within these bounds.
+const LIST_WIDTH = { min: 228, max: 294, ratio: 0.21 }
+// Breathing room above and below the Selected Work card.
 const CARD_MARGIN_RATIO = 0.05
 // The strip drifts on its own whenever the section is on screen, easing to a
 // stop while the pointer rests on a project panel or a list row.
@@ -116,7 +108,7 @@ const releasePointer = (element, pointerId) => {
   }
 }
 
-export default function ProjectGallery({ heroCardRef }) {
+export default function ProjectGallery() {
   const sectionRef = useRef(null)
   const pinRef = useRef(null)
   const stageRef = useRef(null)
@@ -137,15 +129,8 @@ export default function ProjectGallery({ heroCardRef }) {
   const offsetTweenRef = useRef(null)
   const panelWRef = useRef(0)
   const setWidthRef = useRef(0)
-  const heroScaleRef = useRef(HERO_MAX_SCALE)
   const pinnedRef = useRef(false)
   const driftSpeedRef = useRef(0)
-  // Hero card: the scrubbed entrance and the drag offset are composed by hand
-  // each frame so neither can overwrite the other's transform.
-  const heroEntranceRef = useRef({ p: 0 })
-  const heroCentreRef = useRef(0)
-  const dragRef = useRef({ x: 0, y: 0, active: false, baseLeft: 0, baseTop: 0 })
-  const appliedHeroYRef = useRef(0)
   const listDragRef = useRef({ x: 0, y: 0, active: false, baseLeft: 0, baseTop: 0 })
 
   const [activeIndex, setActiveIndex] = useState(0)
@@ -198,10 +183,10 @@ export default function ProjectGallery({ heroCardRef }) {
   }, [])
 
   useLayoutEffect(() => {
-    const heroCard = heroCardRef?.current
+    const section = sectionRef.current
     const pin = pinRef.current
     const stage = stageRef.current
-    if (!heroCard || !pin || !stage) return undefined
+    if (!section || !pin || !stage) return undefined
 
     const mm = gsap.matchMedia()
 
@@ -220,31 +205,23 @@ export default function ProjectGallery({ heroCardRef }) {
         stage.style.marginLeft = `${-stage.getBoundingClientRect().left}px`
       }
 
-      // Size both floating cards to the screen: the hero shrinks only as far
-      // as it must to fit, and the list matches whatever width that lands on
-      // and is capped to the same height so neither can be clipped.
-      const fitCards = () => {
+      // Size the Selected Work card to the screen, inset from the right by the
+      // same margin the page content has on the left, and capped in height so
+      // it can't be clipped.
+      const fitList = () => {
         const stageH = stage.clientHeight
         const margin = Math.max(16, Math.round(stageH * CARD_MARGIN_RATIO))
         const available = Math.max(220, stageH - margin * 2)
-        const naturalH = heroCard.offsetHeight
+        const width = Math.min(LIST_WIDTH.max, Math.max(LIST_WIDTH.min, window.innerWidth * LIST_WIDTH.ratio))
 
-        const scale = naturalH
-          ? Math.min(HERO_MAX_SCALE, Math.max(HERO_MIN_SCALE, available / naturalH))
-          : HERO_MAX_SCALE
-        heroScaleRef.current = scale
-
-        compactOuter.style.width = `${Math.round(heroCard.offsetWidth * scale)}px`
-        compactOuter.style.right = `${Math.round(heroCard.getBoundingClientRect().left - dragRef.current.x)}px`
+        compactOuter.style.width = `${Math.round(width)}px`
+        compactOuter.style.right = `${Math.round(section.getBoundingClientRect().left)}px`
         compactInner.style.maxHeight = `${available}px`
-
-        const stickyTop = parseFloat(getComputedStyle(heroCard).top) || 0
-        heroCentreRef.current = Math.round((stageH - naturalH * scale) / 2 - stickyTop)
       }
 
       const applyMetrics = () => {
         alignStage()
-        fitCards()
+        fitList()
         const panelW = stage.clientWidth * PANEL_RATIO
         panelWRef.current = panelW
         setWidthRef.current = panelW * PROJECTS.length
@@ -268,11 +245,8 @@ export default function ProjectGallery({ heroCardRef }) {
         }
       }
 
-      // Centre the shrunken hero card in the stage. It is sticky, so its
-      // untransformed top is whatever `top` resolves to.
-      gsap.set(heroCard, { transformOrigin: 'left top' })
       gsap.set(galleryViewport, { opacity: 0 })
-      gsap.set(compactInner, { opacity: 0, y: 14 })
+      gsap.set(compactInner, { y: 14 })
       applyMetrics()
 
       const syncInteractivity = (progress) => {
@@ -296,9 +270,8 @@ export default function ProjectGallery({ heroCardRef }) {
         },
       })
 
-      tl.to(heroEntranceRef.current, { p: 1, duration: ENTRANCE_FRACTION }, 0)
-        .to(galleryViewport, { opacity: 1, duration: ENTRANCE_FRACTION }, 0)
-        .to(compactInner, { opacity: 1, y: 0, duration: ENTRANCE_FRACTION }, 0)
+      tl.to(galleryViewport, { opacity: 1, duration: ENTRANCE_FRACTION }, 0)
+        .to(compactInner, { y: 0, duration: ENTRANCE_FRACTION }, 0)
         // Holds the timeline at a total duration of 1 so the entrance stays a
         // short opening beat rather than stretching over the whole section.
         .to({}, { duration: 1 - ENTRANCE_FRACTION }, ENTRANCE_FRACTION)
@@ -320,7 +293,6 @@ export default function ProjectGallery({ heroCardRef }) {
         lastScrollY = y
         const rect = pin.getBoundingClientRect()
         pinnedRef.current = rect.top <= 0 && rect.bottom >= window.innerHeight
-        heroCard.classList.toggle('is-draggable', pinnedRef.current)
         compactOuter.classList.toggle('is-draggable', pinnedRef.current)
         if (!pinnedRef.current || !delta) return
         if (offsetTweenRef.current) offsetTweenRef.current.kill()
@@ -418,52 +390,6 @@ export default function ProjectGallery({ heroCardRef }) {
       galleryViewport.addEventListener('click', onStripClickCapture, true)
       galleryViewport.addEventListener('dragstart', onStripDragStart)
 
-      // Drag the hero card around, but only while the Work section holds the
-      // screen. Links and buttons inside the card keep working.
-      const onHeroPointerDown = (event) => {
-        if (!pinnedRef.current || event.button !== 0) return
-        if (event.target.closest('a, button')) return
-        const drag = dragRef.current
-        const rect = heroCard.getBoundingClientRect()
-        drag.active = true
-        drag.baseLeft = rect.left - drag.x
-        drag.baseTop = rect.top - drag.y
-        drag.pointerX = event.clientX
-        drag.pointerY = event.clientY
-        heroCard.classList.add('is-dragging', 'has-dragged')
-        capturePointer(heroCard, event.pointerId)
-        event.preventDefault()
-      }
-
-      const onHeroPointerMove = (event) => {
-        const drag = dragRef.current
-        if (!drag.active) return
-        const scale = heroScaleRef.current
-        const width = heroCard.offsetWidth * scale
-        const height = heroCard.offsetHeight * scale
-        const nextX = drag.x + (event.clientX - drag.pointerX)
-        const nextY = drag.y + (event.clientY - drag.pointerY)
-        drag.pointerX = event.clientX
-        drag.pointerY = event.clientY
-        const edge = 12
-        drag.x = Math.min(
-          Math.max(nextX, edge - drag.baseLeft),
-          window.innerWidth - edge - width - drag.baseLeft,
-        )
-        drag.y = Math.min(
-          Math.max(nextY, edge - drag.baseTop),
-          window.innerHeight - edge - height - drag.baseTop,
-        )
-      }
-
-      const onHeroPointerUp = (event) => {
-        const drag = dragRef.current
-        if (!drag.active) return
-        drag.active = false
-        heroCard.classList.remove('is-dragging')
-        releasePointer(heroCard, event.pointerId)
-      }
-
       // The Selected Work card drags by its header only, so the rows below
       // stay free for hovering and clicking.
       const onListPointerDown = (event) => {
@@ -512,11 +438,6 @@ export default function ProjectGallery({ heroCardRef }) {
       window.addEventListener('pointerup', onListPointerUp)
       window.addEventListener('pointercancel', onListPointerUp)
 
-      heroCard.addEventListener('pointerdown', onHeroPointerDown)
-      window.addEventListener('pointermove', onHeroPointerMove)
-      window.addEventListener('pointerup', onHeroPointerUp)
-      window.addEventListener('pointercancel', onHeroPointerUp)
-
       // Paused while the pointer is actually on something — read live rather
       // than tracked with enter/leave, which would blink false for a frame
       // when the pointer crosses straight from one panel to the next.
@@ -547,15 +468,7 @@ export default function ProjectGallery({ heroCardRef }) {
           offsetRef.current += driftSpeedRef.current * (dt / 1000)
         }
 
-        // Compose the hero card's transform: entrance shrink + drag offset.
-        // Once the section lets go, any drag eases back to nothing.
-        const drag = dragRef.current
-        if (!pinnedRef.current && !drag.active && (drag.x || drag.y)) {
-          drag.x += -drag.x * 0.12
-          drag.y += -drag.y * 0.12
-          if (Math.abs(drag.x) < 0.5) drag.x = 0
-          if (Math.abs(drag.y) < 0.5) drag.y = 0
-        }
+        // Once the section lets go, a dragged list eases back into place.
         const listDrag = listDragRef.current
         if (!pinnedRef.current && !listDrag.active && (listDrag.x || listDrag.y)) {
           listDrag.x += -listDrag.x * 0.12
@@ -567,26 +480,6 @@ export default function ProjectGallery({ heroCardRef }) {
           compactOuter.style.transform = `translate(${listDrag.x}px, calc(-50% + ${listDrag.y}px))`
           listDrag.offset = Boolean(listDrag.x || listDrag.y)
         }
-
-        const p = heroEntranceRef.current.p
-        const heroScale = 1 + (heroScaleRef.current - 1) * p
-        let heroY = heroCentreRef.current * p + drag.y
-
-        // The centring offset must never push the card past the bottom of the
-        // column it sticks inside, or it hangs into the section below once the
-        // strip has scrolled away. Sticky stops the card; this stops the offset.
-        const column = heroCard.parentElement
-        if (column) {
-          const naturalTop = heroCard.getBoundingClientRect().top - appliedHeroYRef.current
-          const maxY =
-            column.getBoundingClientRect().bottom -
-            heroCard.offsetHeight * heroScale -
-            naturalTop
-          heroY = Math.min(heroY, maxY)
-        }
-        appliedHeroYRef.current = heroY
-
-        gsap.set(heroCard, { x: drag.x, y: heroY, scale: heroScale })
 
         renderTrack()
         syncActive()
@@ -619,21 +512,13 @@ export default function ProjectGallery({ heroCardRef }) {
         compactOuter.style.transform = ''
         listDragRef.current.x = 0
         listDragRef.current.y = 0
-        heroCard.removeEventListener('pointerdown', onHeroPointerDown)
-        window.removeEventListener('pointermove', onHeroPointerMove)
-        window.removeEventListener('pointerup', onHeroPointerUp)
-        window.removeEventListener('pointercancel', onHeroPointerUp)
-        heroCard.classList.remove('is-draggable', 'is-dragging', 'has-dragged')
-        dragRef.current.x = 0
-        dragRef.current.y = 0
-        appliedHeroYRef.current = 0
         if (offsetTweenRef.current) offsetTweenRef.current.kill()
         track.style.transform = ''
       }
     })
 
     return () => mm.revert()
-  }, [heroCardRef])
+  }, [])
 
   // Hovering a list row previews that project. Both copies of the panel get
   // the class (only one can ever be on screen — they sit a full strip apart),
@@ -914,7 +799,7 @@ export default function ProjectGallery({ heroCardRef }) {
           </div>
 
           <div className="project-gallery__compact" ref={compactOuterRef}>
-            {/* Same "Drag me" hint as the hero card; the list drags by its header. */}
+            {/* "Drag me" hint; the list drags by its header. */}
             <span className="project-gallery__drag-hint" aria-hidden="true">
               <svg viewBox="0 0 16 16" width="12" height="12">
                 <path

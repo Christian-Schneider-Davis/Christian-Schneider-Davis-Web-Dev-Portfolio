@@ -56,12 +56,12 @@
   filter: brightness(1.02);
   pointer-events: none;
   -webkit-mask-image:
-    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
-    linear-gradient(to bottom, transparent, #000 4%, #000 95%, transparent);
+    linear-gradient(to right, transparent, #000 1.5%, #000 98.5%, transparent),
+    linear-gradient(to bottom, transparent, #000 1.5%, #000 99%, transparent);
   -webkit-mask-composite: source-in;
   mask-image:
-    linear-gradient(to right, transparent, #000 6%, #000 94%, transparent),
-    linear-gradient(to bottom, transparent, #000 4%, #000 95%, transparent);
+    linear-gradient(to right, transparent, #000 1.5%, #000 98.5%, transparent),
+    linear-gradient(to bottom, transparent, #000 1.5%, #000 99%, transparent);
   mask-composite: intersect;
 }
 
@@ -243,7 +243,7 @@
   .expertise--desktop .expertise__layout {
     padding-top: 7vh;
     padding-bottom: 3vh;
-    row-gap: 0.75rem;
+    row-gap: 1.4rem;
   }
 
   .expertise__heading {
@@ -255,26 +255,28 @@
   }
 }
 
-/* ---------- Mobile: laptop scrubs on its own, list follows ---------- */
-.expertise--mobile .expertise__stage {
-  margin-left: calc(50% - 50vw);
-}
-
-/* Mobile card: the video plus a strip of head and foot room, centred
-   in the stage. Its height feeds the list's pull-up below. */
+/* ---------- Mobile: no pinning — the box scrolls through in flow, the
+   video plays as it travels up the screen, and the list follows. ---------- */
 .expertise--mobile {
-  --frame-w: calc(100vw - 3.5rem);
   --frame-pad-top: 3rem;
   --frame-pad-bottom: 1.5rem;
-  --frame-h: calc(var(--frame-w) * 0.5625 + var(--frame-pad-top) + var(--frame-pad-bottom));
+}
+
+.expertise--mobile .expertise__stage {
+  position: relative;
+  top: auto;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  padding-top: 1.5rem;
+  background: none;
 }
 
 .expertise--mobile .expertise__frame {
-  top: 50%;
-  width: var(--frame-w);
+  position: relative;
+  width: 100%;
   padding: var(--frame-pad-top) 0 var(--frame-pad-bottom);
   border-radius: 20px;
-  transform: translateY(-50%);
 }
 
 .expertise--mobile .expertise__video {
@@ -302,12 +304,7 @@
 }
 
 .expertise__mobile-list {
-  position: relative;
-  z-index: 3;
-  margin-top: calc(-50vh + var(--frame-h) / 2 + 1.5rem);
-  margin-top: calc(-50svh + var(--frame-h) / 2 + 1.5rem);
-  padding-block: 1rem clamp(4rem, 12vw, 6rem);
-  background: var(--bg);
+  padding-block: 1.5rem clamp(4rem, 12vw, 6rem);
 }
 
 .expertise__mobile-list .expertise__item {

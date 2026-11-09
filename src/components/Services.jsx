@@ -37,14 +37,14 @@ const REDUCED_QUERY = '(prefers-reduced-motion: reduce)'
 const VIDEO_DURATION = 5.06
 const VIDEO_FPS = 30
 
-const PIN_VH = { desktop: 420, mobile: 260 }
+// Desktop pins the stage for this much scroll. Mobile doesn't pin: the box
+// scrolls through normally and the video plays as it travels up the screen.
+const PIN_VH = 420
 // Share of the pinned scroll spent playing the video; the rest holds the
 // finished layout on screen before the section lets go.
 const VIDEO_END = { desktop: 0.62, mobile: 0.8 }
-// "Expertise" links land once everything has faded in; on mobile, far enough
-// on that the list below the laptop is in view too.
-const ANCHOR_FRACTION = { desktop: 0.8, mobile: 1 }
-const ANCHOR_EXTRA_VH = { desktop: 0, mobile: 15 }
+// Desktop "Expertise" links land once everything has faded in.
+const ANCHOR_FRACTION = 0.8
 
 function useMediaQuery(query) {
   const [matches, setMatches] = useState(() => window.matchMedia(query).matches)
@@ -128,20 +128,22 @@ export default function Services() {
 
   const pinRef = useRef(null)
   const stageRef = useRef(null)
+  const frameRef = useRef(null)
   const videoRef = useRef(null)
   const eyebrowRef = useRef(null)
   const headingRef = useRef(null)
   const mobileListRef = useRef(null)
 
   const mode = isDesktop ? 'desktop' : 'mobile'
-  const pinVh = reduced ? 100 : PIN_VH[mode]
+  const pinVh = reduced ? 100 : PIN_VH
   const videoSrc = isDesktop ? 'expertise/laptop-1080.mp4' : 'expertise/laptop-720.mp4'
 
   useLayoutEffect(() => {
     const pin = pinRef.current
     const stage = stageRef.current
+    const frameEl = frameRef.current
     const video = videoRef.current
-    if (!pin || !stage || !video) return undefined
+    if (!pin || !stage || !frameEl || !video) return undefined
 
     const items = gsap.utils.toArray('.expertise__item', stage)
     const duration = () => (Number.isFinite(video.duration) ? video.duration : VIDEO_DURATION)
@@ -207,9 +209,9 @@ export default function Services() {
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: pin,
-        start: 'top top',
-        end: 'bottom bottom',
+        ...(isDesktop
+          ? { trigger: pin, start: 'top top', end: 'bottom bottom' }
+          : { trigger: frameEl, start: 'top 85%', end: 'top 15%' }),
         scrub: 0.5,
         invalidateOnRefresh: true,
         onRefresh: alignStage,
@@ -274,15 +276,17 @@ export default function Services() {
 
   return (
     <section id="services" className={`expertise expertise--${mode}`}>
-      <div className="expertise__pin" ref={pinRef} style={{ height: `${pinVh}vh` }}>
-        <span
-          className="expertise__anchor"
-          data-scroll-anchor="#services"
-          aria-hidden="true"
-          style={{ top: `${(pinVh - 100) * ANCHOR_FRACTION[mode] + (reduced ? 0 : ANCHOR_EXTRA_VH[mode])}vh` }}
-        />
+      <div className="expertise__pin" ref={pinRef} style={isDesktop ? { height: `${pinVh}vh` } : undefined}>
+        {isDesktop && (
+          <span
+            className="expertise__anchor"
+            data-scroll-anchor="#services"
+            aria-hidden="true"
+            style={{ top: `${(pinVh - 100) * ANCHOR_FRACTION}vh` }}
+          />
+        )}
         <div className="expertise__stage" ref={stageRef}>
-          <div className="expertise__frame">
+          <div className="expertise__frame" ref={frameRef}>
             <video
               key={videoSrc}
               ref={videoRef}

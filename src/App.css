@@ -2,36 +2,36 @@
    Top of the page — HeroCard beside the Hero. The card stays put
    and scrolls away with the page.
 --------------------------------------------------------- */
-.pinned-layout {
+.intro-layout {
   padding-top: 7rem;
   display: flex;
   align-items: flex-start;
   gap: clamp(3rem, 7vw, 6rem);
 }
 
-.pinned-layout > .hero-card {
+.intro-layout > .hero-card {
   flex: 0 0 clamp(248px, 23vw, 320px);
 }
 
-.pinned-layout__content {
+.intro-layout__content {
   flex: 1 1 auto;
   min-width: 0;
 }
 
 @media (max-width: 900px) {
-  .pinned-layout {
+  .intro-layout {
     flex-direction: column;
     padding-top: 6rem;
   }
 
-  .pinned-layout > .hero-card {
+  .intro-layout > .hero-card {
     flex: none;
     width: 100%;
   }
 }
 
 /* ---------------------------------------------------------
-   Latest Projects (untouched by the pinned-layout change)
+   Latest Projects
 --------------------------------------------------------- */
 .latest-projects {
   padding-block: clamp(5rem, 10vw, 8rem);

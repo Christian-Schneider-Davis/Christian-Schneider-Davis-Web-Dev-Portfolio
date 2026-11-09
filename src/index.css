@@ -126,13 +126,6 @@ button:focus-visible {
   letter-spacing: -0.01em;
 }
 
-.hairline {
-  height: 1px;
-  width: 100%;
-  background: var(--line);
-  border: none;
-}
-
 /* Reveal-on-scroll utility (paired with useReveal hook) */
 .reveal {
   opacity: 0;

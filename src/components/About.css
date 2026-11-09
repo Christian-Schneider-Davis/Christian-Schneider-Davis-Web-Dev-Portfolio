@@ -40,33 +40,6 @@
   font-style: italic;
 }
 
-.about__stats {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 1.5rem;
-  border-top: 1px solid var(--line);
-  padding-top: 1.5rem;
-}
-
-.about__stats li {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.about__stat-value {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.9rem;
-  color: var(--fg);
-}
-
-.about__stat-label {
-  font-size: 0.74rem;
-  color: var(--fg-faint);
-  letter-spacing: 0.03em;
-}
-
 /* ---- Details card ---- */
 .about__card {
   justify-self: end;
@@ -131,9 +104,5 @@
 
   .about__body {
     grid-template-columns: 1fr;
-  }
-
-  .about__stats {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
