@@ -1,9 +1,6 @@
 /* ---------------------------------------------------------
-   Pinned layout — wraps HeroCard + (Hero, About, Services, Work).
-   HeroCard sticks within this container only; it naturally stops
-   sticking at this container's bottom edge, right before the
-   "latest-projects" section starts (which lives outside this wrapper
-   and is untouched).
+   Top of the page — HeroCard beside the Hero. The card stays put
+   and scrolls away with the page.
 --------------------------------------------------------- */
 .pinned-layout {
   padding-top: 7rem;

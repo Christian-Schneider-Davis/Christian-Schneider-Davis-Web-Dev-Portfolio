@@ -33,9 +33,9 @@ const SERVICES = [
 ]
 
 const DESKTOP_QUERY = '(min-width: 901px)'
-const HOVER_QUERY = '(hover: hover) and (pointer: fine)'
 const REDUCED_QUERY = '(prefers-reduced-motion: reduce)'
 const VIDEO_DURATION = 5.06
+const VIDEO_FPS = 30
 
 const PIN_VH = { desktop: 420, mobile: 260 }
 // Share of the pinned scroll spent playing the video; the rest holds the
@@ -60,8 +60,10 @@ function useMediaQuery(query) {
   return matches
 }
 
+// A mouse opens an item on hover and closes it on leave; touch and keyboard
+// toggle it with a tap or Enter instead.
 function ServiceList({ openIndex, setOpenIndex, className = '' }) {
-  const canHover = useMediaQuery(HOVER_QUERY)
+  const hoveredRef = useRef(-1)
 
   return (
     <ul className={`expertise__list ${className}`}>
@@ -72,17 +74,24 @@ function ServiceList({ openIndex, setOpenIndex, className = '' }) {
             key={service.title}
             className={`expertise__item expertise__item--${index + 1}`}
             style={{ '--i': index }}
-            onMouseEnter={canHover ? () => setOpenIndex(index) : undefined}
-            onMouseLeave={
-              canHover ? () => setOpenIndex((current) => (current === index ? -1 : current)) : undefined
-            }
+            onPointerEnter={(event) => {
+              if (event.pointerType !== 'mouse') return
+              hoveredRef.current = index
+              setOpenIndex(index)
+            }}
+            onPointerLeave={(event) => {
+              if (event.pointerType !== 'mouse') return
+              hoveredRef.current = -1
+              setOpenIndex((current) => (current === index ? -1 : current))
+            }}
           >
             <button
               className="expertise__row"
               aria-expanded={isOpen}
               onClick={(event) => {
-                const fromKeyboard = event.detail === 0
-                setOpenIndex(isOpen && (fromKeyboard || !canHover) ? -1 : index)
+                const mouseHovering = event.detail > 0 && hoveredRef.current === index
+                if (mouseHovering) setOpenIndex(index)
+                else setOpenIndex(isOpen ? -1 : index)
               }}
             >
               <span className="expertise__index">{String(index + 1).padStart(2, '0')}</span>
@@ -119,7 +128,6 @@ export default function Services() {
 
   const pinRef = useRef(null)
   const stageRef = useRef(null)
-  const frameRef = useRef(null)
   const videoRef = useRef(null)
   const eyebrowRef = useRef(null)
   const headingRef = useRef(null)
@@ -132,9 +140,8 @@ export default function Services() {
   useLayoutEffect(() => {
     const pin = pinRef.current
     const stage = stageRef.current
-    const frameEl = frameRef.current
     const video = videoRef.current
-    if (!pin || !stage || !frameEl || !video) return undefined
+    if (!pin || !stage || !video) return undefined
 
     const items = gsap.utils.toArray('.expertise__item', stage)
     const duration = () => (Number.isFinite(video.duration) ? video.duration : VIDEO_DURATION)
@@ -170,13 +177,18 @@ export default function Services() {
       }
     }
 
+    // Seek by whole frames, and only when the frame changes — re-seeking the
+    // same spot every tick makes the browser flicker between neighbours.
     const playhead = { t: 0 }
-    let wantedTime = 0
+    const lastFrame = () => Math.max(0, Math.floor(duration() * VIDEO_FPS) - 1)
+    let wantedFrame = 0
+    let shownFrame = -1
     let frame = 0
 
     const seek = () => {
-      if (!video.seeking && video.readyState >= 1 && Math.abs(video.currentTime - wantedTime) > 0.008) {
-        video.currentTime = wantedTime
+      if (!video.seeking && video.readyState >= 1 && wantedFrame !== shownFrame) {
+        shownFrame = wantedFrame
+        video.currentTime = (wantedFrame + 0.5) / VIDEO_FPS
       }
       frame = requestAnimationFrame(seek)
     }
@@ -189,7 +201,7 @@ export default function Services() {
     gsap.set(headingRef.current, { autoAlpha: 0, scale: 0.82, y: 18 })
     gsap.set(items, { autoAlpha: 0, y: 26 })
     const card = { reveal: 0 }
-    const paintCard = () => frameEl.style.setProperty('--reveal', card.reveal.toFixed(3))
+    const paintCard = () => stage.style.setProperty('--reveal', card.reveal.toFixed(3))
     paintCard()
 
     const tl = gsap.timeline({
@@ -210,7 +222,7 @@ export default function Services() {
         t: 1,
         duration: videoEnd,
         onUpdate: () => {
-          wantedTime = playhead.t * Math.max(0, duration() - 0.04)
+          wantedFrame = Math.round(playhead.t * lastFrame())
         },
       },
       0,
@@ -256,7 +268,7 @@ export default function Services() {
       tl.scrollTrigger?.kill()
       tl.kill()
       gsap.set([eyebrowRef.current, headingRef.current, ...items], { clearProps: 'all' })
-      frameEl.style.removeProperty('--reveal')
+      stage.style.removeProperty('--reveal')
     }
   }, [isDesktop, reduced, mode])
 
@@ -270,7 +282,7 @@ export default function Services() {
           style={{ top: `${(pinVh - 100) * ANCHOR_FRACTION[mode] + (reduced ? 0 : ANCHOR_EXTRA_VH[mode])}vh` }}
         />
         <div className="expertise__stage" ref={stageRef}>
-          <div className="expertise__frame" ref={frameRef}>
+          <div className="expertise__frame">
             <video
               key={videoSrc}
               ref={videoRef}

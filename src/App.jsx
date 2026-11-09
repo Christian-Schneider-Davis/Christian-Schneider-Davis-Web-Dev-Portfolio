@@ -24,10 +24,13 @@ export default function App() {
 
           <div className="pinned-layout__content">
             <Hero />
-            <About />
-            <Services />
-            <ProjectGallery heroCardRef={heroCardRef} />
           </div>
+        </div>
+
+        <div className="wrap">
+          <About />
+          <Services />
+          <ProjectGallery heroCardRef={heroCardRef} />
         </div>
 
         <section id="demo" className="latest-projects" aria-labelledby="latest-projects-heading">

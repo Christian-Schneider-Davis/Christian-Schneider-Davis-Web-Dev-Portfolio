@@ -1,7 +1,5 @@
-/* Sticky positioning lives here */
 .hero-card {
-  position: sticky;
-  top: 6rem;
+  position: relative;
   z-index: 20;
   background: var(--surface);
   border: 1px solid var(--line);

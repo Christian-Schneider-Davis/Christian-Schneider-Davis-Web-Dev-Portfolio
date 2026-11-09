@@ -25,11 +25,6 @@ export default function About() {
               actually use a screen, trimming noise until what's left
               feels <em>natural</em>.
             </p>
-
-            <p className="about__bio">
-              My goal is to create experiences that reach past the screen: interactive websites and live
-              event experiences that respond to the people in front of them.
-            </p>
           </div>
 
           <aside className="about__card">
