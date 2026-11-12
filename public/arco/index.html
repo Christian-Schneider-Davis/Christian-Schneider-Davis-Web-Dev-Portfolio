@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es" class="l-es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Propuesta web para ARCO TCG: más visitas a la tienda, ventas online con Stripe y un panel para gestionar inventario y pedidos.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ARCO TCG · Propuesta web">
+<meta property="og:description" content="Más visitas a la tienda, ventas online con Stripe y gestión desde el móvil. Por Christian Schneider-Davis.">
+<meta property="og:url" content="https://christianschneiderdavis.com/arco/">
+<meta property="og:image" content="https://christianschneiderdavis.com/arco/img/share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex, nofollow">
+<title>ARCO TCG · Propuesta web</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090b; --bg2:#101216; --line:#23272e; --ink:#f3f2ee; --mute:#9aa0a8;
+  --led:#8ef6ff; --led2:#3fd9ff; --stone:#d8c8ab; --stone2:#bfae8f; --ink-d:#16130f;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:Archivo,system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html.l-en .es, html.l-es .en{display:none!important}
+img{display:block;max-width:100%}
+a{color:inherit}
+.mono{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.wrap{width:min(1180px,92vw);margin:0 auto}
+.display{font-weight:900;font-style:italic;font-stretch:112%;letter-spacing:-.02em;line-height:.95;text-transform:uppercase}
+h2.display{font-size:clamp(38px,6.2vw,84px)}
+.kicker{color:var(--led);margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.kicker:before{content:"";width:22px;height:1px;background:currentColor}
+section{position:relative}
+.pad{padding:clamp(80px,12vw,150px) 0}
+.lede{font-size:clamp(18px,1.6vw,21px);color:#d6d6d2;max-width:640px}
+
+.bens{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:56px}
+.ben{background:var(--bg);padding:28px 26px}
+.ben .num{color:var(--led)}
+.ben h3{font-size:22px;font-weight:900;font-style:italic;font-stretch:108%;text-transform:uppercase;line-height:1.05;margin:12px 0 8px}
+.ben p{color:#c2c5c9;font-size:15.5px}
+.glow{color:var(--led);font-style:italic;text-shadow:0 0 30px #3fd9ff66}
+.intro{padding:clamp(60px,8vw,100px) 0}
+/* top bar */
+.bar{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:14px 4vw;background:linear-gradient(#08090bee,#08090b00)}
+.bar .who{color:var(--mute)}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:#0d0f12cc;backdrop-filter:blur(8px)}
+.lang button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;font:600 12px "JetBrains Mono",monospace;letter-spacing:.1em;color:var(--mute)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+
+/* hex glow */
+.hexfield{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.hexfield svg{position:absolute;filter:drop-shadow(0 0 6px var(--led2)) drop-shadow(0 0 22px #3fd9ff88)}
+.hexfield path{fill:none;stroke:#e9fdff;stroke-width:3}
+
+/* cover */
+.cover{min-height:100svh;display:flex;align-items:flex-end;padding:120px 0 70px;overflow:hidden;background:radial-gradient(1200px 600px at 75% 10%,#0f2a30 0%,transparent 60%),var(--bg)}
+.cover h1{font-size:clamp(54px,11vw,168px)}
+.cover h1 em{color:var(--led);font-style:italic;text-shadow:0 0 30px #3fd9ff66}
+.cover .meta{display:flex;flex-wrap:wrap;gap:28px;margin-top:40px;color:var(--mute);border-top:1px solid var(--line);padding-top:22px}
+.cover .meta b{display:block;color:var(--ink);font-weight:600;font-size:15px;letter-spacing:0;text-transform:none;font-family:Archivo,system-ui,sans-serif}
+.scrollcue{margin-top:38px;color:var(--led);display:inline-flex;gap:10px;align-items:center}
+.scrollcue i{width:1px;height:34px;background:linear-gradient(var(--led),transparent);animation:cue 1.8s infinite}
+@keyframes cue{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* intro */
+.intro{background:var(--stone);color:var(--ink-d)}
+.intro .kicker{color:#6b5a3c}
+.intro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,90px);align-items:start}
+.intro p{font-size:clamp(18px,1.55vw,21px);margin-bottom:18px}
+.intro p.big{font-size:clamp(24px,2.4vw,32px);line-height:1.25;font-weight:600}
+.badges{display:grid;gap:12px}
+.badge{border:1px solid #00000022;border-radius:var(--r);padding:18px 20px;display:flex;gap:16px;align-items:center;background:#ffffff33}
+.badge .n{font-weight:900;font-style:italic;font-size:40px;font-stretch:115%;line-height:1;min-width:76px}
+.badge span{font-size:15px;line-height:1.35}
+.sig{margin-top:26px;font-weight:700}
+.sig a{font-weight:600}
+
+/* photos */
+.photos{display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:56px}
+.ph{position:relative;border-radius:var(--r);overflow:hidden;background:var(--bg2)}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+.ph:hover img{transform:scale(1.03)}
+.ph figcaption{position:absolute;left:0;right:0;bottom:0;padding:50px 18px 16px;background:linear-gradient(transparent,#000d);font-size:15px;line-height:1.35}
+.ph1{grid-column:span 4;aspect-ratio:3/4}.ph2{grid-column:span 4;aspect-ratio:3/4}.ph3{grid-column:span 4;aspect-ratio:3/4}
+.ph4{grid-column:span 12;aspect-ratio:21/9}
+.ph4 img{object-position:center 40%}
+.credit{color:var(--mute);margin-top:12px}
+.gapline{margin-top:60px;font-size:clamp(26px,3.2vw,44px);font-weight:800;line-height:1.15;max-width:900px}
+.gapline em{color:var(--led);font-style:normal}
+
+/* opportunity */
+.opps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.opp{border:1px solid var(--line);border-radius:var(--r);padding:30px 26px;background:linear-gradient(180deg,#12161b,#0b0d10)}
+.opp .num{color:var(--led)}
+.opp h3{font-size:28px;font-weight:900;font-style:italic;font-stretch:110%;text-transform:uppercase;margin:16px 0 12px;line-height:1}
+.opp p{color:#c7c9cc;font-size:16px}
+.note{margin-top:28px;color:var(--mute);font-size:15px;max-width:780px;border-left:2px solid var(--led);padding-left:16px}
+
+/* walk */
+.walk{height:320vh;background:var(--bg)}
+.walk .stick{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:18px;padding:70px 0 24px}
+.walk-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.walk-head h2{font-size:clamp(28px,4vw,54px)}
+.prog{flex:0 0 160px;height:2px;background:var(--line);position:relative;margin-bottom:12px}
+.prog i{position:absolute;inset:0 auto 0 0;background:var(--led);box-shadow:0 0 10px var(--led)}
+.browser{border-radius:16px;overflow:hidden;border:1px solid #2b3038;background:#000;box-shadow:0 40px 120px -20px #000, 0 0 0 1px #000,0 0 80px -30px #3fd9ff55}
+.chrome{height:36px;display:flex;align-items:center;gap:8px;padding:0 14px;background:#16191e;border-bottom:1px solid #23272e}
+.chrome i{width:11px;height:11px;border-radius:50%;background:#3a3f47}
+.chrome .url{margin-left:14px;flex:1;max-width:420px;height:22px;border-radius:6px;background:#0d0f12;color:#8b929b;font:12px "JetBrains Mono",monospace;display:flex;align-items:center;padding:0 10px}
+.chrome .url b{color:#5fe08c;margin-right:6px;font-weight:400}
+.screen{position:relative;height:min(68svh,56vw);overflow:hidden}
+.screen canvas{position:absolute;inset:0;width:100%;height:100%}
+.screen .shade{position:absolute;inset:0;background:linear-gradient(90deg,#000b 0%,#0006 45%,transparent 75%),linear-gradient(#0008,transparent 22%)}
+.wm{position:absolute;inset:0;pointer-events:none;opacity:.10;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='220'%3E%3Ctext x='0' y='120' transform='rotate(-18 210 110)' fill='white' font-family='monospace' font-size='15' letter-spacing='3'%3ECONCEPT · C. SCHNEIDER-DAVIS · FOR ARCO TCG%3C/text%3E%3C/svg%3E")}
+.mnav{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:18px 3.2%;z-index:3}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-style:italic;font-stretch:118%;font-size:22px;letter-spacing:-.01em;text-transform:uppercase}
+.logo small{font-size:11px;font-style:normal;letter-spacing:.3em;font-weight:700;font-stretch:100%;display:block;margin-top:-3px}
+.mlinks{display:flex;gap:22px;font-size:13px;font-weight:600;color:#e8e8e8}
+.cart{border:1px solid #ffffff44;border-radius:999px;padding:6px 12px;font-size:12px}
+.stage{position:absolute;left:5%;bottom:12%;max-width:560px;z-index:3;transition:opacity .45s ease,transform .45s ease;opacity:0;transform:translateY(16px)}
+.stage.on{opacity:1;transform:none}
+.stage .t{font-weight:900;font-style:italic;font-stretch:115%;text-transform:uppercase;line-height:.92;font-size:clamp(30px,5.4vw,78px);text-shadow:0 4px 30px #000a}
+.stage .s{margin-top:12px;color:#e6e6e6;font-size:clamp(13px,1.3vw,17px)}
+.stage .ctas{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:11px 18px;font-weight:700;font-size:14px;text-decoration:none}
+.btn.p{background:var(--led);color:#001418;box-shadow:0 0 24px #3fd9ff77}
+.btn.g{border:1px solid #ffffff66;color:#fff;background:#0004;backdrop-filter:blur(6px)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.chip{font:600 11px "JetBrains Mono",monospace;letter-spacing:.08em;padding:5px 10px;border-radius:999px;background:#ffffff1a;border:1px solid #ffffff2a}
+.walk-note{color:var(--mute);font-size:14px;max-width:760px}
+.walk-note b{color:var(--ink)}
+
+/* screens */
+.screens{display:grid;grid-template-columns:1.55fr 1fr;gap:20px;margin-top:56px;align-items:start}
+.cap{margin-top:14px;display:flex;gap:12px;align-items:baseline}
+.cap .mono{color:var(--led)}
+.cap span:last-child{color:#c9cbce;font-size:15px}
+.mock{position:relative;background:#0b0c0f;border:1px solid #262a31;border-radius:16px;overflow:hidden}
+.mock .wm{opacity:.07}
+.shop{padding:22px}
+.shop-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.shop-top .logo{font-size:17px}
+.search{flex:1;min-width:140px;max-width:300px;height:34px;border-radius:999px;background:#15181d;border:1px solid #262a31;color:#7d838c;font-size:13px;display:flex;align-items:center;padding:0 14px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.filters .chip{background:#14171c;border-color:#262a31;color:#b9bdc3}
+.filters .chip.on{background:var(--led);color:#001418;border-color:var(--led)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:#111419;border:1px solid #20242b;border-radius:12px;padding:10px}
+.art{aspect-ratio:63/88;border-radius:8px;position:relative;overflow:hidden;border:5px solid #d9d4c5}
+.art.slab{border:7px solid #e9ecef;border-top-width:22px;border-radius:6px}
+.art.slab:before{content:attr(data-g);position:absolute;top:-19px;left:4px;right:4px;font:700 9px "JetBrains Mono",monospace;color:#b4232a;letter-spacing:.05em}
+.art:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,#ffffff55 45%,transparent 60%);mix-blend-mode:overlay}
+.a1{background:radial-gradient(circle at 50% 40%,#ffb347,#e2462b 45%,#311 100%)}
+.a2{background:radial-gradient(circle at 50% 40%,#9be7ff,#3a7bd5 50%,#0b1430)}
+.a3{background:radial-gradient(circle at 50% 40%,#d3ff9b,#2f9e5b 50%,#0b2414)}
+.a4{background:radial-gradient(circle at 50% 40%,#f0c3ff,#8a3fd1 50%,#1d0b30)}
+.card .nm{font-size:13px;font-weight:700;margin-top:9px;line-height:1.2}
+.card .st{font-size:11px;color:#8a9099;margin-top:2px}
+.card .row{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.card .pr{font-weight:800;font-size:14px}
+.add{font-size:11px;font-weight:700;background:#1c2128;border-radius:999px;padding:4px 9px}
+.tag{position:absolute;left:8px;top:8px;z-index:2;font:700 9px "JetBrains Mono",monospace;background:#000c;padding:3px 6px;border-radius:4px;color:var(--led)}
+
+.phone{width:min(330px,100%);margin:0 auto;border-radius:42px;padding:12px;background:#1a1d22;border:1px solid #2e333b;box-shadow:0 30px 80px -20px #000}
+.phone .in{border-radius:32px;overflow:hidden;background:#0b0c0f;position:relative}
+.pd{padding:18px 18px 22px}
+.pd .notch{width:90px;height:22px;background:#000;border-radius:0 0 14px 14px;margin:-18px auto 14px}
+.pd .art{width:62%;margin:6px auto 16px}
+.pd h4{font-size:19px;font-weight:800;line-height:1.15}
+.pd .st{color:#8a9099;font-size:12px;margin-top:3px}
+.pd .price{font-size:26px;font-weight:900;font-style:italic;margin:10px 0 2px}
+.pd .stock{font-size:12px;color:#5fe08c}
+.opt{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.opt div{border:1px solid #2a2f37;border-radius:10px;padding:9px;font-size:11.5px;line-height:1.3}
+.opt div.on{border-color:var(--led);background:#3fd9ff12}
+.opt b{display:block;font-size:12.5px}
+.pay{display:flex;align-items:center;justify-content:center;gap:8px;background:#635bff;color:#fff;border-radius:12px;padding:13px;font-weight:700;font-size:14px}
+.pay small{opacity:.8;font-weight:500}
+.secure{text-align:center;font-size:11px;color:#7d838c;margin-top:9px}
+
+.admin{grid-column:1/-1;display:grid;grid-template-columns:200px 1fr;min-height:360px}
+.side{background:#0e1014;border-right:1px solid #22262c;padding:20px 16px;display:flex;flex-direction:column;gap:6px}
+.side .logo{font-size:16px;margin-bottom:16px}
+.side a{font-size:13px;padding:8px 10px;border-radius:8px;color:#9aa0a8;text-decoration:none}
+.side a.on{background:#1a1e24;color:#fff}
+.main{padding:22px}
+.main h5{font-size:20px;font-weight:800;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.kpi{background:#111419;border:1px solid #20242b;border-radius:12px;padding:14px}
+.kpi .l{font-size:11.5px;color:#8a9099}
+.kpi .v{font-size:24px;font-weight:900;font-style:italic;margin-top:4px}
+.kpi .v.c{color:var(--led)}
+.split{display:grid;grid-template-columns:1.5fr 1fr;gap:12px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:#111419;border:1px solid #20242b;border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #1d2127}
+th{color:#7d838c;font-weight:600;font-size:11px}
+.pill{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:999px}
+.pill.pk{background:#ffb34722;color:#ffc56b}.pill.sh{background:#3fd9ff1f;color:var(--led)}.pill.rc{background:#5fe08c1f;color:#5fe08c}
+.drop{border:1.5px dashed #3a4049;border-radius:12px;padding:18px;text-align:center;font-size:13px;color:#a3a9b1;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.drop b{color:#fff;font-size:14px}
+.sample{position:absolute;right:12px;top:12px;z-index:4;color:#7d838c;background:#000a;padding:4px 8px;border-radius:6px}
+
+/* hidden layer */
+.vault{margin-top:70px;border-radius:20px;padding:clamp(28px,4vw,48px);background:linear-gradient(135deg,#0f2329,#0b0d10 60%);border:1px solid #1f3a40;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.vault .lock{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;border:1px solid var(--led);color:var(--led);box-shadow:0 0 30px -6px var(--led)}
+.vault p{font-size:clamp(18px,1.7vw,22px);line-height:1.45}
+.vault p b{color:var(--led)}
+
+/* why */
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-top:56px}
+.why div{background:var(--bg);padding:28px 26px}
+.why h3{font-size:19px;font-weight:800;margin-bottom:8px}
+.why p{color:#bfc2c6;font-size:15.5px}
+
+/* process */
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:56px}
+.step{border-top:2px solid var(--line);padding-top:18px;position:relative}
+.step:before{counter-increment:s;content:"0" counter(s);font:600 12px "JetBrains Mono",monospace;color:var(--led);letter-spacing:.1em}
+.step h4{font-size:18px;font-weight:800;margin:10px 0 6px;line-height:1.2}
+.step p{color:#b5b8bd;font-size:14.5px}
+.step.opt5{opacity:.75}
+
+/* price */
+.priceband{background:var(--stone);color:var(--ink-d)}
+.priceband .kicker{color:#6b5a3c}
+.pgrid{display:grid;grid-template-columns:1fr 1.3fr;gap:18px;margin-top:50px}
+.pcard{border-radius:18px;padding:34px 30px;border:1px solid #00000022}
+.pcard.std{background:#ffffff3a}
+.pcard.std .amt{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:#b4232a99;color:#5b4f3c}
+.pcard.arco{background:var(--ink-d);color:var(--ink);box-shadow:0 30px 70px -30px #000}
+.pcard .lbl{margin-bottom:16px;color:inherit;opacity:.7}
+.pcard .amt{font-weight:900;font-style:italic;font-stretch:112%;font-size:clamp(40px,5vw,64px);line-height:1}
+.pcard .amt small{font-size:.38em;font-style:normal;font-stretch:100%;font-weight:700;display:block;margin-top:8px}
+.pcard.arco .amt{font-size:clamp(32px,3.6vw,48px);line-height:1.05}
+.pcard.arco .amt em{color:var(--led);font-style:italic}
+.pcard ul{list-style:none;margin-top:22px;display:grid;gap:10px}
+.pcard li{padding-left:26px;position:relative;font-size:16px}
+.pcard li:before{content:"";position:absolute;left:0;top:8px;width:12px;height:12px;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);background:var(--led)}
+.pcard.std li:before{background:#6b5a3c}
+.addon{margin-top:18px;border:1px dashed #00000040;border-radius:16px;padding:22px 26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.addon b{font-size:18px}
+.fine{margin-top:16px;font-size:13px;color:#5b4f3c}
+
+/* close */
+.close{min-height:90svh;display:flex;align-items:center;overflow:hidden;text-align:left}
+.close h2{font-size:clamp(48px,9vw,130px)}
+.close h2 em{color:var(--led);font-style:italic;text-shadow:0 0 30px #3fd9ff66}
+.contact{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
+footer{border-top:1px solid var(--line);padding:30px 0 40px;color:#6f757d;font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  .intro-grid,.screens,.pgrid{grid-template-columns:1fr}
+  .opps,.why{grid-template-columns:1fr}
+  .bens{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}
+  .ph1,.ph2,.ph3{grid-column:span 6}.ph3{grid-column:span 12;aspect-ratio:4/3}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .admin{grid-template-columns:1fr}.side{display:none}
+  .kpis{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}
+  .mlinks{display:none}
+  .screen{height:60svh}
+  .walk .stick{padding-top:78px}
+  .stage{left:6%;right:6%;bottom:9%}
+  .prog{display:none}
+  .vault{grid-template-columns:1fr}
+  .bar .who{display:none}
+}
+@media (max-width:520px){
+  .steps{grid-template-columns:1fr}
+  .ph1,.ph2{grid-column:span 12;aspect-ratio:4/5}
+  .ph4{aspect-ratio:4/3}
+}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="who mono">Christian Schneider-Davis → ARCO TCG</div>
+  <div class="lang" role="group" aria-label="Language">
+    <button data-l="es" aria-pressed="true">ES</button>
+    <button data-l="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<!-- COVER -->
+<section class="cover">
+  <div class="hexfield" aria-hidden="true">
+    <svg viewBox="0 0 620 420" style="right:-90px;top:-40px;width:min(760px,95vw);opacity:.9">
+      <path d="M150 20h120l60 104-60 104H150L90 124z"/><path d="M330 124h120l60 104-60 104H330l-60-104z"/><path d="M330 -80h120l60 104-60 104H330l-60-104z"/><path d="M510 20h120l60 104-60 104H510l-60-104z"/><path d="M150 228h120l60 104-60 104H150L90 332z"/>
+    </svg>
+  </div>
+  <div class="wrap" style="position:relative">
+    <div class="kicker mono"><span class="en">Website proposal · Prepared for ARCO TCG</span><span class="es">Propuesta web · Preparada para ARCO TCG</span></div>
+    <h1 class="display"><span class="en">Let Barcelona<br><em>walk in.</em></span><span class="es">Que Barcelona<br><em>entre.</em></span></h1>
+    <p class="lede" style="margin-top:28px">
+      <span class="en">A new website for ARCO TCG, built to bring more players and collectors through your door at Ausiàs Marc 53, and to start selling online safely with Stripe.</span>
+      <span class="es">Una nueva web para ARCO TCG, pensada para traer más jugadores y coleccionistas a vuestra tienda de Ausiàs Marc 53, y para empezar a vender online de forma segura con Stripe.</span>
+    </p>
+    <div class="meta mono">
+      <div><span class="en">From</span><span class="es">De</span><b>Christian Schneider-Davis</b></div>
+      <div><span class="en">Role</span><span class="es">Perfil</span><b><span class="en">Software engineer · Customer · Collector</span><span class="es">Ingeniero de software · Cliente · Coleccionista</span></b></div>
+      <div><span class="en">Date</span><span class="es">Fecha</span><b><span class="en">November 2026</span><span class="es">Noviembre 2026</span></b></div>
+    </div>
+    <a href="#gains" class="scrollcue mono" style="text-decoration:none"><i></i><span class="en">Scroll</span><span class="es">Desliza</span></a>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="pad" id="gains">
+  <div class="wrap">
+    <div class="kicker mono"><span class="en">What ARCO gains</span><span class="es">Lo que gana ARCO</span></div>
+    <h2 class="display reveal"><span class="en">More visits.<br>More sales.<br><em class="glow">Less hassle.</em></span><span class="es">Más visitas.<br>Más ventas.<br><em class="glow">Menos líos.</em></span></h2>
+    <div class="bens">
+      <div class="ben reveal"><div class="num mono">01</div><h3><span class="en">More customers in store</span><span class="es">Más clientes en la tienda</span></h3><p><span class="en">Hours, directions and a walk through the store before they arrive. Your site becomes a reason to visit.</span><span class="es">Horario, cómo llegar y un recorrido por la tienda antes de venir. La web se convierte en un motivo para visitaros.</span></p></div>
+      <div class="ben reveal"><div class="num mono">02</div><h3><span class="en">Sales 24/7</span><span class="es">Ventas 24/7</span></h3><p><span class="en">Sell singles, graded and sealed product online with Stripe, even while the shop is closed.</span><span class="es">Vended cartas sueltas, gradeadas y producto sellado online con Stripe, incluso con la tienda cerrada.</span></p></div>
+      <div class="ben reveal"><div class="num mono">03</div><h3><span class="en">Reserve online, collect in store</span><span class="es">Reserva online, recoge en tienda</span></h3><p><span class="en">Online buyers come to the counter, and that's a chance to sell them more.</span><span class="es">Quien compra online viene al mostrador, y eso es una oportunidad para venderle más.</span></p></div>
+      <div class="ben reveal"><div class="num mono">04</div><h3><span class="en">Less admin, more selling</span><span class="es">Menos gestión, más ventas</span></h3><p><span class="en">Upload inventory and manage orders from your phone in minutes.</span><span class="es">Subid inventario y gestionad pedidos desde el móvil en minutos.</span></p></div>
+      <div class="ben reveal"><div class="num mono">05</div><h3><span class="en">A partner who knows the hobby</span><span class="es">Alguien que conoce el hobby</span></h3><p><span class="en">I'm a customer and collector. I know NM from LP and PSA from CGC, and so will your site.</span><span class="es">Soy cliente y coleccionista. Distingo NM de LP y PSA de CGC, y vuestra web también lo hará.</span></p></div>
+      <div class="ben reveal"><div class="num mono">06</div><h3><span class="en">Local, one point of contact</span><span class="es">Local, un solo contacto</span></h3><p><span class="en">I'm in Barcelona. Design, code, payments and upkeep: one person. Need a change? Tell me at the counter.</span><span class="es">Estoy en Barcelona. Diseño, código, pagos y mantenimiento: una sola persona. ¿Un cambio? Me lo decís en el mostrador.</span></p></div>
+      <div class="ben reveal"><div class="num mono">07</div><h3><span class="en">Shipping, handled</span><span class="es">Envíos, resueltos</span></h3><p><span class="en">If online orders take off, I can pack and ship them, as a service or as part of your team.</span><span class="es">Si los pedidos online despegan, puedo prepararlos y enviarlos, como servicio o como parte de vuestro equipo.</span></p></div>
+      <div class="ben reveal"><div class="num mono">08</div><h3><span class="en">Fast and bilingual</span><span class="es">Rápida y bilingüe</span></h3><p><span class="en">Loads fast on any phone, tablet or computer, in Spanish and English for locals, expats and tourists.</span><span class="es">Carga rápido en móvil, tablet u ordenador, en español e inglés para vecinos, extranjeros y turistas.</span></p></div>
+      <div class="ben reveal"><div class="num mono">09</div><h3><span class="en">A premium build, a local price</span><span class="es">Un proyecto premium a precio de barrio</span></h3><p><span class="en">A €3,000 build for a small flat fee plus a trade. No monthly fee required.</span><span class="es">Un proyecto de 3.000 € por una pequeña tarifa única más un intercambio. Sin cuota mensual obligatoria.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro pad" id="hola">
+  <div class="wrap" style="max-width:820px">
+    <div class="reveal">
+      <div class="kicker mono"><span class="en">Hi, ARCO team</span><span class="es">Hola, equipo de ARCO</span></div>
+      <p class="big"><span class="en">I'm Christian. You've probably already seen me at your counter.</span><span class="es">Soy Christian. Probablemente ya me habéis visto en vuestro mostrador.</span></p>
+      <p><span class="en">I'm an American software engineer living in Barcelona, and I'm a regular customer of yours. I collect Pokémon TCG and Magic: The Gathering (yes, the Final Fantasy set got me), and ARCO is my go-to shop. I've spent six years designing, building and running websites and apps, and I'd love to build yours.</span><span class="es">Soy un ingeniero de software estadounidense que vive en Barcelona, y soy cliente habitual vuestro. Colecciono Pokémon TCG y Magic: The Gathering (sí, la colección de Final Fantasy me atrapó), y ARCO es mi tienda de referencia. Llevo seis años diseñando, desarrollando y gestionando webs y apps, y me encantaría construir la vuestra.</span></p>
+      <p class="sig">— Christian · <a href="https://christianschneiderdavis.com" target="_blank" rel="noopener">christianschneiderdavis.com</a></p>
+    </div>
+      </div>
+</section>
+
+<!-- STORE -->
+<section class="pad">
+  <div class="wrap">
+    <div class="kicker mono"><span class="en">What you've already built</span><span class="es">Lo que ya habéis construido</span></div>
+    <h2 class="display reveal"><span class="en">The store<br>already wins.</span><span class="es">La tienda<br>ya gana.</span></h2>
+    <div class="photos">
+      <figure class="ph ph1 reveal"><img src="img/storefront.webp" alt="ARCO TCG storefront" loading="lazy"><figcaption><span class="en">The arch, the black sign, the guardian at the door. Instantly recognizable.</span><span class="es">El arco, el rótulo negro y el guardián de la puerta. Inconfundible.</span></figcaption></figure>
+      <figure class="ph ph2 reveal"><img src="img/graded-wall.webp" alt="Graded card display wall" loading="lazy"><figcaption><span class="en">A wall of graded slabs most stores can't match.</span><span class="es">Una pared de cartas gradeadas que pocas tiendas pueden igualar.</span></figcaption></figure>
+      <figure class="ph ph3 reveal"><img src="img/floor.webp" alt="Store floor with hex LED ceiling" loading="lazy"><figcaption><span class="en">Hex LED ceiling. Sealed product floor to ceiling.</span><span class="es">Techo LED hexagonal. Producto sellado de suelo a techo.</span></figcaption></figure>
+      <figure class="ph ph4 reveal"><img src="img/counter.webp" alt="Customers at the counter" loading="lazy"><figcaption><span class="en">A counter that's always busy. That's community, and it's your best advertisement.</span><span class="es">Un mostrador siempre lleno. Eso es comunidad, y es vuestra mejor publicidad.</span></figcaption></figure>
+    </div>
+    <div class="credit mono"><span class="en">Store photos: Google Maps</span><span class="es">Fotos de la tienda: Google Maps</span></div>
+    <p class="gapline reveal"><span class="en">Online, almost none of this comes through yet. <em>That's the opportunity.</em></span><span class="es">Online, casi nada de esto se ve todavía. <em>Ahí está la oportunidad.</em></span></p>
+  </div>
+</section>
+
+<!-- WALK -->
+<section class="walk" id="walk">
+  <div class="stick">
+    <div class="wrap walk-head">
+      <div>
+        <div class="kicker mono" style="margin-bottom:12px"><span class="en">The concept · Live preview</span><span class="es">El concepto · Vista previa</span></div>
+        <h2 class="display"><span class="en">Walk in before you walk in.</span><span class="es">Entra antes de llegar.</span></h2>
+      </div>
+      <div class="prog" aria-hidden="true"><i id="progbar"></i></div>
+    </div>
+    <div class="wrap">
+      <div class="browser">
+        <div class="chrome"><i></i><i></i><i></i><div class="url"><b>●</b>arcotcg.com</div></div>
+        <div class="screen" id="screen">
+          <canvas id="cv"></canvas>
+          <div class="shade"></div>
+          <div class="wm"></div>
+          <div class="mnav">
+            <div class="logo"><svg width="30" height="26" viewBox="0 0 30 26" fill="none" stroke="#fff" stroke-width="3"><path d="M4 25V14a11 11 0 0 1 22 0v11"/><path d="M9 25V15a6 6 0 0 1 12 0v10" stroke-width="2"/></svg><div>Arco<small>TCG</small></div></div>
+            <div class="mlinks"><span class="en">Shop</span><span class="es">Tienda</span><span class="en">New in</span><span class="es">Novedades</span><span class="en">Graded</span><span class="es">Gradeadas</span><span class="en">Visit us</span><span class="es">Visítanos</span></div>
+            <div class="cart">🛒 0,00 €</div>
+          </div>
+          <div class="stage on" data-s="0"><div class="t">ARCO TCG</div><div class="s">Barcelona · Carrer d'Ausiàs Marc 53</div></div>
+          <div class="stage" data-s="1"><div class="t"><span class="en">Cards that deserve a display case.</span><span class="es">Cartas que merecen una vitrina.</span></div><div class="s"><span class="en">Raw singles, graded slabs and sealed product, verified by hand.</span><span class="es">Cartas sueltas, gradeadas y producto sellado, verificado a mano.</span></div></div>
+          <div class="stage" data-s="2"><div class="t"><span class="en">Shop online.<br>Collect in store.</span><span class="es">Compra online.<br>Recoge en tienda.</span></div>
+            <div class="chips"><span class="chip">Pokémon</span><span class="chip">Magic</span><span class="chip">One Piece</span><span class="chip">Dragon Ball</span></div>
+            <div class="ctas"><span class="btn p"><span class="en">Shop now →</span><span class="es">Ver tienda →</span></span><span class="btn g"><span class="en">Visit the store</span><span class="es">Cómo llegar</span></span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap walk-note"><span class="en"><b>This walkthrough is an AI-generated placeholder.</b> If we work together, I'll film your real store in high definition, or build a polished, faithful AI replica of it, so visitors walk through ARCO itself, hex lights and all.</span><span class="es"><b>Este recorrido es una maqueta generada con IA.</b> Si trabajamos juntos, grabaré vuestra tienda real en alta definición, o crearé una réplica con IA fiel y pulida, para que los visitantes recorran la propia ARCO, con sus luces hexagonales incluidas.</span></div>
+  </div>
+</section>
+
+<!-- SCREENS -->
+<section class="pad">
+  <div class="wrap">
+    <div class="kicker mono"><span class="en">Inside the concept</span><span class="es">Dentro del concepto</span></div>
+    <h2 class="display reveal"><span class="en">Built for collectors.<br>Easy for you.</span><span class="es">Para coleccionistas.<br>Fácil para vosotros.</span></h2>
+
+    <div class="screens">
+      <div class="reveal">
+        <div class="mock shop">
+          <div class="wm"></div><div class="sample mono"><span class="en">Sample data</span><span class="es">Datos de ejemplo</span></div>
+          <div class="shop-top"><div class="logo">Arco <span style="font-size:12px;letter-spacing:.25em;font-style:normal">TCG</span></div><div class="search">⌕ <span class="en">&nbsp;Search Charizard, Umbreon, Cloud…</span><span class="es">&nbsp;Busca Charizard, Umbreon, Cloud…</span></div></div>
+          <div class="filters"><span class="chip on">Pokémon</span><span class="chip">Magic</span><span class="chip">One Piece</span><span class="chip">Dragon Ball</span><span class="chip">·</span><span class="chip">Raw</span><span class="chip on"><span class="en">Graded</span><span class="es">Gradeadas</span></span><span class="chip"><span class="en">Sealed</span><span class="es">Sellado</span></span></div>
+          <div class="grid">
+            <div class="card"><div class="art slab a1" data-g="PSA 10 · GEM MT"></div><div class="nm">Charizard ex</div><div class="st">151 · 199/165</div><div class="row"><span class="pr">349,00 €</span><span class="add">+ <span class="en">Add</span><span class="es">Añadir</span></span></div></div>
+            <div class="card"><div class="art a2"><span class="tag">NM</span></div><div class="nm">Greninja ex</div><div class="st">Twilight Masquerade</div><div class="row"><span class="pr">24,90 €</span><span class="add">+ <span class="en">Add</span><span class="es">Añadir</span></span></div></div>
+            <div class="card"><div class="art slab a4" data-g="CGC 9.5 · MINT+"></div><div class="nm">Umbreon VMAX</div><div class="st">Evolving Skies</div><div class="row"><span class="pr">219,00 €</span><span class="add">+ <span class="en">Add</span><span class="es">Añadir</span></span></div></div>
+            <div class="card"><div class="art a3"><span class="tag">FOIL</span></div><div class="nm">Cloud, Midgar Mercenary</div><div class="st">MTG · Final Fantasy</div><div class="row"><span class="pr">12,50 €</span><span class="add">+ <span class="en">Add</span><span class="es">Añadir</span></span></div></div>
+          </div>
+        </div>
+        <div class="cap"><span class="mono">01</span><span><span class="en">Shop: filter by game, raw, graded or sealed. Condition and grade on every card.</span><span class="es">Tienda: filtra por juego, sueltas, gradeadas o sellado. Estado y nota en cada carta.</span></span></div>
+      </div>
+
+      <div class="reveal">
+        <div class="phone"><div class="in"><div class="wm"></div>
+          <div class="pd">
+            <div class="notch"></div>
+            <div class="art slab a1" data-g="PSA 10 · GEM MT"></div>
+            <h4>Charizard ex</h4><div class="st">Scarlet & Violet 151 · 199/165</div>
+            <div class="price">349,00 €</div><div class="stock">● <span class="en">1 in stock at Ausiàs Marc 53</span><span class="es">1 en stock en Ausiàs Marc 53</span></div>
+            <div class="opt"><div class="on"><b><span class="en">Pick up in store</span><span class="es">Recoger en tienda</span></b><span class="en">Free · Ready today</span><span class="es">Gratis · Listo hoy</span></div><div><b><span class="en">Protected shipping</span><span class="es">Envío protegido</span></b><span class="en">Tracked & insured</span><span class="es">Con seguimiento y seguro</span></div></div>
+            <div class="pay"><span class="en">Pay</span><span class="es">Pagar</span> <small>· Card · Apple Pay · Google Pay</small></div>
+            <div class="secure">🔒 <span class="en">Secure checkout powered by Stripe</span><span class="es">Pago seguro con Stripe</span></div>
+          </div>
+        </div></div>
+        <div class="cap"><span class="mono">02</span><span><span class="en">Product page: pay with Stripe, or reserve and collect in store.</span><span class="es">Ficha de producto: paga con Stripe, o reserva y recoge en tienda.</span></span></div>
+      </div>
+
+      <div class="reveal" style="grid-column:1/-1">
+        <div class="mock admin">
+          <div class="wm"></div><div class="sample mono"><span class="en">Sample data</span><span class="es">Datos de ejemplo</span></div>
+          <div class="side"><div class="logo">Arco <span style="font-size:11px;letter-spacing:.25em;font-style:normal">ADMIN</span></div>
+            <a class="on" href="#walk" onclick="return false"><span class="en">Today</span><span class="es">Hoy</span></a><a href="#walk" onclick="return false"><span class="en">Orders</span><span class="es">Pedidos</span></a><a href="#walk" onclick="return false"><span class="en">Inventory</span><span class="es">Inventario</span></a><a href="#walk" onclick="return false"><span class="en">Pick-ups</span><span class="es">Recogidas</span></a><a href="#walk" onclick="return false"><span class="en">Shipping</span><span class="es">Envíos</span></a></div>
+          <div class="main">
+            <h5><span class="en">Good morning, ARCO</span><span class="es">Buenos días, ARCO</span><span class="chip" style="background:#3fd9ff1f;color:var(--led);border-color:#3fd9ff44">● <span class="en">Store online</span><span class="es">Tienda online activa</span></span></h5>
+            <div class="kpis">
+              <div class="kpi"><div class="l"><span class="en">New orders</span><span class="es">Pedidos nuevos</span></div><div class="v c">7</div></div>
+              <div class="kpi"><div class="l"><span class="en">To pack</span><span class="es">Por preparar</span></div><div class="v">4</div></div>
+              <div class="kpi"><div class="l"><span class="en">Pick-ups today</span><span class="es">Recogidas hoy</span></div><div class="v">3</div></div>
+              <div class="kpi"><div class="l"><span class="en">Low stock</span><span class="es">Stock bajo</span></div><div class="v">2</div></div>
+            </div>
+            <div class="split">
+              <table>
+                <tr><th>#</th><th><span class="en">Item</span><span class="es">Artículo</span></th><th><span class="en">Type</span><span class="es">Tipo</span></th><th><span class="en">Status</span><span class="es">Estado</span></th></tr>
+                <tr><td>1042</td><td>Charizard ex · PSA 10</td><td><span class="en">Shipping</span><span class="es">Envío</span></td><td><span class="pill pk"><span class="en">To pack</span><span class="es">Preparar</span></span></td></tr>
+                <tr><td>1041</td><td>ETB · Prismatic Evolutions</td><td><span class="en">Pick-up</span><span class="es">Recogida</span></td><td><span class="pill rc"><span class="en">Ready</span><span class="es">Listo</span></span></td></tr>
+                <tr><td>1040</td><td>Umbreon VMAX · CGC 9.5</td><td><span class="en">Shipping</span><span class="es">Envío</span></td><td><span class="pill sh"><span class="en">Shipped</span><span class="es">Enviado</span></span></td></tr>
+                <tr><td>1039</td><td>Booster box · Final Fantasy</td><td><span class="en">Pick-up</span><span class="es">Recogida</span></td><td><span class="pill rc"><span class="en">Ready</span><span class="es">Listo</span></span></td></tr>
+              </table>
+              <div class="drop"><b>＋ <span class="en">Add inventory</span><span class="es">Añadir inventario</span></b><span class="en">Snap a photo or drop a spreadsheet. Name, set, condition and price, done.</span><span class="es">Haz una foto o sube una hoja de cálculo. Nombre, colección, estado y precio, listo.</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="cap"><span class="mono">03</span><span><span class="en">Admin: your orders, pick-ups and inventory in one place, from your phone or the shop computer.</span><span class="es">Admin: pedidos, recogidas e inventario en un solo sitio, desde el móvil o el ordenador de la tienda.</span></span></div>
+      </div>
+    </div>
+
+    <div class="vault reveal">
+      <div class="lock"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+      <p><span class="en">What you see here is the vision. What you don't see is what makes it work: <b>the scroll-walk engine, the inventory and order system, the Stripe setup, the store shoot plan</b>, and someone who keeps it all running. That part comes with me.</span><span class="es">Lo que veis aquí es la visión. Lo que no veis es lo que hace que funcione: <b>el motor del recorrido con scroll, el sistema de inventario y pedidos, la configuración de Stripe, el plan de grabación de la tienda</b> y alguien que lo mantenga todo funcionando. Esa parte viene conmigo.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section class="priceband pad">
+  <div class="wrap">
+    <div class="kicker mono"><span class="en">Investment</span><span class="es">Inversión</span></div>
+    <h2 class="display reveal"><span class="en">A local deal<br>for a local shop.</span><span class="es">Un trato de barrio<br>para una tienda de barrio.</span></h2>
+    <div class="pgrid">
+      <div class="pcard std reveal">
+        <div class="lbl mono"><span class="en">My standard price for this build</span><span class="es">Mi precio habitual por este proyecto</span></div>
+        <div class="amt">3.000 €<small><span class="en">+ 150–500 € / month upkeep</span><span class="es">+ 150–500 € / mes de mantenimiento</span></small></div>
+        <ul>
+          <li><span class="en">Premium custom website with scroll-walk hero</span><span class="es">Web premium a medida con recorrido de la tienda</span></li>
+          <li><span class="en">Online shop with Stripe checkout</span><span class="es">Tienda online con pago por Stripe</span></li>
+          <li><span class="en">Admin login for inventory and orders</span><span class="es">Acceso de administración para inventario y pedidos</span></li>
+        </ul>
+      </div>
+      <div class="pcard arco reveal">
+        <div class="lbl mono" style="color:var(--led);opacity:1"><span class="en">For ARCO TCG</span><span class="es">Para ARCO TCG</span></div>
+        <div class="amt"><span class="en">One flat fee, a small fraction of that, <em>plus a trade.</em></span><span class="es">Una tarifa única, una pequeña parte de eso, <em>más un intercambio.</em></span></div>
+        <ul>
+          <li><span class="en">Everything in the standard build, no monthly fee required</span><span class="es">Todo lo del proyecto estándar, sin cuota mensual obligatoria</span></li>
+          <li><span class="en">The trade: a few cards, an Elite Trainer Box or two, or a package you think is fair</span><span class="es">El intercambio: algunas cartas, una o dos Elite Trainer Box, o el paquete que consideréis justo</span></li>
+          <li><span class="en">I'll work with your budget. I want your store to do well.</span><span class="es">Me adapto a vuestro presupuesto. Quiero que a vuestra tienda le vaya bien.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="addon reveal">
+      <span class="mono" style="color:#6b5a3c"><span class="en">Optional</span><span class="es">Opcional</span></span>
+      <b><span class="en">Online store management, or packing & shipping orders</span><span class="es">Gestión de la tienda online, o preparación y envío de pedidos</span></b>
+      <span><span class="en">For a monthly fee or as part of your team. Only if and when you want it.</span><span class="es">Con cuota mensual o como parte de vuestro equipo. Solo si lo queréis y cuando lo queráis.</span></span>
+    </div>
+    <p class="fine"><span class="en">Stripe's standard per-transaction fees apply to online payments.</span><span class="es">A los pagos online se aplican las comisiones estándar de Stripe por transacción.</span></p>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section class="close pad">
+  <div class="hexfield" aria-hidden="true">
+    <svg viewBox="0 0 620 420" style="left:-120px;bottom:-60px;width:min(700px,90vw);opacity:.55">
+      <path d="M150 20h120l60 104-60 104H150L90 124z"/><path d="M330 124h120l60 104-60 104H330l-60-104z"/><path d="M150 228h120l60 104-60 104H150L90 332z"/>
+    </svg>
+  </div>
+  <div class="wrap" style="position:relative">
+    <div class="kicker mono"><span class="en">Next step</span><span class="es">Siguiente paso</span></div>
+    <h2 class="display"><span class="en">Let's talk,<br><em>at your counter.</em></span><span class="es">Hablemos,<br><em>en vuestro mostrador.</em></span></h2>
+    <p class="lede" style="margin-top:26px"><span class="en">I'm in the store often anyway. Reply to my message, or stop me on my next visit, and I'll walk you through it in person.</span><span class="es">Paso por la tienda a menudo. Respondedme al mensaje o paradme en mi próxima visita, y os lo enseño en persona.</span></p>
+    <div class="contact">
+      <a class="btn p" href="https://christianschneiderdavis.com" target="_blank" rel="noopener"><span class="en">See more of my work →</span><span class="es">Ver más de mi trabajo →</span></a>
+      <span class="btn g">christianschneiderdavis.com</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Christian Schneider-Davis. <span class="en">Concept, design and copy prepared exclusively for ARCO TCG for evaluation. Please don't share or reuse without permission.</span><span class="es">Concepto, diseño y textos preparados exclusivamente para ARCO TCG para su valoración. Por favor, no compartir ni reutilizar sin permiso.</span></span>
+    <span class="mono"><span class="en">Store photos: Google Maps · Walkthrough: AI placeholder</span><span class="es">Fotos: Google Maps · Recorrido: maqueta IA</span></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // language
+  var root=document.documentElement, btns=document.querySelectorAll('.lang button');
+  function setLang(l){
+    root.className='l-'+l; root.lang=l;
+    btns.forEach(function(b){b.setAttribute('aria-pressed', b.dataset.l===l)});
+    try{localStorage.setItem('arco-lang',l)}catch(e){}
+  }
+  var h=(location.hash||'').slice(1), saved=null;
+  try{saved=localStorage.getItem('arco-lang')}catch(e){}
+  var nav=(navigator.language||'').toLowerCase();
+  setLang(h==='en'?'en':'es');
+  btns.forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.l)})});
+  addEventListener('hashchange',function(){var x=location.hash.slice(1);if(x==='en'||x==='es')setLang(x)});
+
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+
+  // scroll walk
+  var N=152, imgs=new Array(N), loaded=0, started=false;
+  var cv=document.getElementById('cv'), ctx=cv.getContext('2d'), screen=document.getElementById('screen');
+  var walk=document.getElementById('walk'), bar=document.getElementById('progbar');
+  var stages=document.querySelectorAll('.stage'), cur=-1, want=0;
+  function src(i){return 'f/'+String(i).padStart(3,'0')+'.webp'}
+  function load(){
+    if(started)return; started=true;
+    // load in a stride order so the whole range is coarse-available fast
+    var order=[],seen={};
+    [16,8,4,2,1].forEach(function(s){for(var i=0;i<N;i+=s){if(!seen[i]){seen[i]=1;order.push(i)}}});
+    order.forEach(function(i){var im=new Image();im.decoding='async';im.onload=function(){imgs[i]=im;loaded++;if(Math.abs(i-want)<20)draw(want,true)};im.src=src(i)});
+  }
+  function size(){
+    var r=screen.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2);
+    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d); cur=-1; draw(want,true);
+  }
+  function nearest(i){ if(imgs[i])return imgs[i]; for(var k=1;k<N;k++){ if(imgs[i-k])return imgs[i-k]; if(imgs[i+k])return imgs[i+k]; } return null }
+  function draw(i,force){
+    if(i===cur&&!force)return; var im=nearest(i); if(!im)return; cur=i;
+    var cw=cv.width,ch=cv.height,iw=im.naturalWidth,ih=im.naturalHeight,s=Math.max(cw/iw,ch/ih);
+    var w=iw*s,hh=ih*s; ctx.drawImage(im,(cw-w)/2,(ch-hh)/2,w,hh);
+  }
+  function onScroll(){
+    var r=walk.getBoundingClientRect(), total=walk.offsetHeight-innerHeight;
+    if(r.top<innerHeight*2.5)load();
+    var p=Math.min(1,Math.max(0,-r.top/total));
+    want=Math.min(N-1,Math.round(p*(N-1)));
+    draw(want);
+    bar.style.width=(p*100)+'%';
+    var s=p<.3?0:p<.66?1:2;
+    stages.forEach(function(el){el.classList.toggle('on',+el.dataset.s===s)});
+  }
+  var ticking=false;
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(function(){ticking=false;onScroll()})}},{passive:true});
+  addEventListener('resize',size);
+  // poster first
+  var poster=new Image();poster.onload=function(){if(!imgs[0])imgs[0]=poster;size()};poster.src='img/poster.jpg';
+  size(); onScroll();
+})();
+</script>
+</body>
+</html>
