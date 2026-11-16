@@ -26,14 +26,6 @@ const PROJECTS = [
     video: 'gallery/project-8.mp4',
   },
   {
-    name: 'Local Barber Shop Website',
-    category: 'E-Commerce',
-    year: 'Aug. 2026',
-    url: 'https://www.vinzbarbershopbcn.com/',
-    static: 'gallery/project-2.png',
-    video: 'gallery/project-2.mp4',
-  },
-  {
     name: 'E-Commerce Vintage Accessory Store',
     category: 'E-Commerce',
     year: 'Feb. 2024',
@@ -58,6 +50,14 @@ const PROJECTS = [
     desktopOnly: true,
     static: 'gallery/project-1.png',
     video: 'gallery/project-1.mp4',
+  },
+    {
+    name: 'Local Barber Shop Website',
+    category: 'E-Commerce',
+    year: 'Aug. 2026',
+    url: 'https://www.vinzbarbershopbcn.com/',
+    static: 'gallery/project-2.png',
+    video: 'gallery/project-2.mp4',
   },
   {
     name: 'Virtual Desktop Portfolio',
